@@ -47,6 +47,8 @@ The build runs in Node and the viewer runs in the browser. They share `src/model
 
 **Text stays readable or isn't drawn.** Text under 9 px on screen is hidden, and containers stay closed until their children's names would be readable. A screen of unlabelled boxes is worse than a closed card with a count.
 
+**Lines don't move unless you ask.** Nothing about the lines should change on hover, on a single click, or in the middle of a pan or zoom; they settle once the view stops (DECISIONS D-26). If you add an interaction that restyles lines, put it behind a double-click or an explicit control, and redraw through `drawEdges`, which only touches lines that changed.
+
 **The registry is the only source of truth.** The viewer never writes to it. Ink, notes and pins live in the viewer's local storage, and tours are copied out as YAML for someone to commit. Anything that changes the architecture goes through a reviewed change to the YAML.
 
 **Connection kinds come from the types at each end.** Don't add a free-form `kind` field to connections. If a pair of types needs a new kind, add it to `CONNECTION_RULES` in `src/registry/rules.ts` with a test, so validation keeps rejecting the pairs that don't make sense.

@@ -259,10 +259,12 @@ svg.board:active { cursor: grabbing; }
 .edge.k-twin .line { stroke-dasharray: 7 4; }
 .dense .edge .line { opacity: 0.45; }
 /* Busy views stay calm until a card is hovered, selected or traced. */
-.quiet:not(.focusing):not(.hovering) .edge .line { opacity: 0.22; }
-.quiet:not(.focusing):not(.hovering) .edge .count { opacity: 0.5; }
-.hovering .edge .line { opacity: 0.1; }
-.edge:hover .line, .edge.hot .line, .hovering .edge.hot .line { opacity: 1; }
+.quiet:not(.focusing) .edge .line { opacity: 0.22; }
+.quiet:not(.focusing) .edge .count { opacity: 0.5; }
+/* Lines fade rather than blink when they are added, removed or restyled. */
+.ready .edge .line, .ready .edge .count { transition: opacity 200ms ease; }
+.edge.entering, .edge.leaving { opacity: 0; }
+.edge.leaving { pointer-events: none; }
 .focusing .edge.dim { opacity: 0.06; }
 .edge.fdim { opacity: 0.05; }
 .fan circle { fill: #fff; stroke: var(--e-async); stroke-width: 1.5; vector-effect: non-scaling-stroke; }
@@ -296,6 +298,9 @@ svg.board:active { cursor: grabbing; }
 .panel .gap-note { color: var(--warn); font-size: 11px; }
 .panel .close { position: absolute; top: 12px; right: 12px; border: 0; background: var(--panel-2); width: 28px; height: 28px; border-radius: 8px; font-size: 16px; cursor: pointer; color: var(--ink-3); }
 .panel .close:hover { color: var(--ink); }
+.panel .actions { display: flex; flex-wrap: wrap; gap: 6px; margin: 10px 0 2px; }
+.panel .actions button { height: 28px; border: 1px solid var(--line-2); border-radius: 8px; background: var(--panel); padding: 0 10px; cursor: pointer; font: 500 12px var(--f-ui); color: var(--ink-2); }
+.panel .actions button:hover { border-color: var(--ink-3); color: var(--ink); }
 .panel .empty { color: var(--ink-3); margin: 0; }
 .chips { display: flex; flex-wrap: wrap; gap: 5px; }
 .chips span { background: var(--accent-soft); color: #2a44b0; border-radius: 999px; padding: 2px 9px; font-size: 11px; font-weight: 500; }

@@ -38,8 +38,8 @@ Stale markers compare `reviewedAt` with the viewer's clock, not the build time, 
 ## D-9 Typography: label blocks with a maximum screen size
 All card text lives in label blocks (chip + name + second line) designed at world size. A block scales with the zoom until its text reaches the role's maximum on-screen size, then stays that size (CSS `scale(min(1, cap / --k))`). Maximums: department title 30 px, domain 24, system 18, names and headers 15, meta 12, tags 11. Lines inside a block are stacked in the block's own units, so they can't drift into each other at any zoom. Text under 9 px on screen is hidden. Far out, departments and domains whose own title is unreadable get map-style screen labels (12 px).
 
-## D-10 Trackpad
-Pinch, and mouse wheels with discrete steps, zoom. Two-finger trackpad scroll pans. This is a heuristic on wheel deltas.
+## D-10 Trackpad and mouse wheel
+Pinch, and mouse wheels with discrete steps, zoom. Two-finger trackpad scroll pans. This is a heuristic on wheel deltas. Wheel notches ease in rather than jump (D-26).
 
 ## D-11 Orthogonal routing in the viewer
 Edges are routed on visibility change, in the viewer, by `src/route/orthogonal.ts`: ports are shared out along a side in the order of the other end; A* with a bend penalty over a sparse grid of obstacle faces and gutter centre lines; then parallel segments sharing a gutter are spread apart, in the order that crosses fewest joints. Obstacles are the visible siblings of every card on the two ends' paths to the root, so open containers are crossed only by their own edges.
@@ -83,7 +83,7 @@ Platform links are included, since an outage of auth does break its callers.
 `registry/tours.yaml` holds named walkthroughs; each step has a caption and one of `focus`, `trace: [from, to]` or `impact` (+ `direction`), optionally `level`. They are validated with the rest of the registry. The viewer can record a draft tour from what's on screen and copy it as YAML to paste into the file, so tours go through the same review as everything else.
 
 ## D-20 Calm overview
-When more than 70 connections touch the screen and nothing is focused, lines draw faint until a card is hovered, selected, traced or analysed.
+When more than 70 connections touch the screen and nothing is focused, lines draw faint until a card or line is double-clicked, or a trace or impact is shown.
 
 ## D-21 Spec0 boards are built in the browser
 A Spec0 page carries a data source, not a laid-out model. `src/viewer/boot.ts` fetches the snapshot, builds the chosen hierarchy (`src/spec0/board.ts`), lays it out with ELK in a Web Worker, and caches the layout in local storage per org, snapshot version and hierarchy. Registry boards still arrive laid out from `atlas build`. `layoutBoard` takes the ELK engine as a parameter so both paths share it.
@@ -99,3 +99,8 @@ An API card is sized from the operation and schema counts in the snapshot (`src/
 
 ## D-25 Grants are the connections
 Approved grants are `calls`, pending ones `requests` (dashed), rejected ones are dropped. Operation-scoped grants are refined from consumer → API to consumer → operations once details load. Operations link to the schemas they use; schemas link to the schemas they reference and, opt-in, to identical schemas (same structural hash) in other loaded APIs.
+
+## D-26 Lines hold still
+Lines only change when you ask them to or when the view has settled. While a pan or zoom is in progress they keep their current routes, even if containers open or close underneath; 160 ms after the last movement they are regrouped and rerouted for what is now on screen. They are kept by key between redraws, so a line whose route didn't change isn't touched, new ones fade in and removed ones fade out. The exception is panning past the area the lines were drawn for, which draws the newly exposed part straight away.
+Hovering changes nothing, and a single click on a card only opens its panel. Highlighting is on double-click: a card's connections, or one line and the cards at its ends. Pinning a container open or closed, which double-click used to do, moved to the panel.
+A mouse wheel notch zooms by the same factor d3-zoom uses but eases there over a few frames around the pointer. Pinch goes straight to d3-zoom, and screen-constant sizes (`--k`, `--inv`) follow the zoom on every frame, which measured no slower than stepping them.

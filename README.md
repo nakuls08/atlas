@@ -6,7 +6,7 @@ Cards never move when more detail appears. That rule decides most of the layout,
 
 ![The e-commerce example zoomed into Payments, with the details panel open](docs/images/focus.png)
 
-**[Try the demo](https://nakuls08.github.io/atlas/)**, a made-up e-commerce company with 12 departments, 38 domains, 114 services and 318 connections. There's also a [small example](https://nakuls08.github.io/atlas/small/) of about 40 entries and an [org graph](https://nakuls08.github.io/atlas/org-graph/) built from teams, APIs and access grants. Press `/` to search, click a card to focus it, and try `T` to trace a path between two cards.
+**[Try the demo](https://nakuls08.github.io/atlas/)**, a made-up e-commerce company with 12 departments, 38 domains, 114 services and 318 connections. There's also a [small example](https://nakuls08.github.io/atlas/small/) of about 40 entries and an [org graph](https://nakuls08.github.io/atlas/org-graph/) built from teams, APIs and access grants. Press `/` to search, double-click a card or a line to highlight its connections, and try `T` to trace a path between two cards.
 
 To build the same board yourself:
 
@@ -69,11 +69,11 @@ Run them with `npx tsx src/cli/main.ts <command>` or `bin/atlas.mjs <command>`.
 
 ## Using the board
 
-Containers open by themselves once they're big enough on screen for their children's names to be readable, so you never get a screen of unlabelled boxes. "Show down to" in the toolbar overrides that, and double-clicking a container pins it open or closed.
+Containers open by themselves once they're big enough on screen for their children's names to be readable, so you never get a screen of unlabelled boxes. "Show down to" in the toolbar overrides that, and a container's details panel has a button to keep it open or closed whatever the zoom.
 
 Connections are routed at right angles around cards. Lines between the same two cards merge into one with a count, and lines that lead off screen are grouped by the domain they go to ("12 calls → Billing"). When a view would still draw more than 160 lines, both ends are grouped one level coarser and the board says so.
 
-Click a card to focus it and see its details, inbound and outbound connections. Press `/` to search. Filters cover connection kinds, platform links, Kafka clusters, tags and stale domains. The URL always reopens the exact view, so you can paste a link to "the Payments domain with these filters" into a ticket.
+Moving around never changes the lines under you. Hovering does nothing to them, and while you pan or zoom they stay where they are, then regroup for the new view once you stop, with changed lines fading rather than blinking. Click a card to see its details and its inbound and outbound connections. Double-click a card to highlight its connections and dim everything else, or double-click a line to pick out just that connection and list what it stands for. Click empty space or press Esc to clear. Press `/` to search. Filters cover connection kinds, platform links, Kafka clusters, tags and stale domains. The URL always reopens the exact view, so you can paste a link to "the Payments domain with these filters" into a ticket.
 
 There are two drawing styles. Studio is the clean default. Sketch draws in handwriting on graph paper, which works better in a design review because nobody mistakes it for a finished diagram.
 

@@ -138,7 +138,7 @@ footer.append(
 );
 if (model.meta.version === 'draft') footer.append(el('span', { className: 'warn' }, 'Draft — not published'));
 footer.append(...(hooks.footerExtras ?? []));
-footer.append(el('span', { className: 'spacer' }), el('span', { className: 'hint' }, 'Drag to pan · scroll or pinch to zoom · click to focus · double-click to pin · / to search'));
+footer.append(el('span', { className: 'spacer' }), el('span', { className: 'hint' }, 'Drag to pan · scroll or pinch to zoom · double-click to highlight connections · / to search'));
 app.append(stage, footer);
 
 // ── cards ───────────────────────────────────────────────────────────────────
@@ -207,6 +207,14 @@ let lifted: LiftedEdge[] = [];
 let fans: Fan[] = [];
 let pending = false;
 let selected: string | null = null;
+/** Card whose connections are highlighted (double-click a card). */
+let focused: string | null = null;
+/** Leaf edges of the connection picked by double-clicking a line. */
+let picked: Set<string> | null = null;
+/** True from the first zoom or pan event until the view has been still for a moment. */
+let gesturing = false;
+/** World area the drawn edges cover; panning beyond it during a gesture draws more. */
+let drawnBox: Rect | null = null;
 let focusSet: Set<string> | null = null;
 /** Trace or impact result from the presentation tools; takes precedence over selection focus. */
 let highlight: Highlight | null = null;
@@ -340,13 +348,16 @@ function update() {
   const t1 = performance.now();
   applyCardClasses();
   record(perf.classMs, performance.now() - t1);
-  if (changed) {
+  // While the view is moving, lines stay as they are: they are redrawn once it settles, unless
+  // the move has carried the screen past the area they were drawn for.
+  const escaped = !!drawnBox && !contains(drawnBox, viewBox(0));
+  if ((changed && !gesturing) || escaped) {
     const t2 = performance.now();
     drawEdges();
     applyFocus();
-    present?.onVisibility();
     record(perf.edgeMs, performance.now() - t2);
   }
+  if (changed) present?.onVisibility();
   record(perf.lodMs, visMs + liftMs);
   record(perf.frameMs, performance.now() - t0);
   wantDetails();
@@ -567,38 +578,78 @@ function drawEdges() {
   record(perf.routeMs, performance.now() - t1);
 
   const tRouted = performance.now();
-  const frag = document.createDocumentFragment();
+  // Lines are kept by key: one that hasn't changed stays exactly as it is, a new one fades in and
+  // a removed one fades out, so redrawing never makes the board blink.
+  const old = new Map<string, SVGGElement>();
+  for (const c of edgeLayer.children) {
+    const g = c as SVGGElement;
+    if (!g.classList.contains('leaving')) old.set(g.dataset.id!, g);
+  }
+  const entering: SVGGElement[] = [];
+  const put = (id: string, cls: string, sig: string, build: (g: SVGGElement) => void, data: (g: SVGGElement) => void) => {
+    let g = old.get(id);
+    old.delete(id);
+    if (g && g.dataset.sig === sig) return;
+    if (!g) {
+      g = svgEl<SVGGElement>('g', {});
+      g.dataset.id = id;
+      g.classList.add('entering');
+      entering.push(g);
+      edgeLayer.append(g);
+    } else g.replaceChildren();
+    g.setAttribute('class', `${cls}${g.classList.contains('entering') ? ' entering' : ''}`);
+    g.dataset.sig = sig;
+    data(g);
+    build(g);
+  };
   for (const l of drawn) {
     const pts = routes.get(l.key)!;
-    const g = svgEl<SVGGElement>('g', { class: `edge ${kindClass(l.kinds)}${l.gapOnly ? ' gap' : ''}` });
-    g.dataset.key = l.key;
     const d = roundedPath(pts, 10);
-    g.append(svgEl('path', { class: 'hit', d }));
-    g.append(svgEl('path', { class: 'line', d, 'stroke-width': Math.min(5, 1.4 + 0.9 * Math.log2(l.count)).toFixed(2) }));
-    g.append(arrowHead(pts, l));
-    if (l.count > 1) g.append(countLabel(pts, l.count));
-    frag.append(g);
+    const width = Math.min(5, 1.4 + 0.9 * Math.log2(l.count)).toFixed(2);
+    const cls = `edge ${kindClass(l.kinds)}${l.gapOnly ? ' gap' : ''}`;
+    put(
+      l.key,
+      cls,
+      `${cls}|${d}|${width}|${l.count}`,
+      (g) => {
+        g.append(svgEl('path', { class: 'hit', d }));
+        g.append(svgEl('path', { class: 'line', d, 'stroke-width': width }));
+        g.append(arrowHead(pts, l));
+        if (l.count > 1) g.append(countLabel(pts, l.count));
+      },
+      (g) => (g.dataset.key = l.key),
+    );
   }
   for (const f of fans) {
     const n = nodes.get(f.topic)!;
     if (!intersects(n, view)) continue;
     const x0 = n.x + n.w;
     const y = n.y + n.h / 2;
-    const g = svgEl<SVGGElement>('g', { class: 'edge fan k-async' });
-    g.dataset.fan = f.topic;
     const d = `M${x0},${y} H${x0 + 30}`;
-    g.append(svgEl('path', { class: 'hit', d }), svgEl('path', { class: 'line', d, 'stroke-width': 2.5 }));
-    const badge = svgEl<SVGGElement>('g', {});
-    badge.setAttribute('style', `transform: translate(${x0 + 44}px, ${y}px) scale(var(--inv, 1))`);
-    badge.append(svgEl('circle', { r: 14 }));
-    const t = svgEl('text', {});
-    t.textContent = String(f.targets.length);
-    badge.append(t);
-    g.append(badge);
-    frag.append(g);
+    put(
+      `fan:${f.topic}`,
+      'edge fan k-async',
+      `${d}|${f.targets.length}`,
+      (g) => {
+        g.append(svgEl('path', { class: 'hit', d }), svgEl('path', { class: 'line', d, 'stroke-width': 2.5 }));
+        const badge = svgEl<SVGGElement>('g', {});
+        badge.setAttribute('style', `transform: translate(${x0 + 44}px, ${y}px) scale(var(--inv, 1))`);
+        badge.append(svgEl('circle', { r: 14 }));
+        const t = svgEl('text', {});
+        t.textContent = String(f.targets.length);
+        badge.append(t);
+        g.append(badge);
+      },
+      (g) => (g.dataset.fan = f.topic),
+    );
   }
   const tBuilt = performance.now();
-  edgeLayer.replaceChildren(frag);
+  for (const g of old.values()) {
+    g.classList.add('leaving');
+    window.setTimeout(() => g.remove(), 200);
+  }
+  if (entering.length) requestAnimationFrame(() => requestAnimationFrame(() => entering.forEach((g) => g.classList.remove('entering'))));
+  drawnBox = view;
   applyEdgeFilter();
   record(perf.stages, { lift: t1 - t0, prep: tReq - t1, route: tRouted - tReq, build: tBuilt - tRouted, attach: performance.now() - tBuilt, drawn: drawn.length });
 }
@@ -615,6 +666,7 @@ const union = (a: Rect, b: Rect): Rect => {
   const y = Math.min(a.y, b.y);
   return { x, y, w: Math.max(a.x + a.w, b.x + b.w) - x, h: Math.max(a.y + a.h, b.y + b.h) - y };
 };
+const contains = (a: Rect, b: Rect) => b.x >= a.x && b.y >= a.y && b.x + b.w <= a.x + a.w && b.y + b.h <= a.y + a.h;
 const intersects = (a: Rect, b: Rect) => a.x < b.x + b.w && a.x + a.w > b.x && a.y < b.y + b.h && a.y + a.h > b.y;
 
 function arrowHead(pts: Pt[], l: LiftedEdge): SVGElement {
@@ -680,33 +732,43 @@ const fitScale = (box: { w: number; h: number }, pad = 0.9, inset = 0) => {
 const zoomBehavior: ZoomBehavior<SVGSVGElement, unknown> = d3zoom<SVGSVGElement, unknown>()
   .scaleExtent([fitScale(bounds) * 0.5, (3 * expandAt) / smallestLeaf])
   .filter((e: Event) => {
-    if (e.type === 'wheel') return isZoomWheel(e as WheelEvent);
+    // Pinch (and ctrl/⌘ + wheel) goes to d3-zoom; mouse wheels and trackpad scrolls are handled below.
+    if (e.type === 'wheel') return (e as WheelEvent).ctrlKey || (e as WheelEvent).metaKey;
     if (e.type === 'dblclick') return false;
     if (present?.capturesDrag() && (e.type === 'mousedown' || e.type === 'touchstart')) return false;
     return !(e as MouseEvent).ctrlKey && !(e as MouseEvent).button;
   })
   .on('end', () => {
-    // Edge grouping depends on what is on screen, so settle it after every pan or zoom
-    // (routes come from the cache, so this is cheap).
-    {
-      drawEdges();
-      applyFocus();
-    }
-    syncScaleVars(true);
-    updateCrumbs();
-    writeHash();
+    // Trackpad pans and animations end after every event or frame, so wait until the view
+    // has been still for a moment before settling.
+    clearTimeout(settleTimer);
+    settleTimer = window.setTimeout(settle, SETTLE_MS);
   })
   .on('zoom', (e: { transform: ZoomTransform }) => {
+    clearTimeout(settleTimer);
+    gesturing = true;
     world.setAttribute('transform', e.transform.toString());
     k = e.transform.k;
     moveGrid(e.transform);
-    syncScaleVars(false);
+    syncScaleVars();
     present?.onViewChange();
-    hideTip(false);
+    tip.hidden = true;
     schedule();
   });
 const svgSel = select(svg);
 svgSel.call(zoomBehavior);
+
+const SETTLE_MS = 160;
+let settleTimer = 0;
+/** The view has stopped moving: regroup and redraw lines for what is now on screen. */
+function settle() {
+  gesturing = false;
+  drawEdges();
+  applyFocus();
+  syncScaleVars();
+  updateCrumbs();
+  writeHash();
+}
 const currentTransform = () => svgSel.property('__zoom') as ZoomTransform;
 
 /** The dot grid behind the board pans and zooms with it, folded into a 16–32 px step. */
@@ -719,20 +781,12 @@ function moveGrid(t: ZoomTransform) {
 }
 
 /**
- * Screen-constant sizes (arrowheads, counts, headers) read --inv and --k. Rewriting them restyles
- * every edge, so during a gesture they only follow the zoom in 8% steps.
+ * Screen-constant sizes (arrowheads, counts, headers) read --inv and --k. They follow the zoom on
+ * every frame: stepping them made labels and arrowheads jump in size mid-gesture.
  */
-let varsK = 0;
-let settleTimer = 0;
-function syncScaleVars(force: boolean) {
-  clearTimeout(settleTimer);
-  if (force || !varsK || Math.abs(k / varsK - 1) > 0.08) {
-    varsK = k;
-    world.style.setProperty('--inv', String(1 / k));
-    world.style.setProperty('--k', String(k));
-  } else {
-    settleTimer = window.setTimeout(() => syncScaleVars(true), 120);
-  }
+function syncScaleVars() {
+  world.style.setProperty('--inv', String(1 / k));
+  world.style.setProperty('--k', String(k));
 }
 
 /** Pinch and mouse wheels zoom; two-finger trackpad scrolls pan. */
@@ -744,12 +798,37 @@ function isZoomWheel(e: WheelEvent) {
 svg.addEventListener(
   'wheel',
   (e) => {
-    if (isZoomWheel(e)) return;
+    if (e.ctrlKey || e.metaKey) return;
     e.preventDefault();
-    zoomBehavior.translateBy(svgSel, -e.deltaX / k, -e.deltaY / k);
+    animation++;
+    if (isZoomWheel(e)) glideZoom(e);
+    else zoomBehavior.translateBy(svgSel, -e.deltaX / k, -e.deltaY / k);
   },
   { passive: false },
 );
+
+/**
+ * A mouse wheel notch zooms by the same amount as d3-zoom would, but eases there over a few
+ * frames around the pointer instead of jumping, and further notches extend the same glide.
+ */
+let glideTarget = 0;
+let glideAt: [number, number] = [0, 0];
+let glideFrame = 0;
+function glideZoom(e: WheelEvent) {
+  const [lo, hi] = zoomBehavior.scaleExtent();
+  const per = e.deltaMode === 1 ? 0.05 : e.deltaMode ? 1 : 0.002;
+  const from = glideFrame ? glideTarget : currentTransform().k;
+  glideTarget = Math.min(hi, Math.max(lo, from * Math.pow(2, -e.deltaY * per)));
+  const r = svg.getBoundingClientRect();
+  glideAt = [e.clientX - r.left, e.clientY - r.top];
+  if (!glideFrame) glideFrame = requestAnimationFrame(glideStep);
+}
+function glideStep() {
+  const now = currentTransform().k;
+  const done = Math.abs(Math.log(glideTarget / now)) < 0.004;
+  zoomBehavior.scaleTo(svgSel, done ? glideTarget : now * Math.pow(glideTarget / now, 0.28), glideAt);
+  glideFrame = done ? 0 : requestAnimationFrame(glideStep);
+}
 
 let animation = 0;
 function animateTo(box: { x: number; y: number; w: number; h: number }, pad = 0.85, maxK?: number, instant = false, minK = 0) {
@@ -764,6 +843,8 @@ function animateTo(box: { x: number; y: number; w: number; h: number }, pad = 0.
   const to: [number, number, number] = [box.x + box.w / 2 + inset / 2 / targetK, box.y + box.h / 2, v.w / targetK];
   const interp = interpolateZoom(from, to);
   const duration = instant ? 0 : Math.min(1100, Math.max(350, interp.duration * 0.6));
+  cancelAnimationFrame(glideFrame);
+  glideFrame = 0;
   const start = performance.now();
   const id = ++animation;
   const step = (now: number) => {
@@ -792,8 +873,16 @@ function zoomToNode(id: string, instant = false) {
 const fit = () => animateTo(bounds, 0.92);
 
 // ── selection, focus, panel ─────────────────────────────────────────────────
-function selectNode(id: string | null, zoomTo = false) {
+/**
+ * Selects a card and opens its panel. Its connections are highlighted only when `connections` is
+ * set (double-click, tours); a plain click leaves the lines alone.
+ */
+function selectNode(id: string | null, zoomTo = false, connections = false) {
   selected = id;
+  if (connections) focused = id;
+  else if (focused !== id) focused = null;
+  picked = null;
+  if (!id) hideTip(true);
   renderPanel();
   applyFocus();
   writeHash();
@@ -817,17 +906,28 @@ function applyFocus() {
       if (prev === undefined || (v >= 0 && v < prev)) emphasis.set(host, v);
     }
     focusSet = keep;
-  } else if (!selected) focusSet = null;
+  } else if (picked) {
+    // A picked line: keep the cards at either end of every connection it stands for.
+    const keep = new Set<string>();
+    for (const leaf of picked) {
+      const e = edgesById.get(leaf);
+      if (!e) continue;
+      chains.get(e.from)!.forEach((a) => keep.add(a));
+      chains.get(e.to)!.forEach((a) => keep.add(a));
+    }
+    focusSet = keep;
+  } else if (!focused) focusSet = null;
   else {
-    const keep = new Set<string>(chains.get(selected));
+    const focusedId = focused;
+    const keep = new Set<string>(chains.get(focusedId));
     const sub = (id: string) => {
       keep.add(id);
       nodes.get(id)!.children.forEach(sub);
     };
-    sub(selected);
+    sub(focusedId);
     for (const e of model.edges) {
-      const fromIn = inSubtree(e.from, selected);
-      const toIn = inSubtree(e.to, selected);
+      const fromIn = inSubtree(e.from, focusedId);
+      const toIn = inSubtree(e.to, focusedId);
       if (fromIn === toIn) continue;
       for (const a of chains.get(fromIn ? e.to : e.from)!) keep.add(a);
     }
@@ -838,27 +938,34 @@ function applyFocus() {
   for (const g of edgeLayer.children) {
     const el = g as SVGGElement;
     if (!focusSet) {
-      el.classList.remove('dim', 'emph');
+      setClass(el, 'dim', false);
+      setClass(el, 'emph', false);
       continue;
     }
     const l = byKey.get(el.dataset.key ?? '');
-    if (highlight) {
-      const hot = !!l && l.leaves.some((leaf) => highlight!.edges.has(leaf));
-      el.classList.toggle('dim', !hot);
-      el.classList.toggle('emph', hot);
+    const hotSet = highlight ? highlight.edges : picked;
+    if (hotSet) {
+      const hot = !!l && l.leaves.some((leaf) => hotSet.has(leaf));
+      setClass(el, 'dim', !hot);
+      setClass(el, 'emph', hot);
       continue;
     }
-    el.classList.remove('emph');
+    setClass(el, 'emph', false);
     const touches = l
       ? l.leaves.some((leaf) => {
           const e = edgesById.get(leaf)!;
-          return inSubtree(e.from, selected!) || inSubtree(e.to, selected!);
+          return inSubtree(e.from, focused!) || inSubtree(e.to, focused!);
         })
-      : el.dataset.fan === selected;
-    el.classList.toggle('dim', !touches);
+      : el.dataset.fan === focused;
+    setClass(el, 'dim', !touches);
   }
   applyCardClasses();
 }
+
+/** Touches the element only when the class actually changes, so unchanged lines aren't restyled. */
+const setClass = (e: Element, name: string, on: boolean) => {
+  if (e.classList.contains(name) !== on) e.classList.toggle(name, on);
+};
 
 const FLAG_NOTES: Record<string, (n: BoardNode) => string> = {
   platform: () => 'Platform service: links to it are hidden by default and shown as a "uses" badge on callers. Turn on "Platform links" in Filters to draw them.',
@@ -921,7 +1028,7 @@ function renderPanel() {
   const hue = n.dept ? hueOf.get(n.dept) : undefined;
   (badgeShape.firstChild as SVGElement).style.setProperty('--h', String(hue ?? deptHue(0)));
   typeBadge.append(badgeShape, n.type);
-  const parts: Node[] = [close, typeBadge, el('h2', { textContent: n.name }), crumbs];
+  const parts: Node[] = [close, typeBadge, el('h2', { textContent: n.name }), crumbs, panelActions(n)];
   for (const f of n.flags) parts.push(el('p', { className: 'note', textContent: FLAG_NOTES[f]?.(n) ?? f }));
   if (staleDomains.has(n.id)) parts.push(el('p', { className: 'note', textContent: `Not reviewed in the last ${STALE_DAYS} days.` }));
   if (n.uses.length) parts.push(el('h3', { textContent: 'Uses platform services' }), chips(n.uses));
@@ -938,6 +1045,39 @@ function renderPanel() {
   panel.hidden = false;
 }
 
+/** "Show connections" for every card; keeping a container open or closed for containers. */
+function panelActions(n: BoardNode): HTMLElement {
+  const row = el('div', { className: 'actions' });
+  const conn = el('button', { textContent: focused === n.id ? 'Hide connections' : 'Show connections', title: 'Or double-click the card' });
+  conn.onclick = () => toggleConnections(n.id);
+  row.append(conn);
+  if (n.children.length) {
+    const pin = pins.get(n.id);
+    const b = el('button', {
+      textContent: pin === undefined ? (state.expanded.has(n.id) ? 'Keep open' : 'Keep closed') : `Kept ${pin ? 'open' : 'closed'} · release`,
+      title: 'Hold this card open or closed whatever the zoom',
+    });
+    b.onclick = () => {
+      if (pins.has(n.id)) pins.delete(n.id);
+      else pins.set(n.id, !state.expanded.has(n.id));
+      state = { ...state, signature: '\u0000' };
+      schedule();
+      writeHash();
+      requestAnimationFrame(renderPanel);
+    };
+    row.append(b);
+  }
+  return row;
+}
+
+function toggleConnections(id: string) {
+  if (focused === id) {
+    focused = null;
+    applyFocus();
+    renderPanel();
+  } else selectNode(id, false, true);
+}
+
 const chips = (items: string[]) => el('div', { className: 'chips' }, ...items.map((t) => el('span', { textContent: t })));
 
 nodeLayer.addEventListener('click', (e) => {
@@ -948,36 +1088,14 @@ nodeLayer.addEventListener('click', (e) => {
   selectNode(g.dataset.id!);
 });
 
-// Pins: double-click pins a container open or closed; double-click again releases it.
+// Double-click a card to highlight its connections; again to clear them. Lines never react to
+// hovering or a single click, so moving the pointer across the board changes nothing.
 nodeLayer.addEventListener('dblclick', (e) => {
   const g = (e.target as Element).closest('.node') as SVGGElement | null;
   const id = g?.dataset.id;
-  if (!id || !nodes.get(id)!.children.length) return;
+  if (!id || present?.passiveHover()) return;
   e.stopPropagation();
-  if (pins.has(id)) pins.delete(id);
-  else pins.set(id, !state.expanded.has(id));
-  state = { ...state, signature: '\u0000' };
-  schedule();
-  writeHash();
-});
-
-// Hovering a card brings its edges forward and dims the rest.
-let hovered: string | null = null;
-nodeLayer.addEventListener('mouseover', (e) => {
-  const g = (e.target as Element).closest('.node') as SVGGElement | null;
-  const id = g?.dataset.id ?? null;
-  if (id === hovered) return;
-  hovered = id;
-  svg.classList.toggle('hovering', !!id);
-  for (const eg of edgeLayer.children) {
-    const key = (eg as SVGGElement).dataset.key ?? '';
-    const [from, to] = key.split('->');
-    eg.classList.toggle('hot', !!id && ((from && inSubtree(from, id)) || (to && inSubtree(to, id)) || (eg as SVGGElement).dataset.fan === id));
-  }
-});
-nodeLayer.addEventListener('mouseleave', () => {
-  hovered = null;
-  svg.classList.remove('hovering');
+  toggleConnections(id);
 });
 
 svg.addEventListener('click', (e) => {
@@ -988,10 +1106,8 @@ svg.addEventListener('click', (e) => {
 
 // ── merged-edge tooltip ─────────────────────────────────────────────────────
 let tipPinned = false;
-let tipTimer = 0;
 
 function showTip(g: SVGGElement, x: number, y: number, pin: boolean) {
-  if (tipPinned && !pin) return;
   let title = '';
   let leaves: string[] = [];
   if (g.dataset.fan) {
@@ -1005,7 +1121,6 @@ function showTip(g: SVGGElement, x: number, y: number, pin: boolean) {
     leaves = l.leaves;
   }
   tipPinned = pin;
-  clearTimeout(tipTimer);
   const ul = el('ul');
   for (const leaf of leaves) {
     const e = edgesById.get(leaf)!;
@@ -1030,24 +1145,24 @@ function hideTip(force: boolean) {
   if (tipPinned && !force) return;
   tipPinned = false;
   tip.hidden = true;
+  if (force && picked) {
+    picked = null;
+    applyFocus();
+  }
 }
-edgeLayer.addEventListener('mouseover', (e) => {
-  if (present?.passiveHover()) return;
+// Double-click a line to select it: it and the cards at its ends stay bright, and a list of the
+// connections it stands for opens beside it.
+edgeLayer.addEventListener('dblclick', (e) => {
   const g = (e.target as Element).closest('.edge') as SVGGElement | null;
-  if (g) showTip(g, (e as MouseEvent).clientX, (e as MouseEvent).clientY, false);
-});
-edgeLayer.addEventListener('mouseout', (e) => {
-  if (!(e.target as Element).closest('.edge') || tipPinned) return;
-  tipTimer = window.setTimeout(() => hideTip(false), 250);
-});
-edgeLayer.addEventListener('click', (e) => {
-  const g = (e.target as Element).closest('.edge') as SVGGElement | null;
-  if (!g) return;
+  if (!g || present?.passiveHover()) return;
   e.stopPropagation();
+  const leaves = g.dataset.fan ? fans.find((f) => f.topic === g.dataset.fan)?.leaves : lifted.find((l) => l.key === g.dataset.key)?.leaves;
+  if (!leaves) return;
+  focused = null;
+  picked = new Set(leaves);
+  applyFocus();
   showTip(g, e.clientX, e.clientY, true);
 });
-tip.addEventListener('mouseenter', () => clearTimeout(tipTimer));
-tip.addEventListener('mouseleave', () => hideTip(false));
 
 // ── search ──────────────────────────────────────────────────────────────────
 let hits: BoardNode[] = [];
@@ -1483,7 +1598,7 @@ present = initPresentation({
     svg.classList.toggle('highlighting', !!h);
     applyFocus();
   },
-  selectNode: (id) => selectNode(id),
+  selectNode: (id) => selectNode(id, false, true),
   setLevel(level) {
     levelOverride = level;
     levelSelect.value = level === null ? '' : String(level);
@@ -1511,7 +1626,7 @@ present.setFocusGetter(() => selected);
     selectNode(focus);
     if (!view) zoomToNode(focus, true);
   }
-  syncScaleVars(true);
+  syncScaleVars();
   update();
   applyFilters();
   updateCrumbs();
