@@ -1,0 +1,17 @@
+clusters:
+  - id: logistics-kafka
+    name: logistics-kafka
+  - id: finance-kafka
+    name: finance-kafka
+  - id: commerce-kafka
+    name: commerce-kafka
+  - id: identity-kafka
+    name: identity-kafka
+  - id: data-kafka
+    name: data-kafka
+  - id: platform-kafka
+    name: platform-kafka
+  - id: marketing-kafka
+    name: marketing-kafka
+  - id: support-kafka
+    name: support-kafka

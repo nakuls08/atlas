@@ -1,0 +1,21 @@
+domain:
+  id: observability
+  name: Observability
+  department: platform
+  owningTeam: team-sre
+  reviewedAt: 2026-08-15
+  reviewedBy: lee
+services:
+  - id: observability/telemetry-collector
+    name: telemetry-collector
+    owningTeam: team-sre
+    role: platform
+apis:
+  - id: observability/otlp-ingest
+    name: OTLP Ingest
+    hostedBy: observability/telemetry-collector
+    style: gRPC
+    audience: internal
+connections:
+  - from: observability/telemetry-collector
+    to: ext/datadog

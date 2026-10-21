@@ -1,0 +1,337 @@
+domain:
+  id: chat
+  name: Chat
+  department: data
+  owningTeam: team-chat
+  reviewedAt: 2026-07-01
+  reviewedBy: pe
+systems:
+  - id: chat/sys-0
+    name: chat system 0
+services:
+  - id: chat/chat-engine-0
+    name: chat-engine-0
+    owningTeam: team-chat
+    system: chat/sys-0
+  - id: chat/chat-adapter-1
+    name: chat-adapter-1
+    owningTeam: team-chat
+    ownership: disputed
+    claimant: search
+  - id: chat/chat-engine-2
+    name: chat-engine-2
+    owningTeam: team-chat
+    system: chat/sys-0
+  - id: chat/chat-worker-3
+    name: chat-worker-3
+    owningTeam: team-chat
+    system: chat/sys-0
+  - id: chat/chat-adapter-4
+    name: chat-adapter-4
+    owningTeam: team-chat
+    system: chat/sys-0
+  - id: chat/chat-gateway-5
+    name: chat-gateway-5
+    owningTeam: team-chat
+  - id: chat/chat-gateway-6
+    name: chat-gateway-6
+    owningTeam: team-chat
+    system: chat/sys-0
+  - id: chat/chat-worker-7
+    name: chat-worker-7
+    owningTeam: team-chat
+    system: chat/sys-0
+  - id: chat/chat-manager-8
+    name: chat-manager-8
+    owningTeam: team-chat
+  - id: chat/chat-gateway-9
+    name: chat-gateway-9
+    owningTeam: team-chat
+    system: chat/sys-0
+apis:
+  - id: chat/api-257
+    name: chat-engine-0 API 257
+    hostedBy: chat/chat-engine-0
+    style: gRPC
+  - id: chat/api-258
+    name: chat-adapter-1 API 258
+    hostedBy: chat/chat-adapter-1
+    style: gRPC
+  - id: chat/api-259
+    name: chat-engine-2 API 259
+    hostedBy: chat/chat-engine-2
+    style: REST
+  - id: chat/api-260
+    name: chat-worker-3 API 260
+    hostedBy: chat/chat-worker-3
+    style: gRPC
+  - id: chat/api-261
+    name: chat-adapter-4 API 261
+    hostedBy: chat/chat-adapter-4
+    style: gRPC
+  - id: chat/api-262
+    name: chat-gateway-5 API 262
+    hostedBy: chat/chat-gateway-5
+    style: REST
+  - id: chat/api-263
+    name: chat-gateway-6 API 263
+    hostedBy: chat/chat-gateway-6
+    style: GraphQL
+  - id: chat/api-264
+    name: chat-worker-7 API 264
+    hostedBy: chat/chat-worker-7
+    style: REST
+  - id: chat/api-265
+    name: chat-manager-8 API 265
+    hostedBy: chat/chat-manager-8
+    style: REST
+  - id: chat/api-266
+    name: chat-gateway-9 API 266
+    hostedBy: chat/chat-gateway-9
+    style: REST
+topics:
+  - id: chat/topic-46
+    name: chat.event-46.v1
+    ownedBy: chat/chat-worker-7
+    cluster: data-kafka
+  - id: chat/topic-79
+    name: chat.event-79.v1
+    ownedBy: chat/chat-gateway-6
+    cluster: data-kafka
+  - id: chat/topic-129
+    name: chat.event-129.v1
+    ownedBy: chat/chat-gateway-9
+    cluster: data-kafka
+  - id: chat/topic-134
+    name: chat.event-134.v1
+    ownedBy: chat/chat-engine-0
+    cluster: data-kafka
+  - id: chat/topic-164
+    name: chat.event-164.v1
+    ownedBy: chat/chat-adapter-1
+    cluster: data-kafka
+  - id: chat/topic-171
+    name: chat.event-171.v1
+    ownedBy: chat/chat-adapter-1
+    cluster: data-kafka
+  - id: chat/topic-200
+    name: chat.event-200.v1
+    ownedBy: chat/chat-adapter-1
+    cluster: data-kafka
+channels: []
+datastores:
+  - id: chat/store-1
+    name: chat-db-1
+    technology: redis
+    ownedBy: chat/chat-gateway-9
+  - id: chat/store-20
+    name: chat-db-20
+    technology: s3
+    ownedBy: chat/chat-gateway-9
+  - id: chat/store-58
+    name: chat-db-58
+    technology: dynamodb
+    ownedBy: chat/chat-gateway-5
+connections:
+  - from: chat/chat-engine-0
+    to: carrier/auth-api
+  - from: chat/chat-gateway-6
+    to: carrier/auth-api
+  - from: chat/chat-gateway-9
+    to: carrier/auth-api
+  - from: chat/chat-gateway-9
+    to: chat/api-258
+  - from: chat/chat-gateway-9
+    to: tax/api-336
+  - from: chat/chat-worker-3
+    to: chat/api-262
+  - from: chat/chat-adapter-4
+    to: chat/api-263
+  - from: chat/chat-manager-8
+    to: chat/topic-46
+  - from: chat/chat-manager-8
+    to: tracking/api-483
+  - from: chat/chat-gateway-6
+    to: chat/api-266
+  - from: chat/chat-gateway-9
+    to: refund/api-37
+  - from: chat/chat-gateway-5
+    to: chat/topic-200
+  - from: chat/chat-adapter-1
+    to: checkout/api-378
+  - from: chat/chat-gateway-6
+    to: chat/api-259
+  - from: chat/chat-gateway-5
+    to: ticket/api-249
+  - from: chat/chat-worker-3
+    to: checkout/api-383
+  - from: chat/topic-46
+    to: chat/chat-adapter-1
+  - from: chat/chat-worker-3
+    to: chat/api-260
+  - from: chat/chat-manager-8
+    to: chat/api-260
+  - from: chat/chat-gateway-6
+    to: warehouse/api-319
+  - from: chat/chat-engine-0
+    to: warehouse/api-320
+  - from: chat/chat-gateway-9
+    to: promo/api-245
+  - from: chat/chat-gateway-6
+    to: chat/topic-46
+  - from: chat/chat-gateway-9
+    to: loyalty/api-354
+  - from: chat/chat-manager-8
+    to: chat/api-257
+  - from: chat/topic-134
+    to: chat/chat-manager-8
+  - from: chat/chat-adapter-1
+    to: chat/topic-134
+  - from: chat/chat-engine-2
+    to: chat/topic-134
+  - from: chat/chat-engine-0
+    to: chat/api-257
+  - from: chat/chat-adapter-4
+    to: checkout/api-380
+  - from: chat/chat-adapter-4
+    to: chat/topic-200
+  - from: chat/chat-gateway-5
+    to: chat/api-261
+  - from: chat/chat-engine-2
+    to: chat/api-265
+  - from: chat/chat-manager-8
+    to: catalog/api-504
+  - from: chat/chat-worker-3
+    to: routing/api-276
+  - from: chat/chat-worker-3
+    to: dispatch/api-278
+  - from: chat/chat-worker-7
+    to: chat/api-262
+  - from: chat/chat-manager-8
+    to: carrier/api-294
+  - from: chat/chat-worker-3
+    to: chat/topic-171
+  - from: chat/chat-adapter-4
+    to: chat/topic-79
+  - from: chat/chat-gateway-9
+    to: chat/topic-46
+  - from: chat/chat-adapter-1
+    to: warehouse/api-315
+  - from: chat/chat-manager-8
+    to: chat/api-264
+  - from: chat/chat-gateway-6
+    to: ticket/api-249
+  - from: chat/chat-gateway-6
+    to: chat/topic-129
+  - from: carrier/topic-100
+    to: chat/chat-gateway-6
+  - from: chat/chat-gateway-9
+    to: chat/topic-134
+  - from: chat/chat-gateway-6
+    to: label/api-74
+  - from: chat/chat-engine-0
+    to: routing/api-276
+  - from: chat/chat-engine-2
+    to: chat/topic-164
+  - from: chat/chat-manager-8
+    to: chat/topic-129
+  - from: chat/chat-adapter-4
+    to: chat/api-257
+  - from: chat/chat-adapter-1
+    to: chat/api-263
+  - from: routing/topic-70
+    to: chat/chat-gateway-6
+  - from: dispatch/topic-175
+    to: chat/chat-worker-7
+  - from: chat/chat-worker-3
+    to: chat/topic-79
+  - from: chat/chat-adapter-4
+    to: chat/api-260
+  - from: chat/chat-worker-7
+    to: chat/topic-134
+  - from: chat/chat-engine-0
+    to: chat/api-266
+  - from: chat/chat-engine-0
+    to: chat/api-259
+  - from: chat/chat-engine-2
+    to: routing/api-273
+  - from: chat/chat-gateway-5
+    to: ticket/api-256
+  - from: ticket/topic-236
+    to: chat/chat-engine-2
+  - from: chat/chat-engine-0
+    to: chat/api-258
+  - from: chat/chat-adapter-1
+    to: ticket/api-253
+  - from: chat/chat-gateway-5
+    to: notify/api-396
+  - from: chat/chat-gateway-6
+    to: routing/api-271
+  - from: chat/chat-adapter-1
+    to: chat/topic-46
+  - from: chat/chat-worker-3
+    to: warehouse/api-325
+  - from: chat/chat-worker-7
+    to: chat/api-259
+  - from: chat/chat-engine-0
+    to: chat/topic-129
+  - from: chat/chat-worker-7
+    to: chat/api-264
+  - from: chat/chat-worker-7
+    to: chat/topic-129
+  - from: chat/chat-worker-7
+    to: routing/api-277
+  - from: chat/topic-79
+    to: chat/chat-worker-3
+  - from: chat/chat-worker-3
+    to: chat/api-257
+  - from: notify/topic-51
+    to: chat/chat-adapter-4
+  - from: chat/chat-adapter-4
+    to: chat/api-259
+  - from: chat/chat-adapter-4
+    to: chat/topic-46
+  - from: chat/topic-171
+    to: chat/chat-worker-3
+  - from: chat/chat-adapter-4
+    to: chat/topic-164
+  - from: chat/chat-engine-2
+    to: chat/api-261
+  - from: chat/chat-worker-7
+    to: chat/topic-164
+  - from: chat/chat-worker-3
+    to: chat/api-263
+  - from: chat/topic-129
+    to: chat/chat-worker-3
+  - from: chat/chat-engine-2
+    to: ticket/api-248
+  - from: chat/chat-worker-7
+    to: ticket/api-255
+  - from: chat/chat-adapter-1
+    to: chat/topic-129
+  - from: carrier/topic-61
+    to: chat/chat-engine-0
+  - from: chat/chat-worker-7
+    to: chat/api-266
+  - from: chat/chat-gateway-9
+    to: chat/api-266
+  - from: chat/topic-79
+    to: chat/chat-adapter-4
+  - from: ticket/topic-240
+    to: chat/chat-adapter-4
+  - from: chat/chat-gateway-6
+    to: chat/topic-171
+  - from: chat/chat-worker-7
+    to: notify/api-396
+  - from: tax/topic-68
+    to: chat/chat-worker-3
+  - from: routing/topic-78
+    to: chat/chat-adapter-1
+  - from: profile/topic-99
+    to: chat/chat-manager-8
+  - from: chat/topic-46
+    to: chat/chat-engine-0
+  - from: chat/chat-adapter-1
+    to: chat/api-260
+  - from: chat/chat-adapter-4
+    to: dispatch/api-278

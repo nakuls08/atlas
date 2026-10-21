@@ -1,0 +1,46 @@
+domain:
+  id: campaigns
+  name: Campaigns
+  department: engagement
+  owningTeam: team-crm
+  reviewedAt: 2026-08-15
+  reviewedBy: lena
+services:
+  - id: campaigns/campaign-manager
+    name: campaign-manager
+    owningTeam: team-crm
+  - id: campaigns/audience-builder
+    name: audience-builder
+    owningTeam: team-crm
+apis:
+  - id: campaigns/campaign-api
+    name: Campaign API
+    hostedBy: campaigns/campaign-manager
+    style: REST
+    audience: internal
+  - id: campaigns/audience-api
+    name: Audience API
+    hostedBy: campaigns/audience-builder
+    style: REST
+    audience: internal
+topics:
+  - id: campaigns/campaign-launched
+    name: campaign.launched.v1
+    ownedBy: campaigns/campaign-manager
+    cluster: engagement-events
+datastores:
+  - id: campaigns/audience-builder-db
+    name: audience-builder-db
+    technology: snowflake
+    ownedBy: campaigns/audience-builder
+connections:
+  - from: campaigns/campaign-manager
+    to: campaigns/audience-api
+  - from: campaigns/campaign-manager
+    to: campaigns/campaign-launched
+  - from: accounts/customer-updated
+    to: campaigns/audience-builder
+  - from: orders/order-placed
+    to: campaigns/audience-builder
+  - from: events/session-enriched
+    to: campaigns/audience-builder

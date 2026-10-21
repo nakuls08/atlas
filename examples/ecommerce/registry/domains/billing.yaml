@@ -1,0 +1,49 @@
+domain:
+  id: billing
+  name: Billing
+  department: finance
+  owningTeam: team-billing
+  reviewedAt: 2026-08-15
+  reviewedBy: omar
+services:
+  - id: billing/invoicing
+    name: invoicing
+    owningTeam: team-billing
+  - id: billing/credit-notes
+    name: credit-notes
+    owningTeam: team-billing
+apis:
+  - id: billing/invoice-api
+    name: Invoice API
+    hostedBy: billing/invoicing
+    style: REST
+    audience: internal
+topics:
+  - id: billing/invoice-issued
+    name: invoice.issued.v1
+    ownedBy: billing/invoicing
+    cluster: finance-events
+datastores:
+  - id: billing/invoicing-db
+    name: invoicing-db
+    technology: postgres
+    ownedBy: billing/invoicing
+  - id: billing/credit-notes-db
+    name: credit-notes-db
+    technology: postgres
+    ownedBy: billing/credit-notes
+connections:
+  - from: billing/invoicing
+    to: tax/tax-api
+  - from: billing/invoicing
+    to: legacy/legacy-orders-api
+  - from: billing/invoicing
+    to: billing/invoice-issued
+  - from: orders/order-placed
+    to: billing/invoicing
+  - from: shipping/shipment-dispatched
+    to: billing/invoicing
+  - from: billing/credit-notes
+    to: billing/invoice-issued
+  - from: refunds/refund-issued
+    to: billing/credit-notes

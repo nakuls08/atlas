@@ -1,0 +1,404 @@
+domain:
+  id: review
+  name: Review
+  department: identity
+  owningTeam: team-review
+  reviewedAt: 2025-11-01
+  reviewedBy: pe
+systems:
+  - id: review/sys-0
+    name: review system 0
+  - id: review/sys-1
+    name: review system 1
+services:
+  - id: review/review-manager-0
+    name: review-manager-0
+    owningTeam: team-review
+  - id: review/review-service-1
+    name: review-service-1
+    owningTeam: team-review
+  - id: review/review-worker-2
+    name: review-worker-2
+    owningTeam: team-review
+    system: review/sys-0
+  - id: review/review-sync-3
+    name: review-sync-3
+    owningTeam: team-review
+    system: review/sys-1
+  - id: review/review-engine-4
+    name: review-engine-4
+    owningTeam: team-review
+    system: review/sys-1
+  - id: review/review-engine-5
+    name: review-engine-5
+    owningTeam: team-review
+  - id: review/review-adapter-6
+    name: review-adapter-6
+    owningTeam: team-review
+    ownership: disputed
+    claimant: ledger
+  - id: review/review-manager-7
+    name: review-manager-7
+    owningTeam: team-review
+  - id: review/review-worker-8
+    name: review-worker-8
+    owningTeam: team-review
+  - id: review/review-sync-9
+    name: review-sync-9
+    owningTeam: team-review
+  - id: review/review-worker-10
+    name: review-worker-10
+    owningTeam: team-review
+    system: review/sys-1
+  - id: review/review-service-11
+    name: review-service-11
+    owningTeam: team-review
+    system: review/sys-0
+apis:
+  - id: review/api-232
+    name: review-manager-0 API 232
+    hostedBy: review/review-manager-0
+    style: gRPC
+  - id: review/api-233
+    name: review-service-1 API 233
+    hostedBy: review/review-service-1
+    style: REST
+  - id: review/api-234
+    name: review-worker-2 API 234
+    hostedBy: review/review-worker-2
+    style: gRPC
+  - id: review/api-235
+    name: review-sync-3 API 235
+    hostedBy: review/review-sync-3
+    style: GraphQL
+  - id: review/api-236
+    name: review-engine-4 API 236
+    hostedBy: review/review-engine-4
+    style: REST
+  - id: review/api-237
+    name: review-engine-5 API 237
+    hostedBy: review/review-engine-5
+    style: gRPC
+  - id: review/api-238
+    name: review-adapter-6 API 238
+    hostedBy: review/review-adapter-6
+    style: REST
+  - id: review/api-239
+    name: review-manager-7 API 239
+    hostedBy: review/review-manager-7
+    style: REST
+  - id: review/api-240
+    name: review-worker-8 API 240
+    hostedBy: review/review-worker-8
+    style: GraphQL
+  - id: review/api-241
+    name: review-sync-9 API 241
+    hostedBy: review/review-sync-9
+    style: gRPC
+  - id: review/api-242
+    name: review-worker-10 API 242
+    hostedBy: review/review-worker-10
+    style: REST
+  - id: review/api-243
+    name: review-service-11 API 243
+    hostedBy: review/review-service-11
+    style: GraphQL
+topics:
+  - id: review/topic-14
+    name: review.event-14.v1
+    ownedBy: review/review-worker-10
+    cluster: identity-kafka
+  - id: review/topic-56
+    name: review.event-56.v1
+    ownedBy: review/review-worker-8
+    cluster: identity-kafka
+  - id: review/topic-59
+    name: review.event-59.v1
+    ownedBy: review/review-service-11
+    cluster: identity-kafka
+  - id: review/topic-66
+    name: review.event-66.v1
+    ownedBy: review/review-sync-9
+    cluster: identity-kafka
+  - id: review/topic-71
+    name: review.event-71.v1
+    ownedBy: review/review-worker-10
+    cluster: identity-kafka
+  - id: review/topic-113
+    name: review.event-113.v1
+    ownedBy: review/review-engine-4
+    cluster: identity-kafka
+  - id: review/topic-141
+    name: review.event-141.v1
+    ownedBy: review/review-worker-8
+    cluster: identity-kafka
+  - id: review/topic-162
+    name: review.event-162.v1
+    ownedBy: review/review-worker-2
+    cluster: identity-kafka
+  - id: review/topic-194
+    name: review.event-194.v1
+    ownedBy: review/review-engine-4
+    cluster: identity-kafka
+  - id: review/topic-234
+    name: review.event-234.v1
+    ownedBy: review/review-adapter-6
+    cluster: identity-kafka
+  - id: review/topic-249
+    name: review.event-249.v1
+    ownedBy: review/review-worker-8
+    cluster: identity-kafka
+channels:
+  - id: review/channel-1
+    name: EDI feed 1
+    technology: HTTP webhook
+    ownedBy: review/review-service-1
+datastores:
+  - id: review/store-56
+    name: review-db-56
+    technology: s3
+    ownedBy: review/review-manager-0
+connections:
+  - from: review/review-service-1
+    to: carrier/auth-api
+  - from: review/review-worker-2
+    to: carrier/auth-api
+  - from: review/review-sync-3
+    to: carrier/notify-api
+  - from: review/review-service-11
+    to: carrier/feature-flags-api
+  - from: review/review-service-11
+    to: search/api-223
+  - from: promo/topic-69
+    to: review/review-engine-4
+  - from: review/review-service-11
+    to: ticket/api-250
+  - from: review/review-manager-7
+    to: loyalty/api-357
+  - from: review/review-worker-2
+    to: review/topic-234
+  - from: promo/topic-8
+    to: review/review-sync-9
+  - from: review/review-worker-2
+    to: review/api-238
+  - from: review/review-adapter-6
+    to: returns/api-415
+  - from: cart/topic-198
+    to: review/review-service-1
+  - from: review/review-manager-7
+    to: label/api-74
+  - from: review/topic-141
+    to: review/review-sync-9
+  - from: review/review-adapter-6
+    to: review/api-232
+  - from: review/review-adapter-6
+    to: stock/api-539
+  - from: review/review-manager-0
+    to: review/api-241
+  - from: review/review-manager-7
+    to: review/topic-14
+  - from: review/review-engine-4
+    to: review/topic-249
+  - from: review/review-worker-8
+    to: routing/api-270
+  - from: review/review-manager-7
+    to: review/api-237
+  - from: review/review-service-1
+    to: carrier/api-302
+  - from: review/review-adapter-6
+    to: chat/api-265
+  - from: review/review-manager-0
+    to: review/api-233
+  - from: review/review-manager-7
+    to: checkout/api-385
+  - from: review/review-manager-0
+    to: review/api-235
+  - from: review/review-manager-7
+    to: dispatch/api-284
+  - from: review/review-worker-8
+    to: review/topic-71
+  - from: review/review-worker-2
+    to: ticket/api-254
+  - from: review/review-service-11
+    to: promo/api-246
+  - from: review/review-sync-3
+    to: review/topic-71
+  - from: review/review-engine-4
+    to: ticket/api-250
+  - from: review/review-worker-2
+    to: chat/api-258
+  - from: review/review-manager-0
+    to: review/api-239
+  - from: review/review-worker-2
+    to: loyalty/api-362
+  - from: review/review-engine-4
+    to: review/topic-162
+  - from: review/review-adapter-6
+    to: routing/api-277
+  - from: review/review-worker-8
+    to: review/api-238
+  - from: review/review-manager-7
+    to: fraud/api-339
+  - from: review/topic-141
+    to: review/review-manager-0
+  - from: review/review-service-1
+    to: review/topic-56
+  - from: review/review-worker-10
+    to: review/api-242
+  - from: review/topic-249
+    to: review/review-manager-0
+  - from: review/review-worker-10
+    to: review/api-241
+  - from: review/topic-66
+    to: review/review-sync-3
+  - from: review/review-service-11
+    to: review/topic-141
+  - from: review/review-worker-10
+    to: fraud/api-340
+  - from: review/topic-14
+    to: review/review-manager-0
+  - from: review/review-engine-5
+    to: review/topic-141
+  - from: review/review-engine-5
+    to: review/topic-249
+  - from: review/review-worker-8
+    to: consent/api-27
+  - from: ticket/topic-245
+    to: review/review-service-11
+  - from: review/review-manager-7
+    to: search/api-228
+  - from: review/review-service-11
+    to: review/topic-59
+  - from: review/review-sync-3
+    to: review/api-240
+  - from: review/review-worker-2
+    to: review/api-232
+  - from: review/review-worker-2
+    to: review/topic-59
+  - from: review/review-worker-8
+    to: chat/api-257
+  - from: review/review-service-11
+    to: review/api-233
+  - from: ticket/topic-245
+    to: review/review-manager-0
+  - from: review/review-sync-3
+    to: catalog/api-109
+  - from: review/review-engine-5
+    to: review/api-234
+  - from: review/review-sync-9
+    to: review/topic-59
+  - from: review/topic-249
+    to: review/review-engine-4
+  - from: promo/topic-69
+    to: review/review-sync-3
+  - from: review/review-worker-2
+    to: review/topic-194
+  - from: review/review-worker-10
+    to: promo/api-246
+  - from: review/review-worker-10
+    to: dispatch/api-281
+  - from: review/review-adapter-6
+    to: review/topic-249
+  - from: review/review-service-11
+    to: review/api-238
+  - from: review/review-service-1
+    to: review/api-242
+  - from: review/review-worker-10
+    to: review/api-237
+  - from: review/review-worker-10
+    to: search/api-231
+  - from: review/review-worker-2
+    to: chat/api-257
+  - from: review/review-service-1
+    to: review/topic-234
+  - from: review/review-service-11
+    to: review/topic-71
+  - from: review/review-worker-8
+    to: routing/api-273
+  - from: review/review-manager-7
+    to: order/api-406
+  - from: review/review-worker-8
+    to: review/api-240
+  - from: tax/topic-37
+    to: review/review-engine-4
+  - from: search/topic-224
+    to: review/review-service-1
+  - from: review/review-engine-4
+    to: pricing/api-527
+  - from: review/review-engine-4
+    to: dispatch/api-280
+  - from: review/review-adapter-6
+    to: review/api-239
+  - from: review/review-service-11
+    to: review/topic-113
+  - from: review/review-worker-10
+    to: review/topic-141
+  - from: review/review-engine-5
+    to: review/api-240
+  - from: review/review-sync-3
+    to: review/api-239
+  - from: review/review-manager-7
+    to: review/topic-71
+  - from: review/review-sync-3
+    to: search/api-224
+  - from: review/topic-234
+    to: review/review-service-1
+  - from: review/review-sync-9
+    to: routing/api-268
+  - from: review/review-manager-0
+    to: review/api-242
+  - from: review/review-worker-2
+    to: review/api-241
+  - from: review/review-adapter-6
+    to: review/topic-56
+  - from: review/review-worker-10
+    to: promo/api-245
+  - from: review/review-adapter-6
+    to: promo/api-246
+  - from: review/review-engine-5
+    to: chat/api-264
+  - from: review/review-manager-0
+    to: chat/api-266
+  - from: review/review-worker-10
+    to: review/api-238
+  - from: review/review-worker-8
+    to: review/api-236
+  - from: review/review-service-11
+    to: review/api-234
+  - from: review/topic-56
+    to: review/review-adapter-6
+  - from: review/review-worker-2
+    to: review/api-239
+  - from: review/review-sync-3
+    to: search/api-220
+  - from: review/topic-14
+    to: review/review-sync-9
+  - from: review/review-engine-5
+    to: search/api-222
+  - from: review/review-engine-5
+    to: routing/api-271
+  - from: review/topic-71
+    to: review/review-service-1
+  - from: review/review-service-11
+    to: search/api-231
+  - from: review/review-adapter-6
+    to: review/topic-14
+  - from: review/review-manager-7
+    to: review/topic-234
+  - from: review/review-manager-0
+    to: review/topic-234
+  - from: review/review-service-1
+    to: review/api-234
+  - from: review/review-adapter-6
+    to: loyalty/api-362
+  - from: review/review-service-11
+    to: search/api-230
+  - from: review/review-engine-5
+    to: review/api-236
+  - from: review/review-service-11
+    to: dispatch/api-286
+  - from: fraud/topic-193
+    to: review/review-worker-2
+  - from: review/review-engine-5
+    to: catalog/catalog-engine-16
+    gap: legacy, no spec

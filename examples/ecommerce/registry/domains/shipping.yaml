@@ -1,0 +1,98 @@
+domain:
+  id: shipping
+  name: Shipping
+  department: fulfilment
+  owningTeam: team-shipping
+  reviewedAt: 2026-02-02
+  reviewedBy: maria
+systems:
+  - id: shipping/carriers
+    name: Carrier integration
+services:
+  - id: shipping/carrier-gateway
+    name: carrier-gateway
+    owningTeam: team-shipping
+    system: shipping/carriers
+  - id: shipping/label-service
+    name: label-service
+    owningTeam: team-shipping
+    system: shipping/carriers
+  - id: shipping/tracking-service
+    name: tracking-service
+    owningTeam: team-shipping
+    system: shipping/carriers
+  - id: shipping/delivery-promise
+    name: delivery-promise
+    owningTeam: team-shipping
+    ownership: disputed
+    claimant: checkout
+apis:
+  - id: shipping/carrier-api
+    name: Carrier API
+    hostedBy: shipping/carrier-gateway
+    style: REST
+    audience: internal
+  - id: shipping/label-api
+    name: Label API
+    hostedBy: shipping/label-service
+    style: gRPC
+    audience: internal
+  - id: shipping/tracking-api
+    name: Tracking API
+    hostedBy: shipping/tracking-service
+    style: REST
+    audience: public
+  - id: shipping/carrier-webhooks
+    name: Carrier Webhooks
+    hostedBy: shipping/tracking-service
+    style: REST
+    audience: partner
+  - id: shipping/delivery-promise-api
+    name: Delivery Promise API
+    hostedBy: shipping/delivery-promise
+    style: REST
+    audience: internal
+topics:
+  - id: shipping/shipment-dispatched
+    name: shipment.dispatched.v1
+    ownedBy: shipping/tracking-service
+    cluster: fulfilment-events
+  - id: shipping/shipment-delivered
+    name: shipment.delivered.v1
+    ownedBy: shipping/tracking-service
+    cluster: fulfilment-events
+channels:
+  - id: shipping/dhl-manifest-drop
+    name: DHL manifest drop
+    technology: SFTP
+    ownedBy: shipping/label-service
+datastores:
+  - id: shipping/tracking-service-db
+    name: tracking-service-db
+    technology: postgres
+    ownedBy: shipping/tracking-service
+connections:
+  - from: shipping/carrier-gateway
+    to: ext/dhl
+  - from: shipping/carrier-gateway
+    to: ext/ups
+  - from: shipping/carrier-gateway
+    to: ext/fedex
+  - from: shipping/label-service
+    to: shipping/carrier-api
+  - from: shipping/label-service
+    to: shipping/dhl-manifest-drop
+  - from: shipping/dhl-manifest-drop
+    to: ext/dhl
+  - from: shipping/tracking-service
+    to: edge/auth-api
+  - from: shipping/tracking-service
+    to: shipping/shipment-dispatched
+  - from: shipping/tracking-service
+    to: shipping/shipment-delivered
+  - from: warehouse/parcel-packed
+    to: shipping/tracking-service
+  - from: shipping/delivery-promise
+    to: inventory/availability-api
+  - from: shipping/delivery-promise
+    to: shipping/carrier-api

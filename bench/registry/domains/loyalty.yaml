@@ -1,0 +1,363 @@
+domain:
+  id: loyalty
+  name: Loyalty
+  department: marketing
+  owningTeam: team-loyalty
+  reviewedAt: 2026-07-01
+  reviewedBy: pe
+systems:
+  - id: loyalty/sys-0
+    name: loyalty system 0
+services:
+  - id: loyalty/loyalty-service-0
+    name: loyalty-service-0
+    owningTeam: team-loyalty
+  - id: loyalty/loyalty-gateway-1
+    name: loyalty-gateway-1
+    owningTeam: team-loyalty
+    system: loyalty/sys-0
+  - id: loyalty/loyalty-worker-2
+    name: loyalty-worker-2
+    owningTeam: team-loyalty
+    system: loyalty/sys-0
+  - id: loyalty/loyalty-worker-3
+    name: loyalty-worker-3
+    owningTeam: team-loyalty
+    status: planned
+  - id: loyalty/loyalty-engine-4
+    name: loyalty-engine-4
+    owningTeam: team-loyalty
+    system: loyalty/sys-0
+  - id: loyalty/loyalty-adapter-5
+    name: loyalty-adapter-5
+    owningTeam: team-loyalty
+    system: loyalty/sys-0
+  - id: loyalty/loyalty-gateway-6
+    name: loyalty-gateway-6
+    owningTeam: team-loyalty
+  - id: loyalty/loyalty-gateway-7
+    name: loyalty-gateway-7
+    owningTeam: team-loyalty
+    system: loyalty/sys-0
+  - id: loyalty/loyalty-sync-8
+    name: loyalty-sync-8
+    owningTeam: team-loyalty
+    system: loyalty/sys-0
+  - id: loyalty/loyalty-service-9
+    name: loyalty-service-9
+    owningTeam: team-loyalty
+  - id: loyalty/loyalty-engine-10
+    name: loyalty-engine-10
+    owningTeam: team-loyalty
+    system: loyalty/sys-0
+  - id: loyalty/loyalty-engine-11
+    name: loyalty-engine-11
+    owningTeam: team-loyalty
+  - id: loyalty/loyalty-manager-12
+    name: loyalty-manager-12
+    owningTeam: team-loyalty
+    system: loyalty/sys-0
+apis:
+  - id: loyalty/api-350
+    name: loyalty-service-0 API 350
+    hostedBy: loyalty/loyalty-service-0
+    style: GraphQL
+  - id: loyalty/api-351
+    name: loyalty-gateway-1 API 351
+    hostedBy: loyalty/loyalty-gateway-1
+    style: gRPC
+  - id: loyalty/api-352
+    name: loyalty-worker-2 API 352
+    hostedBy: loyalty/loyalty-worker-2
+    style: GraphQL
+  - id: loyalty/api-353
+    name: loyalty-worker-3 API 353
+    hostedBy: loyalty/loyalty-worker-3
+    style: gRPC
+  - id: loyalty/api-354
+    name: loyalty-engine-4 API 354
+    hostedBy: loyalty/loyalty-engine-4
+    style: gRPC
+  - id: loyalty/api-355
+    name: loyalty-adapter-5 API 355
+    hostedBy: loyalty/loyalty-adapter-5
+    style: GraphQL
+  - id: loyalty/api-356
+    name: loyalty-gateway-6 API 356
+    hostedBy: loyalty/loyalty-gateway-6
+    style: REST
+  - id: loyalty/api-357
+    name: loyalty-gateway-7 API 357
+    hostedBy: loyalty/loyalty-gateway-7
+    style: GraphQL
+  - id: loyalty/api-358
+    name: loyalty-sync-8 API 358
+    hostedBy: loyalty/loyalty-sync-8
+    style: REST
+  - id: loyalty/api-359
+    name: loyalty-service-9 API 359
+    hostedBy: loyalty/loyalty-service-9
+    style: gRPC
+  - id: loyalty/api-360
+    name: loyalty-engine-10 API 360
+    hostedBy: loyalty/loyalty-engine-10
+    style: REST
+  - id: loyalty/api-361
+    name: loyalty-engine-11 API 361
+    hostedBy: loyalty/loyalty-engine-11
+    style: REST
+  - id: loyalty/api-362
+    name: loyalty-manager-12 API 362
+    hostedBy: loyalty/loyalty-manager-12
+    style: REST
+topics:
+  - id: loyalty/topic-18
+    name: loyalty.event-18.v1
+    ownedBy: loyalty/loyalty-service-9
+    cluster: marketing-kafka
+  - id: loyalty/topic-63
+    name: loyalty.event-63.v1
+    ownedBy: loyalty/loyalty-adapter-5
+    cluster: marketing-kafka
+  - id: loyalty/topic-75
+    name: loyalty.event-75.v1
+    ownedBy: loyalty/loyalty-manager-12
+    cluster: marketing-kafka
+  - id: loyalty/topic-104
+    name: loyalty.event-104.v1
+    ownedBy: loyalty/loyalty-service-0
+    cluster: marketing-kafka
+  - id: loyalty/topic-106
+    name: loyalty.event-106.v1
+    ownedBy: loyalty/loyalty-engine-11
+    cluster: marketing-kafka
+  - id: loyalty/topic-112
+    name: loyalty.event-112.v1
+    ownedBy: loyalty/loyalty-gateway-1
+    cluster: marketing-kafka
+  - id: loyalty/topic-179
+    name: loyalty.event-179.v1
+    ownedBy: loyalty/loyalty-sync-8
+    cluster: marketing-kafka
+  - id: loyalty/topic-203
+    name: loyalty.event-203.v1
+    ownedBy: loyalty/loyalty-gateway-7
+    cluster: marketing-kafka
+  - id: loyalty/topic-227
+    name: loyalty.event-227.v1
+    ownedBy: loyalty/loyalty-worker-2
+    cluster: marketing-kafka
+  - id: loyalty/topic-233
+    name: loyalty.event-233.v1
+    ownedBy: loyalty/loyalty-service-9
+    cluster: marketing-kafka
+  - id: loyalty/topic-237
+    name: loyalty.event-237.v1
+    ownedBy: loyalty/loyalty-engine-11
+    cluster: marketing-kafka
+channels: []
+datastores:
+  - id: loyalty/store-5
+    name: loyalty-db-5
+    technology: redis
+    ownedBy: loyalty/loyalty-gateway-6
+connections:
+  - from: loyalty/loyalty-worker-3
+    to: carrier/feature-flags-api
+  - from: loyalty/loyalty-engine-4
+    to: carrier/auth-api
+  - from: loyalty/loyalty-sync-8
+    to: carrier/notify-api
+  - from: loyalty/loyalty-service-9
+    to: carrier/notify-api
+  - from: loyalty/loyalty-engine-11
+    to: carrier/feature-flags-api
+  - from: loyalty/loyalty-manager-12
+    to: carrier/notify-api
+  - from: checkout/topic-209
+    to: loyalty/loyalty-gateway-1
+  - from: loyalty/loyalty-gateway-1
+    to: loyalty/topic-106
+  - from: loyalty/loyalty-gateway-6
+    to: loyalty/api-350
+  - from: loyalty/loyalty-gateway-7
+    to: loyalty/topic-112
+  - from: fraud/topic-193
+    to: loyalty/loyalty-manager-12
+  - from: fraud/topic-193
+    to: loyalty/loyalty-adapter-5
+  - from: checkout/topic-232
+    to: loyalty/loyalty-sync-8
+  - from: loyalty/loyalty-gateway-1
+    to: checkout/api-385
+  - from: loyalty/loyalty-sync-8
+    to: loyalty/api-350
+  - from: loyalty/loyalty-adapter-5
+    to: loyalty/topic-63
+  - from: loyalty/loyalty-engine-10
+    to: loyalty/topic-75
+  - from: notify/topic-127
+    to: loyalty/loyalty-service-0
+  - from: loyalty/loyalty-engine-4
+    to: loyalty/topic-233
+  - from: loyalty/loyalty-worker-3
+    to: loyalty/topic-179
+  - from: loyalty/loyalty-engine-11
+    to: routing/api-274
+  - from: loyalty/loyalty-worker-2
+    to: loyalty/topic-233
+  - from: loyalty/loyalty-gateway-1
+    to: checkout/api-381
+  - from: loyalty/loyalty-service-0
+    to: loyalty/api-356
+  - from: loyalty/loyalty-engine-4
+    to: loyalty/topic-63
+  - from: loyalty/loyalty-engine-11
+    to: loyalty/topic-203
+  - from: loyalty/loyalty-engine-11
+    to: loyalty/topic-75
+  - from: loyalty/loyalty-gateway-7
+    to: checkout/api-380
+  - from: loyalty/loyalty-gateway-7
+    to: loyalty/api-354
+  - from: notify/topic-101
+    to: loyalty/loyalty-engine-11
+  - from: loyalty/loyalty-manager-12
+    to: loyalty/api-356
+  - from: loyalty/loyalty-service-0
+    to: loyalty/topic-104
+  - from: loyalty/topic-179
+    to: loyalty/loyalty-engine-4
+  - from: loyalty/loyalty-service-9
+    to: tracking/api-488
+  - from: loyalty/loyalty-sync-8
+    to: loyalty/topic-104
+  - from: catalog/topic-32
+    to: loyalty/loyalty-engine-10
+  - from: loyalty/loyalty-service-9
+    to: notify/api-396
+  - from: loyalty/loyalty-adapter-5
+    to: loyalty/topic-233
+  - from: loyalty/loyalty-engine-4
+    to: payment/api-165
+  - from: loyalty/loyalty-sync-8
+    to: loyalty/topic-179
+  - from: loyalty/loyalty-engine-11
+    to: pricing/api-128
+  - from: label/topic-21
+    to: loyalty/loyalty-adapter-5
+  - from: loyalty/loyalty-engine-4
+    to: loyalty/api-355
+  - from: loyalty/topic-112
+    to: loyalty/loyalty-gateway-7
+  - from: loyalty/loyalty-gateway-1
+    to: routing/api-274
+  - from: loyalty/loyalty-engine-11
+    to: loyalty/api-353
+  - from: loyalty/loyalty-worker-2
+    to: cart/api-369
+  - from: ledger/topic-34
+    to: loyalty/loyalty-engine-4
+  - from: loyalty/topic-18
+    to: loyalty/loyalty-engine-11
+  - from: loyalty/loyalty-worker-3
+    to: loyalty/api-354
+  - from: loyalty/loyalty-engine-11
+    to: account/api-570
+  - from: loyalty/loyalty-worker-3
+    to: loyalty/api-355
+  - from: loyalty/loyalty-worker-2
+    to: stock/api-545
+  - from: loyalty/loyalty-engine-10
+    to: loyalty/topic-104
+  - from: loyalty/loyalty-gateway-6
+    to: search/api-220
+  - from: loyalty/loyalty-adapter-5
+    to: loyalty/api-359
+  - from: loyalty/loyalty-service-0
+    to: loyalty/topic-203
+  - from: loyalty/topic-237
+    to: loyalty/loyalty-service-0
+  - from: loyalty/loyalty-gateway-1
+    to: fraud/api-343
+  - from: loyalty/loyalty-engine-11
+    to: loyalty/api-357
+  - from: catalog/topic-147
+    to: loyalty/loyalty-worker-3
+  - from: loyalty/loyalty-adapter-5
+    to: stock/api-135
+  - from: loyalty/loyalty-engine-4
+    to: checkout/api-376
+  - from: loyalty/loyalty-gateway-1
+    to: pricing/api-125
+  - from: loyalty/loyalty-gateway-1
+    to: loyalty/api-357
+  - from: loyalty/loyalty-adapter-5
+    to: routing/api-274
+  - from: loyalty/loyalty-worker-2
+    to: loyalty/api-356
+  - from: loyalty/loyalty-engine-4
+    to: loyalty/api-362
+  - from: loyalty/loyalty-worker-2
+    to: fraud/api-344
+  - from: loyalty/topic-233
+    to: loyalty/loyalty-worker-2
+  - from: loyalty/loyalty-engine-11
+    to: consent/api-30
+  - from: loyalty/loyalty-service-9
+    to: loyalty/api-355
+  - from: loyalty/loyalty-engine-11
+    to: loyalty/topic-112
+  - from: loyalty/loyalty-worker-3
+    to: cart/api-363
+  - from: loyalty/topic-237
+    to: loyalty/loyalty-manager-12
+  - from: loyalty/loyalty-worker-2
+    to: catalog/api-98
+  - from: loyalty/loyalty-gateway-7
+    to: tracking/api-491
+  - from: loyalty/loyalty-service-0
+    to: stock/api-535
+  - from: loyalty/loyalty-service-0
+    to: label/api-77
+  - from: loyalty/topic-112
+    to: loyalty/loyalty-engine-4
+  - from: loyalty/loyalty-gateway-6
+    to: loyalty/topic-237
+  - from: loyalty/loyalty-gateway-6
+    to: loyalty/topic-63
+  - from: loyalty/topic-104
+    to: loyalty/loyalty-engine-10
+  - from: loyalty/loyalty-worker-2
+    to: loyalty/topic-112
+  - from: loyalty/loyalty-service-0
+    to: loyalty/api-358
+  - from: loyalty/loyalty-engine-10
+    to: account/api-167
+  - from: loyalty/loyalty-engine-11
+    to: loyalty/api-359
+  - from: loyalty/loyalty-service-9
+    to: checkout/api-379
+  - from: loyalty/loyalty-engine-11
+    to: fraud/api-348
+  - from: loyalty/loyalty-manager-12
+    to: loyalty/api-355
+  - from: loyalty/loyalty-service-9
+    to: loyalty/api-353
+  - from: loyalty/loyalty-engine-10
+    to: routing/api-271
+  - from: loyalty/loyalty-sync-8
+    to: cart/api-370
+  - from: loyalty/loyalty-service-0
+    to: fraud/api-341
+  - from: fraud/topic-91
+    to: loyalty/loyalty-manager-12
+  - from: loyalty/loyalty-engine-10
+    to: cart/api-372
+  - from: loyalty/loyalty-service-9
+    to: cart/api-367
+  - from: loyalty/loyalty-worker-2
+    to: loyalty/api-351
+  - from: loyalty/loyalty-engine-4
+    to: consent/consent-engine-4
+    gap: legacy, no spec

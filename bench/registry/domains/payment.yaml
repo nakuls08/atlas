@@ -1,0 +1,358 @@
+domain:
+  id: payment
+  name: Payment
+  department: commerce
+  owningTeam: team-payment
+  reviewedAt: 2025-11-01
+  reviewedBy: pe
+systems:
+  - id: payment/sys-0
+    name: payment system 0
+  - id: payment/sys-1
+    name: payment system 1
+  - id: payment/sys-2
+    name: payment system 2
+services:
+  - id: payment/payment-manager-0
+    name: payment-manager-0
+    owningTeam: team-payment
+  - id: payment/payment-service-1
+    name: payment-service-1
+    owningTeam: team-payment
+    system: payment/sys-0
+  - id: payment/payment-manager-2
+    name: payment-manager-2
+    owningTeam: team-payment
+  - id: payment/payment-service-3
+    name: payment-service-3
+    owningTeam: team-payment
+    system: payment/sys-0
+  - id: payment/payment-service-4
+    name: payment-service-4
+    owningTeam: team-payment
+    system: payment/sys-1
+  - id: payment/payment-sync-5
+    name: payment-sync-5
+    owningTeam: team-payment
+    system: payment/sys-0
+  - id: payment/payment-gateway-6
+    name: payment-gateway-6
+    owningTeam: team-payment
+    system: payment/sys-1
+  - id: payment/payment-manager-7
+    name: payment-manager-7
+    owningTeam: team-payment
+    system: payment/sys-2
+  - id: payment/payment-sync-8
+    name: payment-sync-8
+    owningTeam: team-payment
+    system: payment/sys-1
+  - id: payment/payment-manager-9
+    name: payment-manager-9
+    owningTeam: team-payment
+    system: payment/sys-2
+apis:
+  - id: payment/api-156
+    name: payment-manager-0 API 156
+    hostedBy: payment/payment-manager-0
+    style: GraphQL
+  - id: payment/api-157
+    name: payment-service-1 API 157
+    hostedBy: payment/payment-service-1
+    style: GraphQL
+  - id: payment/api-158
+    name: payment-manager-2 API 158
+    hostedBy: payment/payment-manager-2
+    style: REST
+  - id: payment/api-159
+    name: payment-service-3 API 159
+    hostedBy: payment/payment-service-3
+    style: gRPC
+  - id: payment/api-160
+    name: payment-service-4 API 160
+    hostedBy: payment/payment-service-4
+    style: gRPC
+  - id: payment/api-161
+    name: payment-sync-5 API 161
+    hostedBy: payment/payment-sync-5
+    style: gRPC
+  - id: payment/api-162
+    name: payment-gateway-6 API 162
+    hostedBy: payment/payment-gateway-6
+    style: GraphQL
+  - id: payment/api-163
+    name: payment-manager-7 API 163
+    hostedBy: payment/payment-manager-7
+    style: GraphQL
+  - id: payment/api-164
+    name: payment-sync-8 API 164
+    hostedBy: payment/payment-sync-8
+    style: REST
+  - id: payment/api-165
+    name: payment-manager-9 API 165
+    hostedBy: payment/payment-manager-9
+    style: gRPC
+  - id: payment/api-556
+    name: payment-manager-0 API 556
+    hostedBy: payment/payment-manager-0
+    style: REST
+  - id: payment/api-557
+    name: payment-service-1 API 557
+    hostedBy: payment/payment-service-1
+    style: gRPC
+  - id: payment/api-558
+    name: payment-manager-2 API 558
+    hostedBy: payment/payment-manager-2
+    style: REST
+  - id: payment/api-559
+    name: payment-service-3 API 559
+    hostedBy: payment/payment-service-3
+    style: gRPC
+  - id: payment/api-560
+    name: payment-service-4 API 560
+    hostedBy: payment/payment-service-4
+    style: REST
+  - id: payment/api-561
+    name: payment-sync-5 API 561
+    hostedBy: payment/payment-sync-5
+    style: REST
+  - id: payment/api-562
+    name: payment-gateway-6 API 562
+    hostedBy: payment/payment-gateway-6
+    style: REST
+  - id: payment/api-563
+    name: payment-manager-7 API 563
+    hostedBy: payment/payment-manager-7
+    style: REST
+  - id: payment/api-564
+    name: payment-sync-8 API 564
+    hostedBy: payment/payment-sync-8
+    style: gRPC
+  - id: payment/api-565
+    name: payment-manager-9 API 565
+    hostedBy: payment/payment-manager-9
+    style: REST
+topics:
+  - id: payment/topic-0
+    name: payment.event-0.v1
+    ownedBy: payment/payment-manager-2
+    cluster: commerce-kafka
+  - id: payment/topic-16
+    name: payment.event-16.v1
+    ownedBy: payment/payment-service-1
+    cluster: commerce-kafka
+  - id: payment/topic-55
+    name: payment.event-55.v1
+    ownedBy: payment/payment-service-3
+    cluster: commerce-kafka
+  - id: payment/topic-72
+    name: payment.event-72.v1
+    ownedBy: payment/payment-manager-9
+    cluster: commerce-kafka
+  - id: payment/topic-148
+    name: payment.event-148.v1
+    ownedBy: payment/payment-service-4
+    cluster: commerce-kafka
+  - id: payment/topic-192
+    name: payment.event-192.v1
+    ownedBy: payment/payment-service-1
+    cluster: commerce-kafka
+channels: []
+datastores:
+  - id: payment/store-8
+    name: payment-db-8
+    technology: dynamodb
+    ownedBy: payment/payment-gateway-6
+  - id: payment/store-26
+    name: payment-db-26
+    technology: dynamodb
+    ownedBy: payment/payment-manager-0
+connections:
+  - from: payment/payment-manager-9
+    to: carrier/feature-flags-api
+  - from: payment/payment-sync-8
+    to: payment/api-158
+  - from: payment/payment-manager-2
+    to: session/api-198
+  - from: payment/payment-gateway-6
+    to: payment/topic-0
+  - from: payment/payment-service-3
+    to: payment/api-559
+  - from: payment/payment-manager-7
+    to: payment/api-163
+  - from: carrier/topic-242
+    to: payment/payment-manager-7
+  - from: payment/payment-service-4
+    to: payment/topic-0
+  - from: payment/payment-manager-9
+    to: consent/api-216
+  - from: payment/payment-service-1
+    to: promo/api-246
+  - from: payment/payment-service-4
+    to: tax/api-335
+  - from: payment/payment-gateway-6
+    to: carrier/api-304
+  - from: payment/payment-manager-2
+    to: profile/api-585
+  - from: payment/payment-service-4
+    to: payment/api-159
+  - from: refund/topic-22
+    to: payment/payment-service-3
+  - from: payment/payment-manager-9
+    to: payment/topic-16
+  - from: payment/payment-manager-9
+    to: payment/topic-55
+  - from: payment/payment-service-4
+    to: session/api-597
+  - from: payment/payment-sync-5
+    to: promo/api-246
+  - from: payment/payment-sync-8
+    to: payment/topic-192
+  - from: payment/payment-manager-7
+    to: warehouse/api-311
+  - from: payment/payment-gateway-6
+    to: warehouse/api-326
+  - from: payment/payment-sync-5
+    to: payment/api-564
+  - from: payment/payment-service-3
+    to: tax/api-329
+  - from: payment/payment-gateway-6
+    to: payment/api-560
+  - from: consent/topic-225
+    to: payment/payment-manager-9
+  - from: payment/payment-gateway-6
+    to: payment/api-156
+  - from: payment/payment-manager-7
+    to: payment/api-160
+  - from: payment/payment-manager-9
+    to: payment/api-563
+  - from: payment/payment-manager-0
+    to: payment/api-558
+  - from: payment/payment-manager-2
+    to: payment/topic-148
+  - from: payment/payment-service-1
+    to: payment/api-559
+  - from: payment/payment-service-1
+    to: carrier/api-308
+  - from: payment/payment-service-4
+    to: promo/api-244
+  - from: promo/topic-230
+    to: payment/payment-service-4
+  - from: payment/payment-manager-7
+    to: search/api-220
+  - from: payment/payment-manager-7
+    to: payment/api-158
+  - from: payment/payment-service-3
+    to: search/api-231
+  - from: payment/payment-sync-8
+    to: payment/api-165
+  - from: payment/payment-service-1
+    to: consent/api-20
+  - from: payment/payment-gateway-6
+    to: payment/api-161
+  - from: payment/payment-service-1
+    to: payment/api-157
+  - from: payment/payment-manager-9
+    to: checkout/api-383
+  - from: payment/payment-service-4
+    to: carrier/api-304
+  - from: payment/payment-service-4
+    to: payment/api-560
+  - from: payment/payment-service-4
+    to: ticket/api-253
+  - from: payment/payment-service-3
+    to: payment/topic-72
+  - from: profile/topic-149
+    to: payment/payment-manager-7
+  - from: payment/payment-manager-0
+    to: payment/api-162
+  - from: payment/payment-gateway-6
+    to: payment/topic-72
+  - from: payment/payment-sync-8
+    to: profile/api-185
+  - from: payment/payment-sync-8
+    to: tax/api-332
+  - from: payment/payment-gateway-6
+    to: consent/api-207
+  - from: payment/payment-manager-7
+    to: payment/topic-72
+  - from: payment/payment-manager-0
+    to: payment/topic-72
+  - from: payment/payment-gateway-6
+    to: carrier/api-303
+  - from: payment/payment-manager-7
+    to: payment/api-162
+  - from: payment/payment-manager-0
+    to: payment/api-557
+  - from: payment/payment-service-1
+    to: payment/topic-148
+  - from: payment/payment-sync-5
+    to: profile/api-192
+  - from: tax/topic-40
+    to: payment/payment-gateway-6
+  - from: payment/payment-service-1
+    to: promo/api-244
+  - from: payment/payment-sync-5
+    to: profile/api-182
+  - from: payment/payment-manager-2
+    to: payment/api-164
+  - from: payment/payment-service-4
+    to: review/api-238
+  - from: payment/payment-manager-0
+    to: payment/api-159
+  - from: payment/payment-gateway-6
+    to: payment/api-564
+  - from: payment/topic-148
+    to: payment/payment-sync-5
+  - from: payment/payment-sync-5
+    to: consent/api-27
+  - from: payment/payment-sync-5
+    to: tax/api-332
+  - from: payment/payment-manager-9
+    to: session/api-203
+  - from: payment/payment-gateway-6
+    to: payment/api-162
+  - from: payment/payment-manager-0
+    to: carrier/api-293
+  - from: payment/payment-manager-0
+    to: payment/topic-0
+  - from: payment/payment-gateway-6
+    to: payment/api-563
+  - from: payment/payment-manager-2
+    to: carrier/api-299
+  - from: payment/payment-sync-5
+    to: payment/api-163
+  - from: payment/payment-manager-7
+    to: session/api-598
+  - from: session/topic-146
+    to: payment/payment-service-4
+  - from: payment/payment-service-3
+    to: payment/topic-148
+  - from: payment/payment-sync-5
+    to: search/api-225
+  - from: payment/payment-sync-5
+    to: payment/api-559
+  - from: payment/payment-manager-2
+    to: tax/api-337
+  - from: payment/payment-service-3
+    to: payment/api-562
+  - from: ticket/topic-236
+    to: payment/payment-service-1
+  - from: payment/payment-service-1
+    to: payment/api-556
+  - from: payment/payment-sync-5
+    to: payment/api-162
+  - from: payment/payment-manager-9
+    to: payment/api-162
+  - from: payment/payment-manager-0
+    to: review/api-242
+  - from: payment/payment-service-4
+    to: payment/topic-55
+  - from: payment/payment-manager-2
+    to: payment/api-156
+  - from: payment/payment-sync-5
+    to: payment/topic-148
+  - from: payment/payment-manager-9
+    to: payment/topic-0
+  - from: payment/payment-sync-5
+    to: payment/api-561

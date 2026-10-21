@@ -1,0 +1,487 @@
+domain:
+  id: profile
+  name: Profile
+  department: commerce
+  owningTeam: team-profile
+  reviewedAt: 2026-07-01
+  reviewedBy: pe
+systems:
+  - id: profile/sys-0
+    name: profile system 0
+  - id: profile/sys-1
+    name: profile system 1
+services:
+  - id: profile/profile-worker-0
+    name: profile-worker-0
+    owningTeam: team-profile
+    system: profile/sys-1
+  - id: profile/profile-sync-1
+    name: profile-sync-1
+    owningTeam: team-profile
+    system: profile/sys-0
+  - id: profile/profile-worker-2
+    name: profile-worker-2
+    owningTeam: team-profile
+  - id: profile/profile-gateway-3
+    name: profile-gateway-3
+    owningTeam: team-profile
+    system: profile/sys-0
+    ownership: disputed
+    claimant: catalog
+  - id: profile/profile-service-4
+    name: profile-service-4
+    owningTeam: team-profile
+    system: profile/sys-0
+  - id: profile/profile-adapter-5
+    name: profile-adapter-5
+    owningTeam: team-profile
+    system: profile/sys-1
+  - id: profile/profile-service-6
+    name: profile-service-6
+    owningTeam: team-profile
+  - id: profile/profile-service-7
+    name: profile-service-7
+    owningTeam: team-profile
+    ownership: disputed
+    claimant: tracking
+  - id: profile/profile-engine-8
+    name: profile-engine-8
+    owningTeam: team-profile
+    system: profile/sys-1
+  - id: profile/profile-manager-9
+    name: profile-manager-9
+    owningTeam: team-profile
+  - id: profile/profile-adapter-10
+    name: profile-adapter-10
+    owningTeam: team-profile
+    system: profile/sys-0
+  - id: profile/profile-service-11
+    name: profile-service-11
+    owningTeam: team-profile
+    system: profile/sys-0
+  - id: profile/profile-adapter-12
+    name: profile-adapter-12
+    owningTeam: team-profile
+    system: profile/sys-1
+  - id: profile/profile-worker-13
+    name: profile-worker-13
+    owningTeam: team-profile
+    system: profile/sys-1
+  - id: profile/profile-sync-14
+    name: profile-sync-14
+    owningTeam: team-profile
+    system: profile/sys-0
+  - id: profile/profile-service-15
+    name: profile-service-15
+    owningTeam: team-profile
+apis:
+  - id: profile/api-180
+    name: profile-worker-0 API 180
+    hostedBy: profile/profile-worker-0
+    style: gRPC
+  - id: profile/api-181
+    name: profile-sync-1 API 181
+    hostedBy: profile/profile-sync-1
+    style: gRPC
+  - id: profile/api-182
+    name: profile-worker-2 API 182
+    hostedBy: profile/profile-worker-2
+    style: GraphQL
+  - id: profile/api-183
+    name: profile-gateway-3 API 183
+    hostedBy: profile/profile-gateway-3
+    style: GraphQL
+  - id: profile/api-184
+    name: profile-service-4 API 184
+    hostedBy: profile/profile-service-4
+    style: REST
+  - id: profile/api-185
+    name: profile-adapter-5 API 185
+    hostedBy: profile/profile-adapter-5
+    style: REST
+  - id: profile/api-186
+    name: profile-service-6 API 186
+    hostedBy: profile/profile-service-6
+    style: GraphQL
+  - id: profile/api-187
+    name: profile-service-7 API 187
+    hostedBy: profile/profile-service-7
+    style: gRPC
+  - id: profile/api-188
+    name: profile-engine-8 API 188
+    hostedBy: profile/profile-engine-8
+    style: gRPC
+  - id: profile/api-189
+    name: profile-manager-9 API 189
+    hostedBy: profile/profile-manager-9
+    style: GraphQL
+  - id: profile/api-190
+    name: profile-adapter-10 API 190
+    hostedBy: profile/profile-adapter-10
+    style: REST
+  - id: profile/api-191
+    name: profile-service-11 API 191
+    hostedBy: profile/profile-service-11
+    style: GraphQL
+  - id: profile/api-192
+    name: profile-adapter-12 API 192
+    hostedBy: profile/profile-adapter-12
+    style: GraphQL
+  - id: profile/api-193
+    name: profile-worker-13 API 193
+    hostedBy: profile/profile-worker-13
+    style: gRPC
+  - id: profile/api-194
+    name: profile-sync-14 API 194
+    hostedBy: profile/profile-sync-14
+    style: GraphQL
+  - id: profile/api-195
+    name: profile-service-15 API 195
+    hostedBy: profile/profile-service-15
+    style: gRPC
+  - id: profile/api-580
+    name: profile-worker-0 API 580
+    hostedBy: profile/profile-worker-0
+    style: REST
+  - id: profile/api-581
+    name: profile-sync-1 API 581
+    hostedBy: profile/profile-sync-1
+    style: gRPC
+  - id: profile/api-582
+    name: profile-worker-2 API 582
+    hostedBy: profile/profile-worker-2
+    style: REST
+  - id: profile/api-583
+    name: profile-gateway-3 API 583
+    hostedBy: profile/profile-gateway-3
+    style: REST
+  - id: profile/api-584
+    name: profile-service-4 API 584
+    hostedBy: profile/profile-service-4
+    style: GraphQL
+  - id: profile/api-585
+    name: profile-adapter-5 API 585
+    hostedBy: profile/profile-adapter-5
+    style: REST
+  - id: profile/api-586
+    name: profile-service-6 API 586
+    hostedBy: profile/profile-service-6
+    style: gRPC
+  - id: profile/api-587
+    name: profile-service-7 API 587
+    hostedBy: profile/profile-service-7
+    style: GraphQL
+  - id: profile/api-588
+    name: profile-engine-8 API 588
+    hostedBy: profile/profile-engine-8
+    style: REST
+  - id: profile/api-589
+    name: profile-manager-9 API 589
+    hostedBy: profile/profile-manager-9
+    style: gRPC
+  - id: profile/api-590
+    name: profile-adapter-10 API 590
+    hostedBy: profile/profile-adapter-10
+    style: gRPC
+  - id: profile/api-591
+    name: profile-service-11 API 591
+    hostedBy: profile/profile-service-11
+    style: GraphQL
+  - id: profile/api-592
+    name: profile-adapter-12 API 592
+    hostedBy: profile/profile-adapter-12
+    style: GraphQL
+  - id: profile/api-593
+    name: profile-worker-13 API 593
+    hostedBy: profile/profile-worker-13
+    style: gRPC
+  - id: profile/api-594
+    name: profile-sync-14 API 594
+    hostedBy: profile/profile-sync-14
+    style: REST
+  - id: profile/api-595
+    name: profile-service-15 API 595
+    hostedBy: profile/profile-service-15
+    style: gRPC
+topics:
+  - id: profile/topic-15
+    name: profile.event-15.v1
+    ownedBy: profile/profile-service-15
+    cluster: commerce-kafka
+  - id: profile/topic-48
+    name: profile.event-48.v1
+    ownedBy: profile/profile-service-7
+    cluster: commerce-kafka
+  - id: profile/topic-82
+    name: profile.event-82.v1
+    ownedBy: profile/profile-worker-2
+    cluster: commerce-kafka
+  - id: profile/topic-93
+    name: profile.event-93.v1
+    ownedBy: profile/profile-worker-0
+    cluster: commerce-kafka
+  - id: profile/topic-99
+    name: profile.event-99.v1
+    ownedBy: profile/profile-gateway-3
+    cluster: commerce-kafka
+  - id: profile/topic-103
+    name: profile.event-103.v1
+    ownedBy: profile/profile-service-6
+    cluster: commerce-kafka
+  - id: profile/topic-122
+    name: profile.event-122.v1
+    ownedBy: profile/profile-service-11
+    cluster: commerce-kafka
+  - id: profile/topic-126
+    name: profile.event-126.v1
+    ownedBy: profile/profile-manager-9
+    cluster: commerce-kafka
+  - id: profile/topic-149
+    name: profile.event-149.v1
+    ownedBy: profile/profile-engine-8
+    cluster: commerce-kafka
+  - id: profile/topic-168
+    name: profile.event-168.v1
+    ownedBy: profile/profile-adapter-12
+    cluster: commerce-kafka
+  - id: profile/topic-181
+    name: profile.event-181.v1
+    ownedBy: profile/profile-adapter-12
+    cluster: commerce-kafka
+  - id: profile/topic-196
+    name: profile.event-196.v1
+    ownedBy: profile/profile-service-6
+    cluster: commerce-kafka
+  - id: profile/topic-207
+    name: profile.event-207.v1
+    ownedBy: profile/profile-worker-2
+    cluster: commerce-kafka
+channels:
+  - id: profile/channel-0
+    name: webhook 0
+    technology: HTTP webhook
+    ownedBy: profile/profile-sync-14
+  - id: profile/channel-13
+    name: webhook 13
+    technology: SQS
+    ownedBy: profile/profile-gateway-3
+datastores:
+  - id: profile/store-3
+    name: profile-db-3
+    technology: postgres
+    ownedBy: profile/profile-adapter-10
+  - id: profile/store-35
+    name: profile-db-35
+    technology: s3
+    ownedBy: profile/profile-engine-8
+  - id: profile/store-37
+    name: profile-db-37
+    technology: postgres
+    ownedBy: profile/profile-sync-1
+  - id: profile/store-49
+    name: profile-db-49
+    technology: postgres
+    ownedBy: profile/profile-gateway-3
+connections:
+  - from: profile/profile-adapter-5
+    to: carrier/auth-api
+  - from: profile/profile-manager-9
+    to: carrier/feature-flags-api
+  - from: profile/profile-worker-13
+    to: carrier/auth-api
+  - from: profile/profile-sync-14
+    to: carrier/auth-api
+  - from: profile/profile-service-15
+    to: carrier/feature-flags-api
+  - from: profile/profile-sync-14
+    to: profile/api-190
+  - from: profile/profile-worker-2
+    to: profile/api-587
+  - from: profile/profile-worker-13
+    to: profile/api-185
+  - from: profile/profile-adapter-5
+    to: profile/api-585
+  - from: profile/profile-service-11
+    to: profile/topic-99
+  - from: profile/topic-168
+    to: profile/profile-worker-13
+  - from: label/topic-76
+    to: profile/profile-worker-0
+  - from: profile/profile-service-15
+    to: warehouse/api-317
+  - from: profile/profile-manager-9
+    to: profile/topic-168
+  - from: profile/profile-worker-0
+    to: profile/api-185
+  - from: profile/profile-engine-8
+    to: tax/api-335
+  - from: profile/profile-sync-1
+    to: profile/topic-93
+  - from: notify/topic-51
+    to: profile/profile-engine-8
+  - from: profile/profile-adapter-10
+    to: profile/api-194
+  - from: profile/topic-48
+    to: profile/profile-service-15
+  - from: profile/topic-126
+    to: profile/profile-adapter-10
+  - from: profile/profile-worker-13
+    to: profile/topic-82
+  - from: profile/profile-adapter-10
+    to: profile/topic-122
+  - from: profile/profile-service-11
+    to: refund/api-441
+  - from: profile/profile-adapter-12
+    to: profile/topic-93
+  - from: profile/profile-worker-0
+    to: profile/topic-149
+  - from: profile/topic-122
+    to: profile/profile-adapter-10
+  - from: profile/profile-adapter-5
+    to: ticket/api-251
+  - from: profile/profile-service-6
+    to: review/api-236
+  - from: profile/profile-service-15
+    to: profile/topic-93
+  - from: profile/profile-adapter-5
+    to: profile/api-193
+  - from: profile/profile-service-11
+    to: profile/api-581
+  - from: profile/profile-engine-8
+    to: profile/topic-48
+  - from: search/topic-45
+    to: profile/profile-worker-2
+  - from: profile/topic-168
+    to: profile/profile-adapter-12
+  - from: profile/profile-sync-14
+    to: profile/topic-82
+  - from: profile/profile-gateway-3
+    to: profile/api-191
+  - from: profile/profile-service-4
+    to: review/api-243
+  - from: profile/profile-adapter-12
+    to: profile/topic-15
+  - from: profile/profile-adapter-10
+    to: payment/api-165
+  - from: profile/topic-82
+    to: profile/profile-adapter-10
+  - from: profile/profile-worker-0
+    to: warehouse/api-312
+  - from: profile/profile-service-6
+    to: profile/api-186
+  - from: profile/profile-adapter-10
+    to: profile/api-583
+  - from: profile/profile-service-11
+    to: profile/topic-122
+  - from: profile/profile-worker-2
+    to: promo/api-246
+  - from: profile/profile-service-15
+    to: account/api-168
+  - from: profile/profile-service-15
+    to: profile/topic-126
+  - from: profile/profile-worker-13
+    to: profile/api-582
+  - from: profile/profile-worker-0
+    to: profile/api-581
+  - from: profile/profile-worker-0
+    to: profile/api-181
+  - from: loyalty/topic-106
+    to: profile/profile-worker-0
+  - from: profile/profile-adapter-5
+    to: review/api-240
+  - from: profile/profile-sync-1
+    to: profile/api-590
+  - from: warehouse/topic-152
+    to: profile/profile-adapter-12
+  - from: search/topic-3
+    to: profile/profile-adapter-12
+  - from: session/topic-53
+    to: profile/profile-worker-0
+  - from: promo/topic-230
+    to: profile/profile-worker-0
+  - from: session/topic-135
+    to: profile/profile-sync-14
+  - from: profile/profile-service-4
+    to: profile/api-583
+  - from: profile/profile-adapter-10
+    to: payment/api-558
+  - from: profile/profile-adapter-10
+    to: fraud/api-340
+  - from: profile/profile-service-15
+    to: profile/api-189
+  - from: profile/profile-engine-8
+    to: profile/topic-181
+  - from: profile/profile-sync-14
+    to: profile/api-180
+  - from: profile/profile-worker-13
+    to: profile/api-593
+  - from: profile/profile-adapter-10
+    to: profile/api-187
+  - from: profile/profile-sync-1
+    to: promo/api-247
+  - from: profile/profile-worker-2
+    to: review/api-236
+  - from: profile/profile-service-4
+    to: pricing/api-129
+  - from: profile/profile-adapter-5
+    to: label/api-75
+  - from: profile/profile-service-4
+    to: dispatch/api-287
+  - from: profile/profile-gateway-3
+    to: search/api-219
+  - from: profile/profile-manager-9
+    to: profile/api-193
+  - from: profile/topic-126
+    to: profile/profile-sync-1
+  - from: profile/profile-service-11
+    to: consent/api-208
+  - from: profile/profile-sync-1
+    to: profile/api-188
+  - from: profile/profile-engine-8
+    to: session/api-204
+  - from: profile/profile-worker-13
+    to: profile/api-589
+  - from: promo/topic-158
+    to: profile/profile-sync-14
+  - from: profile/profile-sync-1
+    to: profile/api-194
+  - from: profile/profile-worker-2
+    to: review/api-234
+  - from: profile/profile-worker-0
+    to: carrier/notify-api
+  - from: profile/profile-gateway-3
+    to: promo/api-245
+  - from: profile/profile-worker-13
+    to: profile/api-194
+  - from: profile/profile-adapter-10
+    to: profile/api-192
+  - from: profile/profile-service-4
+    to: review/api-238
+  - from: profile/profile-worker-2
+    to: profile/topic-99
+  - from: invoice/topic-185
+    to: profile/profile-adapter-10
+  - from: profile/profile-service-4
+    to: tax/api-330
+  - from: profile/profile-sync-1
+    to: profile/api-582
+  - from: warehouse/topic-139
+    to: profile/profile-service-6
+  - from: profile/profile-manager-9
+    to: session/api-598
+  - from: profile/profile-service-4
+    to: warehouse/api-319
+  - from: profile/profile-service-11
+    to: session/api-197
+  - from: profile/profile-adapter-12
+    to: profile/topic-126
+  - from: profile/profile-service-6
+    to: promo/api-246
+  - from: tax/topic-130
+    to: profile/profile-service-15
+  - from: profile/profile-sync-1
+    to: profile/api-593
+  - from: profile/profile-service-7
+    to: profile/api-182
+  - from: profile/profile-service-11
+    to: search/api-230

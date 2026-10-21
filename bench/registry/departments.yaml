@@ -1,0 +1,17 @@
+departments:
+  - id: logistics
+    name: Logistics
+  - id: finance
+    name: Finance
+  - id: commerce
+    name: Commerce
+  - id: identity
+    name: Identity
+  - id: data
+    name: Data
+  - id: platform
+    name: Platform
+  - id: marketing
+    name: Marketing
+  - id: support
+    name: Support

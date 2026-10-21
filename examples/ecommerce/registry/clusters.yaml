@@ -1,0 +1,37 @@
+clusters:
+  - id: digital-events
+    name: digital-events
+    environment: prod
+  - id: commerce-events
+    name: commerce-events
+    environment: prod
+  - id: payments-risk-events
+    name: payments-risk-events
+    environment: prod
+  - id: finance-events
+    name: finance-events
+    environment: prod
+  - id: fulfilment-events
+    name: fulfilment-events
+    environment: prod
+  - id: customer-events
+    name: customer-events
+    environment: prod
+  - id: engagement-events
+    name: engagement-events
+    environment: prod
+  - id: data-events
+    name: data-events
+    environment: prod
+  - id: supply-events
+    name: supply-events
+    environment: prod
+  - id: marketplace-events
+    name: marketplace-events
+    environment: prod
+  - id: support-events
+    name: support-events
+    environment: prod
+  - id: platform-events
+    name: platform-events
+    environment: prod

@@ -1,0 +1,74 @@
+externals:
+  - id: ext/partner-0
+    name: Partner 0
+    kind: other org
+    ownerTeam: team-ext
+  - id: ext/partner-1
+    name: Partner 1
+    kind: SaaS
+    ownerTeam: team-ext
+  - id: ext/partner-2
+    name: Partner 2
+    kind: SaaS
+    ownerTeam: team-ext
+  - id: ext/partner-3
+    name: Partner 3
+    kind: SaaS
+    ownerTeam: team-ext
+  - id: ext/partner-4
+    name: Partner 4
+    kind: other org
+    ownerTeam: team-ext
+  - id: ext/partner-5
+    name: Partner 5
+    kind: partner
+    ownerTeam: team-ext
+  - id: ext/partner-6
+    name: Partner 6
+    kind: SaaS
+    ownerTeam: team-ext
+  - id: ext/partner-7
+    name: Partner 7
+    kind: other org
+    ownerTeam: team-ext
+  - id: ext/partner-8
+    name: Partner 8
+    kind: partner
+    ownerTeam: team-ext
+  - id: ext/partner-9
+    name: Partner 9
+    kind: SaaS
+    ownerTeam: team-ext
+  - id: ext/partner-10
+    name: Partner 10
+    kind: other org
+    ownerTeam: team-ext
+  - id: ext/partner-11
+    name: Partner 11
+    kind: other org
+    ownerTeam: team-ext
+connections:
+  - from: ext/partner-0
+    to: checkout/api-374
+  - from: ext/partner-1
+    to: ledger/api-52
+  - from: ext/partner-2
+    to: account/api-166
+  - from: ext/partner-3
+    to: tax/api-328
+  - from: ext/partner-4
+    to: ticket/api-248
+  - from: ext/partner-5
+    to: returns/api-414
+  - from: ext/partner-6
+    to: promo/api-244
+  - from: ext/partner-7
+    to: loyalty/api-350
+  - from: ext/partner-8
+    to: promo/api-244
+  - from: ext/partner-9
+    to: routing/api-267
+  - from: ext/partner-10
+    to: tax/api-328
+  - from: ext/partner-11
+    to: checkout/api-374

@@ -1,0 +1,58 @@
+domain:
+  id: content
+  name: Content
+  department: digital
+  owningTeam: team-content
+  reviewedAt: 2026-08-15
+  reviewedBy: amara
+services:
+  - id: content/cms-delivery
+    name: cms-delivery
+    owningTeam: team-content
+  - id: content/cms-studio
+    name: cms-studio
+    owningTeam: team-content
+  - id: content/media-service
+    name: media-service
+    owningTeam: team-content
+apis:
+  - id: content/content-api
+    name: Content API
+    hostedBy: content/cms-delivery
+    style: GraphQL
+    audience: public
+  - id: content/cms-studio-api
+    name: CMS Studio API
+    hostedBy: content/cms-studio
+    style: REST
+    audience: internal
+  - id: content/media-api
+    name: Media API
+    hostedBy: content/media-service
+    style: REST
+    audience: internal
+topics:
+  - id: content/content-published
+    name: content.published.v1
+    ownedBy: content/cms-studio
+    cluster: digital-events
+datastores:
+  - id: content/cms-delivery-db
+    name: cms-delivery-db
+    technology: postgres
+    ownedBy: content/cms-delivery
+  - id: content/media-service-db
+    name: media-service-db
+    technology: s3
+    ownedBy: content/media-service
+connections:
+  - from: content/cms-delivery
+    to: edge/auth-api
+  - from: content/content-published
+    to: content/cms-delivery
+  - from: content/cms-studio
+    to: content/media-api
+  - from: content/cms-studio
+    to: content/content-published
+  - from: content/media-service
+    to: ext/cloudinary

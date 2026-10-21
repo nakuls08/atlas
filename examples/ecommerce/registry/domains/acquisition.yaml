@@ -1,0 +1,47 @@
+domain:
+  id: acquisition
+  name: Acquisition
+  department: engagement
+  owningTeam: team-growth
+  reviewedAt: 2026-08-15
+  reviewedBy: lena
+services:
+  - id: acquisition/product-feeds
+    name: product-feeds
+    owningTeam: team-growth
+  - id: acquisition/affiliate-tracking
+    name: affiliate-tracking
+    owningTeam: team-growth
+  - id: acquisition/seo-sitemaps
+    name: seo-sitemaps
+    owningTeam: team-growth
+apis:
+  - id: acquisition/affiliate-api
+    name: Affiliate API
+    hostedBy: acquisition/affiliate-tracking
+    style: REST
+    audience: partner
+datastores:
+  - id: acquisition/seo-sitemaps-db
+    name: seo-sitemaps-db
+    technology: s3
+    ownedBy: acquisition/seo-sitemaps
+connections:
+  - from: acquisition/product-feeds
+    to: ext/google-merchant
+  - from: acquisition/product-feeds
+    to: ext/meta-ads
+  - from: catalog/product-updated
+    to: acquisition/product-feeds
+  - from: pricing/price-changed
+    to: acquisition/product-feeds
+  - from: inventory/inventory-changed
+    to: acquisition/product-feeds
+  - from: acquisition/affiliate-tracking
+    to: ext/awin
+  - from: acquisition/affiliate-tracking
+    to: edge/auth-api
+  - from: orders/order-placed
+    to: acquisition/affiliate-tracking
+  - from: catalog/product-updated
+    to: acquisition/seo-sitemaps

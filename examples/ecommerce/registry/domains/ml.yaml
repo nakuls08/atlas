@@ -1,0 +1,59 @@
+domain:
+  id: ml
+  name: Machine learning
+  department: data
+  owningTeam: team-ml
+  reviewedAt: 2026-08-15
+  reviewedBy: kenji
+services:
+  - id: ml/model-serving
+    name: model-serving
+    owningTeam: team-ml
+  - id: ml/feature-store
+    name: feature-store
+    owningTeam: team-ml
+  - id: ml/feature-pipelines
+    name: feature-pipelines
+    owningTeam: team-ml
+  - id: ml/demand-forecast
+    name: demand-forecast
+    owningTeam: team-ml
+apis:
+  - id: ml/model-serving-api
+    name: Model Serving API
+    hostedBy: ml/model-serving
+    style: gRPC
+    audience: internal
+  - id: ml/feature-store-api
+    name: Feature Store API
+    hostedBy: ml/feature-store
+    style: gRPC
+    audience: internal
+  - id: ml/forecast-api
+    name: Forecast API
+    hostedBy: ml/demand-forecast
+    style: REST
+    audience: internal
+topics:
+  - id: ml/forecast-published
+    name: forecast.published.v1
+    ownedBy: ml/demand-forecast
+    cluster: data-events
+datastores:
+  - id: ml/feature-store-db
+    name: feature-store-db
+    technology: redis
+    ownedBy: ml/feature-store
+connections:
+  - from: ml/model-serving
+    to: ml/feature-store-api
+  - from: ml/feature-pipelines
+    to: ml/feature-store-api
+  - from: events/session-enriched
+    to: ml/feature-pipelines
+  - from: orders/order-placed
+    to: ml/feature-pipelines
+  - from: ml/demand-forecast
+    to: analytics/metrics-api
+  - from: ml/demand-forecast
+    to: ml/forecast-published

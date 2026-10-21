@@ -1,0 +1,381 @@
+domain:
+  id: tracking
+  name: Tracking
+  department: finance
+  owningTeam: team-tracking
+  reviewedAt: 2026-07-01
+  reviewedBy: pe
+systems:
+  - id: tracking/sys-0
+    name: tracking system 0
+  - id: tracking/sys-1
+    name: tracking system 1
+  - id: tracking/sys-2
+    name: tracking system 2
+services:
+  - id: tracking/tracking-manager-0
+    name: tracking-manager-0
+    owningTeam: team-tracking
+  - id: tracking/tracking-engine-1
+    name: tracking-engine-1
+    owningTeam: team-tracking
+    system: tracking/sys-2
+  - id: tracking/tracking-sync-2
+    name: tracking-sync-2
+    owningTeam: team-tracking
+    system: tracking/sys-0
+  - id: tracking/tracking-manager-3
+    name: tracking-manager-3
+    owningTeam: team-tracking
+    system: tracking/sys-1
+  - id: tracking/tracking-worker-4
+    name: tracking-worker-4
+    owningTeam: team-tracking
+  - id: tracking/tracking-gateway-5
+    name: tracking-gateway-5
+    owningTeam: team-tracking
+    system: tracking/sys-2
+  - id: tracking/tracking-manager-6
+    name: tracking-manager-6
+    owningTeam: team-tracking
+    system: tracking/sys-1
+  - id: tracking/tracking-service-7
+    name: tracking-service-7
+    owningTeam: team-tracking
+  - id: tracking/tracking-service-8
+    name: tracking-service-8
+    owningTeam: team-tracking
+    system: tracking/sys-2
+  - id: tracking/tracking-manager-9
+    name: tracking-manager-9
+    owningTeam: team-tracking
+    system: tracking/sys-2
+  - id: tracking/tracking-worker-10
+    name: tracking-worker-10
+    owningTeam: team-tracking
+    system: tracking/sys-0
+  - id: tracking/tracking-worker-11
+    name: tracking-worker-11
+    owningTeam: team-tracking
+    system: tracking/sys-2
+apis:
+  - id: tracking/api-83
+    name: tracking-manager-0 API 83
+    hostedBy: tracking/tracking-manager-0
+    style: gRPC
+  - id: tracking/api-84
+    name: tracking-engine-1 API 84
+    hostedBy: tracking/tracking-engine-1
+    style: gRPC
+  - id: tracking/api-85
+    name: tracking-sync-2 API 85
+    hostedBy: tracking/tracking-sync-2
+    style: GraphQL
+  - id: tracking/api-86
+    name: tracking-manager-3 API 86
+    hostedBy: tracking/tracking-manager-3
+    style: REST
+  - id: tracking/api-87
+    name: tracking-worker-4 API 87
+    hostedBy: tracking/tracking-worker-4
+    style: REST
+  - id: tracking/api-88
+    name: tracking-gateway-5 API 88
+    hostedBy: tracking/tracking-gateway-5
+    style: REST
+  - id: tracking/api-89
+    name: tracking-manager-6 API 89
+    hostedBy: tracking/tracking-manager-6
+    style: REST
+  - id: tracking/api-90
+    name: tracking-service-7 API 90
+    hostedBy: tracking/tracking-service-7
+    style: REST
+  - id: tracking/api-91
+    name: tracking-service-8 API 91
+    hostedBy: tracking/tracking-service-8
+    style: GraphQL
+  - id: tracking/api-92
+    name: tracking-manager-9 API 92
+    hostedBy: tracking/tracking-manager-9
+    style: REST
+  - id: tracking/api-93
+    name: tracking-worker-10 API 93
+    hostedBy: tracking/tracking-worker-10
+    style: REST
+  - id: tracking/api-94
+    name: tracking-worker-11 API 94
+    hostedBy: tracking/tracking-worker-11
+    style: REST
+  - id: tracking/api-483
+    name: tracking-manager-0 API 483
+    hostedBy: tracking/tracking-manager-0
+    style: REST
+  - id: tracking/api-484
+    name: tracking-engine-1 API 484
+    hostedBy: tracking/tracking-engine-1
+    style: gRPC
+  - id: tracking/api-485
+    name: tracking-sync-2 API 485
+    hostedBy: tracking/tracking-sync-2
+    style: REST
+  - id: tracking/api-486
+    name: tracking-manager-3 API 486
+    hostedBy: tracking/tracking-manager-3
+    style: REST
+  - id: tracking/api-487
+    name: tracking-worker-4 API 487
+    hostedBy: tracking/tracking-worker-4
+    style: GraphQL
+  - id: tracking/api-488
+    name: tracking-gateway-5 API 488
+    hostedBy: tracking/tracking-gateway-5
+    style: GraphQL
+  - id: tracking/api-489
+    name: tracking-manager-6 API 489
+    hostedBy: tracking/tracking-manager-6
+    style: GraphQL
+  - id: tracking/api-490
+    name: tracking-service-7 API 490
+    hostedBy: tracking/tracking-service-7
+    style: REST
+  - id: tracking/api-491
+    name: tracking-service-8 API 491
+    hostedBy: tracking/tracking-service-8
+    style: REST
+  - id: tracking/api-492
+    name: tracking-manager-9 API 492
+    hostedBy: tracking/tracking-manager-9
+    style: REST
+  - id: tracking/api-493
+    name: tracking-worker-10 API 493
+    hostedBy: tracking/tracking-worker-10
+    style: GraphQL
+  - id: tracking/api-494
+    name: tracking-worker-11 API 494
+    hostedBy: tracking/tracking-worker-11
+    style: REST
+topics:
+  - id: tracking/topic-11
+    name: tracking.event-11.v1
+    ownedBy: tracking/tracking-manager-3
+    cluster: finance-kafka
+  - id: tracking/topic-90
+    name: tracking.event-90.v1
+    ownedBy: tracking/tracking-worker-4
+    cluster: finance-kafka
+  - id: tracking/topic-132
+    name: tracking.event-132.v1
+    ownedBy: tracking/tracking-manager-9
+    cluster: finance-kafka
+  - id: tracking/topic-182
+    name: tracking.event-182.v1
+    ownedBy: tracking/tracking-worker-10
+    cluster: finance-kafka
+  - id: tracking/topic-204
+    name: tracking.event-204.v1
+    ownedBy: tracking/tracking-engine-1
+    cluster: finance-kafka
+  - id: tracking/topic-205
+    name: tracking.event-205.v1
+    ownedBy: tracking/tracking-sync-2
+    cluster: finance-kafka
+  - id: tracking/topic-213
+    name: tracking.event-213.v1
+    ownedBy: tracking/tracking-manager-0
+    cluster: finance-kafka
+channels: []
+datastores:
+  - id: tracking/store-9
+    name: tracking-db-9
+    technology: dynamodb
+    ownedBy: tracking/tracking-worker-11
+  - id: tracking/store-13
+    name: tracking-db-13
+    technology: postgres
+    ownedBy: tracking/tracking-manager-6
+  - id: tracking/store-14
+    name: tracking-db-14
+    technology: postgres
+    ownedBy: tracking/tracking-engine-1
+  - id: tracking/store-15
+    name: tracking-db-15
+    technology: postgres
+    ownedBy: tracking/tracking-sync-2
+  - id: tracking/store-39
+    name: tracking-db-39
+    technology: postgres
+    ownedBy: tracking/tracking-worker-4
+connections:
+  - from: tracking/tracking-worker-4
+    to: carrier/feature-flags-api
+  - from: tracking/tracking-gateway-5
+    to: carrier/auth-api
+  - from: tracking/tracking-service-8
+    to: carrier/feature-flags-api
+  - from: tracking/tracking-gateway-5
+    to: catalog/api-95
+  - from: label/topic-21
+    to: tracking/tracking-engine-1
+  - from: tracking/tracking-manager-6
+    to: tracking/api-92
+  - from: tracking/tracking-worker-4
+    to: chat/api-263
+  - from: tracking/tracking-sync-2
+    to: tracking/api-94
+  - from: tracking/tracking-service-7
+    to: tracking/api-493
+  - from: tracking/tracking-gateway-5
+    to: tracking/api-90
+  - from: account/topic-95
+    to: tracking/tracking-service-7
+  - from: tracking/tracking-manager-0
+    to: routing/api-269
+  - from: tracking/tracking-manager-0
+    to: routing/api-270
+  - from: pricing/topic-123
+    to: tracking/tracking-worker-10
+  - from: tracking/tracking-worker-4
+    to: tracking/api-83
+  - from: tracking/tracking-worker-11
+    to: label/api-474
+  - from: tracking/tracking-manager-6
+    to: tracking/topic-132
+  - from: tracking/tracking-manager-6
+    to: tracking/api-486
+  - from: tracking/tracking-manager-0
+    to: tracking/api-91
+  - from: tracking/topic-90
+    to: tracking/tracking-sync-2
+  - from: stock/topic-208
+    to: tracking/tracking-sync-2
+  - from: tracking/tracking-gateway-5
+    to: tracking/api-486
+  - from: tracking/tracking-service-8
+    to: tracking/api-484
+  - from: tracking/tracking-manager-6
+    to: payment/api-563
+  - from: tracking/tracking-engine-1
+    to: tracking/api-93
+  - from: tracking/tracking-gateway-5
+    to: catalog/api-109
+  - from: tracking/tracking-sync-2
+    to: routing/api-268
+  - from: tracking/topic-213
+    to: tracking/tracking-engine-1
+  - from: tracking/tracking-manager-6
+    to: tracking/topic-205
+  - from: tracking/tracking-worker-11
+    to: dispatch/api-291
+  - from: tracking/tracking-manager-6
+    to: label/api-472
+  - from: tracking/topic-205
+    to: tracking/tracking-sync-2
+  - from: tracking/tracking-worker-11
+    to: tracking/api-94
+  - from: tracking/tracking-worker-10
+    to: account/api-173
+  - from: tracking/tracking-manager-0
+    to: tracking/topic-132
+  - from: tracking/tracking-worker-4
+    to: tracking/topic-205
+  - from: tracking/tracking-worker-4
+    to: account/api-176
+  - from: tracking/tracking-manager-6
+    to: tracking/topic-213
+  - from: tracking/tracking-sync-2
+    to: tracking/api-88
+  - from: tracking/tracking-worker-4
+    to: loyalty/api-355
+  - from: tracking/tracking-worker-4
+    to: tracking/api-485
+  - from: tracking/tracking-worker-4
+    to: session/api-196
+  - from: tracking/tracking-manager-3
+    to: routing/api-269
+  - from: tracking/tracking-manager-3
+    to: tracking/topic-204
+  - from: tracking/tracking-engine-1
+    to: dispatch/api-286
+  - from: tracking/tracking-manager-3
+    to: consent/api-216
+  - from: tracking/tracking-engine-1
+    to: profile/api-581
+  - from: tracking/tracking-manager-9
+    to: routing/api-271
+  - from: tracking/tracking-manager-3
+    to: tracking/api-88
+  - from: tracking/tracking-worker-11
+    to: tracking/api-487
+  - from: tracking/tracking-service-7
+    to: tracking/api-91
+  - from: tracking/tracking-gateway-5
+    to: tracking/api-493
+  - from: tracking/tracking-sync-2
+    to: tracking/api-93
+  - from: tracking/tracking-engine-1
+    to: tracking/topic-213
+  - from: tracking/tracking-gateway-5
+    to: consent/api-24
+  - from: tracking/tracking-sync-2
+    to: payment/api-561
+  - from: tracking/tracking-service-7
+    to: routing/api-277
+  - from: tracking/tracking-worker-11
+    to: tracking/topic-204
+  - from: tracking/tracking-service-7
+    to: tracking/topic-132
+  - from: tracking/tracking-worker-11
+    to: label/api-80
+  - from: tracking/topic-182
+    to: tracking/tracking-worker-11
+  - from: tracking/tracking-service-8
+    to: chat/api-261
+  - from: tracking/tracking-worker-10
+    to: tracking/topic-182
+  - from: tracking/tracking-gateway-5
+    to: tracking/topic-90
+  - from: tracking/tracking-worker-4
+    to: stock/api-551
+  - from: tracking/tracking-manager-3
+    to: tracking/api-493
+  - from: tracking/tracking-gateway-5
+    to: dispatch/api-282
+  - from: tracking/tracking-service-7
+    to: tracking/topic-205
+  - from: tracking/tracking-manager-0
+    to: tracking/api-493
+  - from: tracking/tracking-worker-10
+    to: tracking/api-487
+  - from: tracking/topic-90
+    to: tracking/tracking-manager-0
+  - from: tracking/tracking-manager-9
+    to: tax/api-333
+  - from: stock/topic-109
+    to: tracking/tracking-manager-0
+  - from: tracking/tracking-worker-4
+    to: consent/api-24
+  - from: tracking/tracking-worker-11
+    to: payment/api-161
+  - from: dispatch/topic-145
+    to: tracking/tracking-manager-9
+  - from: dispatch/topic-175
+    to: tracking/tracking-service-8
+  - from: tracking/tracking-worker-10
+    to: account/api-571
+  - from: tracking/tracking-worker-11
+    to: consent/api-215
+  - from: tracking/tracking-engine-1
+    to: tracking/api-84
+  - from: tracking/tracking-worker-4
+    to: tracking/api-484
+  - from: tracking/tracking-sync-2
+    to: tracking/topic-182
+  - from: tracking/tracking-worker-10
+    to: routing/api-274
+  - from: tracking/tracking-worker-10
+    to: account/api-177
+  - from: tracking/tracking-sync-2
+    to: tracking/topic-90
+  - from: tracking/tracking-manager-3
+    to: consent/api-27

@@ -1,0 +1,93 @@
+domain:
+  id: orders
+  name: Orders
+  department: commerce
+  owningTeam: team-orders
+  reviewedAt: 2026-08-15
+  reviewedBy: jonas
+services:
+  - id: orders/order-service
+    name: order-service
+    owningTeam: team-orders
+  - id: orders/orders-read
+    name: orders-read
+    owningTeam: team-orders
+  - id: orders/order-workflow
+    name: order-workflow
+    owningTeam: team-orders
+apis:
+  - id: orders/order-api-v1
+    name: Order API v1
+    hostedBy: orders/order-service
+    style: REST
+    audience: internal
+    status: deprecated
+  - id: orders/order-api-v2
+    name: Order API v2
+    hostedBy: orders/order-service
+    style: REST
+    audience: internal
+    supersedes: orders/order-api-v1
+  - id: orders/order-history-api
+    name: Order History API
+    hostedBy: orders/orders-read
+    style: REST
+    audience: internal
+topics:
+  - id: orders/order-placed
+    name: order.placed.v1
+    ownedBy: orders/order-service
+    cluster: commerce-events
+  - id: orders/order-cancelled
+    name: order.cancelled.v1
+    ownedBy: orders/order-service
+    cluster: commerce-events
+  - id: orders/order-updated
+    name: order.updated.v1
+    ownedBy: orders/order-service
+    cluster: commerce-events
+  - id: orders/fulfilment-requested
+    name: fulfilment.requested.v1
+    ownedBy: orders/order-workflow
+    cluster: commerce-events
+datastores:
+  - id: orders/order-service-db
+    name: order-service-db
+    technology: postgres
+    ownedBy: orders/order-service
+  - id: orders/orders-read-db
+    name: orders-read-db
+    technology: dynamodb
+    ownedBy: orders/orders-read
+connections:
+  - from: orders/order-service
+    to: orders/order-placed
+  - from: orders/order-service
+    to: orders/order-cancelled
+  - from: orders/order-service
+    to: orders/order-updated
+  - from: payments/payment-captured
+    to: orders/order-service
+  - from: shipping/shipment-dispatched
+    to: orders/order-service
+  - from: shipping/shipment-delivered
+    to: orders/order-service
+  - from: returns/return-received
+    to: orders/order-service
+  - from: orders/order-updated
+    to: orders/orders-read
+  - from: orders/order-workflow
+    to: orders/order-api-v2
+  - from: orders/order-workflow
+    to: inventory/allocation-api
+  - from: orders/order-workflow
+    to: warehouse/wms-gateway
+    gap: legacy SOAP, no spec
+  - from: orders/order-workflow
+    to: orders/fulfilment-requested
+  - from: orders/order-placed
+    to: orders/order-workflow
+  - from: payments/payment-authorized
+    to: orders/order-workflow
+  - from: inventory/inventory-reserved
+    to: orders/order-workflow

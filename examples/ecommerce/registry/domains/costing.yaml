@@ -1,0 +1,32 @@
+domain:
+  id: costing
+  name: Costing
+  department: supply
+  owningTeam: team-costing
+  reviewedAt: 2026-08-15
+  reviewedBy: diego
+services:
+  - id: costing/cost-service
+    name: cost-service
+    owningTeam: team-costing
+apis:
+  - id: costing/cost-api
+    name: Cost API
+    hostedBy: costing/cost-service
+    style: REST
+    audience: internal
+topics:
+  - id: costing/cost-updated
+    name: cost.updated.v1
+    ownedBy: costing/cost-service
+    cluster: supply-events
+datastores:
+  - id: costing/cost-service-db
+    name: cost-service-db
+    technology: postgres
+    ownedBy: costing/cost-service
+connections:
+  - from: costing/cost-service
+    to: ext/sap-erp
+  - from: costing/cost-service
+    to: costing/cost-updated

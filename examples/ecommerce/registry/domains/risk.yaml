@@ -1,0 +1,66 @@
+domain:
+  id: risk
+  name: Risk
+  department: payments-risk
+  owningTeam: team-risk
+  reviewedAt: 2026-08-15
+  reviewedBy: priya
+services:
+  - id: risk/fraud-scoring
+    name: fraud-scoring
+    owningTeam: team-risk
+  - id: risk/fraud-rules
+    name: fraud-rules
+    owningTeam: team-risk
+  - id: risk/chargebacks
+    name: chargebacks
+    owningTeam: team-risk
+  - id: risk/risk-console
+    name: risk-console
+    owningTeam: team-risk
+    status: planned
+apis:
+  - id: risk/fraud-score-api
+    name: Fraud Score API
+    hostedBy: risk/fraud-scoring
+    style: gRPC
+    audience: internal
+  - id: risk/fraud-rules-api
+    name: Fraud Rules API
+    hostedBy: risk/fraud-rules
+    style: REST
+    audience: internal
+  - id: risk/chargeback-api
+    name: Chargeback API
+    hostedBy: risk/chargebacks
+    style: REST
+    audience: internal
+  - id: risk/risk-review-console
+    name: Risk Review Console
+    hostedBy: risk/risk-console
+    style: REST
+    audience: internal
+datastores:
+  - id: risk/fraud-scoring-db
+    name: fraud-scoring-db
+    technology: redis
+    ownedBy: risk/fraud-scoring
+  - id: risk/fraud-rules-db
+    name: fraud-rules-db
+    technology: postgres
+    ownedBy: risk/fraud-rules
+connections:
+  - from: risk/fraud-scoring
+    to: risk/fraud-rules-api
+  - from: risk/fraud-scoring
+    to: ext/sift
+  - from: risk/fraud-scoring
+    to: ml/feature-store-api
+  - from: risk/chargebacks
+    to: ext/adyen
+  - from: risk/chargebacks
+    to: refunds/refund-api
+  - from: payments/payment-disputed
+    to: risk/chargebacks
+  - from: risk/risk-console
+    to: risk/fraud-score-api

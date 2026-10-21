@@ -1,0 +1,132 @@
+domain:
+  id: payments
+  name: Payments
+  department: payments-risk
+  owningTeam: team-payments
+  reviewedAt: 2026-08-15
+  reviewedBy: priya
+systems:
+  - id: payments/gateway
+    name: Payment gateway
+services:
+  - id: payments/payment-orchestrator
+    name: payment-orchestrator
+    owningTeam: team-payments
+    system: payments/gateway
+  - id: payments/payment-adyen
+    name: payment-adyen
+    owningTeam: team-payments
+    system: payments/gateway
+  - id: payments/payment-stripe
+    name: payment-stripe
+    owningTeam: team-payments
+    system: payments/gateway
+  - id: payments/payment-paypal
+    name: payment-paypal
+    owningTeam: team-payments
+    system: payments/gateway
+  - id: payments/payment-klarna
+    name: payment-klarna
+    owningTeam: team-payments
+    system: payments/gateway
+  - id: payments/card-vault
+    name: card-vault
+    owningTeam: team-payments
+  - id: payments/psp-webhook-receiver
+    name: psp-webhook-receiver
+    owningTeam: team-payments
+apis:
+  - id: payments/payments-api
+    name: Payments API
+    hostedBy: payments/payment-orchestrator
+    style: REST
+    audience: internal
+  - id: payments/adyen-adapter
+    name: Adyen Adapter
+    hostedBy: payments/payment-adyen
+    style: REST
+    audience: internal
+  - id: payments/stripe-adapter
+    name: Stripe Adapter
+    hostedBy: payments/payment-stripe
+    style: REST
+    audience: internal
+  - id: payments/paypal-adapter
+    name: PayPal Adapter
+    hostedBy: payments/payment-paypal
+    style: REST
+    audience: internal
+  - id: payments/klarna-adapter
+    name: Klarna Adapter
+    hostedBy: payments/payment-klarna
+    style: REST
+    audience: internal
+  - id: payments/card-vault-api
+    name: Card Vault API
+    hostedBy: payments/card-vault
+    style: gRPC
+    audience: internal
+  - id: payments/psp-webhooks
+    name: PSP Webhooks
+    hostedBy: payments/psp-webhook-receiver
+    style: REST
+    audience: partner
+topics:
+  - id: payments/payment-authorized
+    name: payment.authorized.v1
+    ownedBy: payments/payment-orchestrator
+    cluster: payments-risk-events
+  - id: payments/payment-captured
+    name: payment.captured.v1
+    ownedBy: payments/payment-orchestrator
+    cluster: payments-risk-events
+  - id: payments/payment-failed
+    name: payment.failed.v1
+    ownedBy: payments/payment-orchestrator
+    cluster: payments-risk-events
+  - id: payments/payment-disputed
+    name: payment.disputed.v1
+    ownedBy: payments/psp-webhook-receiver
+    cluster: payments-risk-events
+datastores:
+  - id: payments/payment-orchestrator-db
+    name: payment-orchestrator-db
+    technology: postgres
+    ownedBy: payments/payment-orchestrator
+  - id: payments/card-vault-db
+    name: card-vault-db
+    technology: postgres
+    ownedBy: payments/card-vault
+connections:
+  - from: payments/payment-orchestrator
+    to: payments/adyen-adapter
+  - from: payments/payment-orchestrator
+    to: payments/stripe-adapter
+  - from: payments/payment-orchestrator
+    to: payments/paypal-adapter
+  - from: payments/payment-orchestrator
+    to: payments/klarna-adapter
+  - from: payments/payment-orchestrator
+    to: payments/card-vault-api
+  - from: payments/payment-orchestrator
+    to: risk/fraud-score-api
+  - from: payments/payment-orchestrator
+    to: payments/payment-authorized
+  - from: payments/payment-orchestrator
+    to: payments/payment-captured
+  - from: payments/payment-orchestrator
+    to: payments/payment-failed
+  - from: payments/payment-adyen
+    to: ext/adyen
+  - from: payments/payment-stripe
+    to: ext/stripe
+  - from: payments/payment-paypal
+    to: ext/paypal
+  - from: payments/payment-klarna
+    to: ext/klarna
+  - from: payments/psp-webhook-receiver
+    to: edge/auth-api
+  - from: payments/psp-webhook-receiver
+    to: payments/payment-disputed
+  - from: payments/psp-webhook-receiver
+    to: payments/payment-captured

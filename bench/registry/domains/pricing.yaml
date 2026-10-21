@@ -1,0 +1,521 @@
+domain:
+  id: pricing
+  name: Pricing
+  department: finance
+  owningTeam: team-pricing
+  reviewedAt: 2026-07-01
+  reviewedBy: pe
+systems:
+  - id: pricing/sys-0
+    name: pricing system 0
+  - id: pricing/sys-1
+    name: pricing system 1
+services:
+  - id: pricing/pricing-service-0
+    name: pricing-service-0
+    owningTeam: team-pricing
+    system: pricing/sys-0
+  - id: pricing/pricing-adapter-1
+    name: pricing-adapter-1
+    owningTeam: team-pricing
+    system: pricing/sys-0
+  - id: pricing/pricing-adapter-2
+    name: pricing-adapter-2
+    owningTeam: team-pricing
+  - id: pricing/pricing-service-3
+    name: pricing-service-3
+    owningTeam: team-pricing
+    system: pricing/sys-0
+  - id: pricing/pricing-service-4
+    name: pricing-service-4
+    owningTeam: team-pricing
+  - id: pricing/pricing-gateway-5
+    name: pricing-gateway-5
+    owningTeam: team-pricing
+    system: pricing/sys-0
+  - id: pricing/pricing-sync-6
+    name: pricing-sync-6
+    owningTeam: team-pricing
+    system: pricing/sys-1
+  - id: pricing/pricing-engine-7
+    name: pricing-engine-7
+    owningTeam: team-pricing
+    system: pricing/sys-1
+  - id: pricing/pricing-engine-8
+    name: pricing-engine-8
+    owningTeam: team-pricing
+  - id: pricing/pricing-engine-9
+    name: pricing-engine-9
+    owningTeam: team-pricing
+    system: pricing/sys-0
+  - id: pricing/pricing-gateway-10
+    name: pricing-gateway-10
+    owningTeam: team-pricing
+    system: pricing/sys-1
+  - id: pricing/pricing-worker-11
+    name: pricing-worker-11
+    owningTeam: team-pricing
+    system: pricing/sys-1
+  - id: pricing/pricing-engine-12
+    name: pricing-engine-12
+    owningTeam: team-pricing
+    system: pricing/sys-1
+  - id: pricing/pricing-gateway-13
+    name: pricing-gateway-13
+    owningTeam: team-pricing
+    system: pricing/sys-1
+  - id: pricing/pricing-adapter-14
+    name: pricing-adapter-14
+    owningTeam: team-pricing
+  - id: pricing/pricing-worker-15
+    name: pricing-worker-15
+    owningTeam: team-pricing
+    system: pricing/sys-1
+  - id: pricing/pricing-gateway-16
+    name: pricing-gateway-16
+    owningTeam: team-pricing
+    system: pricing/sys-0
+  - id: pricing/pricing-sync-17
+    name: pricing-sync-17
+    owningTeam: team-pricing
+  - id: pricing/pricing-worker-18
+    name: pricing-worker-18
+    owningTeam: team-pricing
+  - id: pricing/pricing-gateway-19
+    name: pricing-gateway-19
+    owningTeam: team-pricing
+    system: pricing/sys-1
+apis:
+  - id: pricing/api-112
+    name: pricing-service-0 API 112
+    hostedBy: pricing/pricing-service-0
+    style: REST
+  - id: pricing/api-113
+    name: pricing-adapter-1 API 113
+    hostedBy: pricing/pricing-adapter-1
+    style: GraphQL
+  - id: pricing/api-114
+    name: pricing-adapter-2 API 114
+    hostedBy: pricing/pricing-adapter-2
+    style: GraphQL
+  - id: pricing/api-115
+    name: pricing-service-3 API 115
+    hostedBy: pricing/pricing-service-3
+    style: REST
+  - id: pricing/api-116
+    name: pricing-service-4 API 116
+    hostedBy: pricing/pricing-service-4
+    style: REST
+  - id: pricing/api-117
+    name: pricing-gateway-5 API 117
+    hostedBy: pricing/pricing-gateway-5
+    style: REST
+  - id: pricing/api-118
+    name: pricing-sync-6 API 118
+    hostedBy: pricing/pricing-sync-6
+    style: REST
+  - id: pricing/api-119
+    name: pricing-engine-7 API 119
+    hostedBy: pricing/pricing-engine-7
+    style: GraphQL
+  - id: pricing/api-120
+    name: pricing-engine-8 API 120
+    hostedBy: pricing/pricing-engine-8
+    style: REST
+  - id: pricing/api-121
+    name: pricing-engine-9 API 121
+    hostedBy: pricing/pricing-engine-9
+    style: GraphQL
+  - id: pricing/api-122
+    name: pricing-gateway-10 API 122
+    hostedBy: pricing/pricing-gateway-10
+    style: GraphQL
+  - id: pricing/api-123
+    name: pricing-worker-11 API 123
+    hostedBy: pricing/pricing-worker-11
+    style: REST
+  - id: pricing/api-124
+    name: pricing-engine-12 API 124
+    hostedBy: pricing/pricing-engine-12
+    style: GraphQL
+  - id: pricing/api-125
+    name: pricing-gateway-13 API 125
+    hostedBy: pricing/pricing-gateway-13
+    style: REST
+  - id: pricing/api-126
+    name: pricing-adapter-14 API 126
+    hostedBy: pricing/pricing-adapter-14
+    style: REST
+  - id: pricing/api-127
+    name: pricing-worker-15 API 127
+    hostedBy: pricing/pricing-worker-15
+    style: gRPC
+  - id: pricing/api-128
+    name: pricing-gateway-16 API 128
+    hostedBy: pricing/pricing-gateway-16
+    style: GraphQL
+  - id: pricing/api-129
+    name: pricing-sync-17 API 129
+    hostedBy: pricing/pricing-sync-17
+    style: gRPC
+  - id: pricing/api-130
+    name: pricing-worker-18 API 130
+    hostedBy: pricing/pricing-worker-18
+    style: REST
+  - id: pricing/api-131
+    name: pricing-gateway-19 API 131
+    hostedBy: pricing/pricing-gateway-19
+    style: REST
+  - id: pricing/api-512
+    name: pricing-service-0 API 512
+    hostedBy: pricing/pricing-service-0
+    style: REST
+  - id: pricing/api-513
+    name: pricing-adapter-1 API 513
+    hostedBy: pricing/pricing-adapter-1
+    style: gRPC
+  - id: pricing/api-514
+    name: pricing-adapter-2 API 514
+    hostedBy: pricing/pricing-adapter-2
+    style: REST
+  - id: pricing/api-515
+    name: pricing-service-3 API 515
+    hostedBy: pricing/pricing-service-3
+    style: gRPC
+  - id: pricing/api-516
+    name: pricing-service-4 API 516
+    hostedBy: pricing/pricing-service-4
+    style: REST
+  - id: pricing/api-517
+    name: pricing-gateway-5 API 517
+    hostedBy: pricing/pricing-gateway-5
+    style: REST
+  - id: pricing/api-518
+    name: pricing-sync-6 API 518
+    hostedBy: pricing/pricing-sync-6
+    style: GraphQL
+  - id: pricing/api-519
+    name: pricing-engine-7 API 519
+    hostedBy: pricing/pricing-engine-7
+    style: REST
+  - id: pricing/api-520
+    name: pricing-engine-8 API 520
+    hostedBy: pricing/pricing-engine-8
+    style: REST
+  - id: pricing/api-521
+    name: pricing-engine-9 API 521
+    hostedBy: pricing/pricing-engine-9
+    style: gRPC
+  - id: pricing/api-522
+    name: pricing-gateway-10 API 522
+    hostedBy: pricing/pricing-gateway-10
+    style: gRPC
+  - id: pricing/api-523
+    name: pricing-worker-11 API 523
+    hostedBy: pricing/pricing-worker-11
+    style: REST
+  - id: pricing/api-524
+    name: pricing-engine-12 API 524
+    hostedBy: pricing/pricing-engine-12
+    style: REST
+  - id: pricing/api-525
+    name: pricing-gateway-13 API 525
+    hostedBy: pricing/pricing-gateway-13
+    style: gRPC
+  - id: pricing/api-526
+    name: pricing-adapter-14 API 526
+    hostedBy: pricing/pricing-adapter-14
+    style: gRPC
+  - id: pricing/api-527
+    name: pricing-worker-15 API 527
+    hostedBy: pricing/pricing-worker-15
+    style: gRPC
+  - id: pricing/api-528
+    name: pricing-gateway-16 API 528
+    hostedBy: pricing/pricing-gateway-16
+    style: GraphQL
+  - id: pricing/api-529
+    name: pricing-sync-17 API 529
+    hostedBy: pricing/pricing-sync-17
+    style: REST
+  - id: pricing/api-530
+    name: pricing-worker-18 API 530
+    hostedBy: pricing/pricing-worker-18
+    style: gRPC
+  - id: pricing/api-531
+    name: pricing-gateway-19 API 531
+    hostedBy: pricing/pricing-gateway-19
+    style: GraphQL
+topics:
+  - id: pricing/topic-47
+    name: pricing.event-47.v1
+    ownedBy: pricing/pricing-service-4
+    cluster: finance-kafka
+  - id: pricing/topic-65
+    name: pricing.event-65.v1
+    ownedBy: pricing/pricing-engine-8
+    cluster: finance-kafka
+  - id: pricing/topic-87
+    name: pricing.event-87.v1
+    ownedBy: pricing/pricing-gateway-10
+    cluster: finance-kafka
+  - id: pricing/topic-117
+    name: pricing.event-117.v1
+    ownedBy: pricing/pricing-adapter-14
+    cluster: finance-kafka
+  - id: pricing/topic-121
+    name: pricing.event-121.v1
+    ownedBy: pricing/pricing-worker-11
+    cluster: finance-kafka
+  - id: pricing/topic-123
+    name: pricing.event-123.v1
+    ownedBy: pricing/pricing-worker-15
+    cluster: finance-kafka
+  - id: pricing/topic-153
+    name: pricing.event-153.v1
+    ownedBy: pricing/pricing-service-3
+    cluster: finance-kafka
+  - id: pricing/topic-159
+    name: pricing.event-159.v1
+    ownedBy: pricing/pricing-sync-6
+    cluster: finance-kafka
+  - id: pricing/topic-248
+    name: pricing.event-248.v1
+    ownedBy: pricing/pricing-worker-18
+    cluster: finance-kafka
+channels:
+  - id: pricing/channel-14
+    name: SFTP drop 14
+    technology: SFTP
+    ownedBy: pricing/pricing-worker-15
+datastores:
+  - id: pricing/store-6
+    name: pricing-db-6
+    technology: redis
+    ownedBy: pricing/pricing-service-4
+  - id: pricing/store-25
+    name: pricing-db-25
+    technology: dynamodb
+    ownedBy: pricing/pricing-gateway-16
+  - id: pricing/store-41
+    name: pricing-db-41
+    technology: postgres
+    ownedBy: pricing/pricing-service-3
+connections:
+  - from: pricing/pricing-adapter-2
+    to: carrier/notify-api
+  - from: pricing/pricing-service-4
+    to: tracking/api-485
+  - from: pricing/pricing-adapter-1
+    to: tracking/api-89
+  - from: pricing/pricing-gateway-16
+    to: pricing/api-527
+  - from: pricing/pricing-worker-18
+    to: pricing/api-122
+  - from: pricing/pricing-adapter-2
+    to: pricing/api-520
+  - from: pricing/pricing-sync-6
+    to: consent/api-19
+  - from: pricing/topic-123
+    to: pricing/pricing-engine-9
+  - from: pricing/pricing-gateway-13
+    to: pricing/api-126
+  - from: pricing/pricing-service-0
+    to: pricing/api-113
+  - from: pricing/pricing-worker-11
+    to: pricing/api-127
+  - from: pricing/pricing-sync-17
+    to: pricing/api-128
+  - from: pricing/pricing-service-0
+    to: label/api-479
+  - from: pricing/pricing-gateway-13
+    to: pricing/topic-159
+  - from: pricing/pricing-engine-12
+    to: pricing/api-126
+  - from: pricing/topic-121
+    to: pricing/pricing-worker-11
+  - from: pricing/pricing-adapter-2
+    to: routing/api-270
+  - from: pricing/pricing-gateway-10
+    to: pricing/topic-153
+  - from: pricing/pricing-worker-18
+    to: consent/api-208
+  - from: pricing/pricing-gateway-16
+    to: pricing/api-516
+  - from: pricing/pricing-engine-9
+    to: chat/api-258
+  - from: pricing/pricing-gateway-13
+    to: payment/api-564
+  - from: pricing/pricing-worker-11
+    to: pricing/topic-117
+  - from: payment/topic-148
+    to: pricing/pricing-gateway-10
+  - from: pricing/pricing-service-3
+    to: payment/api-560
+  - from: pricing/pricing-gateway-5
+    to: review/api-236
+  - from: pricing/pricing-adapter-2
+    to: consent/api-23
+  - from: pricing/pricing-engine-8
+    to: profile/api-187
+  - from: pricing/pricing-service-3
+    to: profile/api-192
+  - from: pricing/pricing-engine-12
+    to: payment/api-561
+  - from: pricing/pricing-adapter-2
+    to: pricing/topic-47
+  - from: account/topic-202
+    to: pricing/pricing-service-0
+  - from: pricing/pricing-worker-18
+    to: pricing/api-123
+  - from: pricing/pricing-gateway-19
+    to: dispatch/api-285
+  - from: pricing/pricing-worker-15
+    to: payment/api-159
+  - from: pricing/pricing-engine-7
+    to: pricing/topic-47
+  - from: pricing/pricing-engine-9
+    to: tracking/api-89
+  - from: pricing/topic-159
+    to: pricing/pricing-worker-15
+  - from: pricing/pricing-adapter-14
+    to: pricing/topic-153
+  - from: pricing/pricing-sync-17
+    to: pricing/api-119
+  - from: pricing/pricing-adapter-1
+    to: label/api-468
+  - from: pricing/pricing-adapter-14
+    to: label/api-471
+  - from: pricing/pricing-adapter-1
+    to: payment/api-162
+  - from: pricing/pricing-gateway-16
+    to: consent/api-208
+  - from: pricing/pricing-gateway-16
+    to: pricing/api-521
+  - from: pricing/pricing-service-4
+    to: pricing/api-119
+  - from: pricing/pricing-gateway-16
+    to: pricing/api-126
+  - from: pricing/topic-117
+    to: pricing/pricing-gateway-5
+  - from: pricing/pricing-engine-12
+    to: consent/api-208
+  - from: pricing/pricing-gateway-10
+    to: profile/api-580
+  - from: pricing/pricing-engine-8
+    to: pricing/topic-248
+  - from: pricing/topic-123
+    to: pricing/pricing-adapter-14
+  - from: pricing/pricing-service-3
+    to: routing/api-273
+  - from: chat/topic-164
+    to: pricing/pricing-gateway-16
+  - from: pricing/pricing-worker-15
+    to: catalog/api-98
+  - from: pricing/pricing-engine-12
+    to: pricing/api-519
+  - from: checkout/topic-209
+    to: pricing/pricing-engine-8
+  - from: pricing/pricing-worker-18
+    to: pricing/api-114
+  - from: pricing/pricing-engine-9
+    to: chat/api-266
+  - from: pricing/pricing-service-0
+    to: pricing/topic-87
+  - from: pricing/pricing-service-4
+    to: catalog/api-110
+  - from: pricing/pricing-gateway-16
+    to: catalog/api-510
+  - from: pricing/pricing-sync-6
+    to: pricing/api-116
+  - from: review/topic-66
+    to: pricing/pricing-worker-11
+  - from: pricing/pricing-worker-15
+    to: pricing/api-527
+  - from: pricing/pricing-engine-7
+    to: tracking/api-487
+  - from: pricing/pricing-gateway-5
+    to: label/api-479
+  - from: pricing/pricing-gateway-19
+    to: profile/api-181
+  - from: pricing/pricing-service-3
+    to: pricing/api-525
+  - from: label/topic-226
+    to: pricing/pricing-engine-9
+  - from: pricing/pricing-service-0
+    to: ticket/api-248
+  - from: pricing/pricing-gateway-5
+    to: pricing/topic-87
+  - from: pricing/pricing-gateway-19
+    to: pricing/api-530
+  - from: pricing/pricing-service-0
+    to: pricing/topic-123
+  - from: pricing/pricing-worker-18
+    to: tracking/api-489
+  - from: pricing/pricing-sync-6
+    to: pricing/api-518
+  - from: pricing/pricing-worker-11
+    to: account/api-570
+  - from: pricing/pricing-worker-18
+    to: pricing/topic-159
+  - from: pricing/pricing-worker-11
+    to: pricing/api-114
+  - from: pricing/pricing-engine-8
+    to: pricing/api-516
+  - from: pricing/pricing-service-4
+    to: pricing/api-124
+  - from: pricing/pricing-worker-18
+    to: pricing/api-130
+  - from: pricing/pricing-service-3
+    to: ticket/api-256
+  - from: pricing/pricing-service-3
+    to: pricing/api-126
+  - from: pricing/pricing-service-4
+    to: pricing/topic-87
+  - from: pricing/pricing-engine-7
+    to: chat/api-265
+  - from: pricing/pricing-adapter-1
+    to: pricing/topic-47
+  - from: dispatch/topic-143
+    to: pricing/pricing-sync-6
+  - from: pricing/pricing-worker-15
+    to: stock/api-550
+  - from: pricing/pricing-service-4
+    to: profile/api-190
+  - from: pricing/pricing-gateway-16
+    to: pricing/api-115
+  - from: tracking/topic-213
+    to: pricing/pricing-gateway-10
+  - from: pricing/pricing-gateway-5
+    to: session/api-596
+  - from: pricing/pricing-service-0
+    to: routing/api-276
+  - from: pricing/pricing-sync-17
+    to: pricing/api-131
+  - from: pricing/topic-121
+    to: pricing/pricing-worker-18
+  - from: pricing/pricing-worker-11
+    to: pricing/api-115
+  - from: pricing/pricing-gateway-16
+    to: refund/api-445
+  - from: pricing/topic-87
+    to: pricing/pricing-worker-15
+  - from: pricing/pricing-sync-17
+    to: label/api-477
+  - from: pricing/pricing-service-0
+    to: pricing/topic-65
+  - from: pricing/pricing-gateway-13
+    to: chat/api-264
+  - from: pricing/pricing-adapter-2
+    to: stock/api-142
+  - from: pricing/pricing-adapter-14
+    to: order/api-401
+  - from: pricing/pricing-adapter-1
+    to: account/api-578
+  - from: pricing/pricing-gateway-10
+    to: profile/api-589
+  - from: pricing/pricing-worker-18
+    to: pricing/api-129
+  - from: pricing/pricing-engine-9
+    to: pricing/pricing-service-0
+    gap: legacy, no spec

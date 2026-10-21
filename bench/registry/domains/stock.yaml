@@ -1,0 +1,603 @@
+domain:
+  id: stock
+  name: Stock
+  department: finance
+  owningTeam: team-stock
+  reviewedAt: 2025-11-01
+  reviewedBy: pe
+systems:
+  - id: stock/sys-0
+    name: stock system 0
+  - id: stock/sys-1
+    name: stock system 1
+  - id: stock/sys-2
+    name: stock system 2
+services:
+  - id: stock/stock-service-0
+    name: stock-service-0
+    owningTeam: team-stock
+  - id: stock/stock-worker-1
+    name: stock-worker-1
+    owningTeam: team-stock
+  - id: stock/stock-engine-2
+    name: stock-engine-2
+    owningTeam: team-stock
+    system: stock/sys-1
+  - id: stock/stock-service-3
+    name: stock-service-3
+    owningTeam: team-stock
+  - id: stock/stock-adapter-4
+    name: stock-adapter-4
+    owningTeam: team-stock
+    system: stock/sys-1
+  - id: stock/stock-gateway-5
+    name: stock-gateway-5
+    owningTeam: team-stock
+  - id: stock/stock-adapter-6
+    name: stock-adapter-6
+    owningTeam: team-stock
+    system: stock/sys-0
+  - id: stock/stock-manager-7
+    name: stock-manager-7
+    owningTeam: team-stock
+  - id: stock/stock-manager-8
+    name: stock-manager-8
+    owningTeam: team-stock
+    system: stock/sys-2
+  - id: stock/stock-manager-9
+    name: stock-manager-9
+    owningTeam: team-stock
+    system: stock/sys-2
+  - id: stock/stock-worker-10
+    name: stock-worker-10
+    owningTeam: team-stock
+  - id: stock/stock-manager-11
+    name: stock-manager-11
+    owningTeam: team-stock
+    system: stock/sys-2
+  - id: stock/stock-manager-12
+    name: stock-manager-12
+    owningTeam: team-stock
+    system: stock/sys-1
+  - id: stock/stock-sync-13
+    name: stock-sync-13
+    owningTeam: team-stock
+  - id: stock/stock-adapter-14
+    name: stock-adapter-14
+    owningTeam: team-stock
+    system: stock/sys-2
+  - id: stock/stock-worker-15
+    name: stock-worker-15
+    owningTeam: team-stock
+  - id: stock/stock-sync-16
+    name: stock-sync-16
+    owningTeam: team-stock
+    system: stock/sys-2
+  - id: stock/stock-engine-17
+    name: stock-engine-17
+    owningTeam: team-stock
+    system: stock/sys-0
+    status: planned
+  - id: stock/stock-worker-18
+    name: stock-worker-18
+    owningTeam: team-stock
+    system: stock/sys-0
+  - id: stock/stock-adapter-19
+    name: stock-adapter-19
+    owningTeam: team-stock
+  - id: stock/stock-manager-20
+    name: stock-manager-20
+    owningTeam: team-stock
+  - id: stock/stock-sync-21
+    name: stock-sync-21
+    owningTeam: team-stock
+    system: stock/sys-1
+  - id: stock/stock-engine-22
+    name: stock-engine-22
+    owningTeam: team-stock
+    system: stock/sys-0
+  - id: stock/stock-sync-23
+    name: stock-sync-23
+    owningTeam: team-stock
+    system: stock/sys-2
+apis:
+  - id: stock/api-132
+    name: stock-service-0 API 132
+    hostedBy: stock/stock-service-0
+    style: gRPC
+  - id: stock/api-133
+    name: stock-worker-1 API 133
+    hostedBy: stock/stock-worker-1
+    style: REST
+  - id: stock/api-134
+    name: stock-engine-2 API 134
+    hostedBy: stock/stock-engine-2
+    style: REST
+  - id: stock/api-135
+    name: stock-service-3 API 135
+    hostedBy: stock/stock-service-3
+    style: REST
+  - id: stock/api-136
+    name: stock-adapter-4 API 136
+    hostedBy: stock/stock-adapter-4
+    style: gRPC
+  - id: stock/api-137
+    name: stock-gateway-5 API 137
+    hostedBy: stock/stock-gateway-5
+    style: REST
+  - id: stock/api-138
+    name: stock-adapter-6 API 138
+    hostedBy: stock/stock-adapter-6
+    style: REST
+  - id: stock/api-139
+    name: stock-manager-7 API 139
+    hostedBy: stock/stock-manager-7
+    style: REST
+  - id: stock/api-140
+    name: stock-manager-8 API 140
+    hostedBy: stock/stock-manager-8
+    style: REST
+  - id: stock/api-141
+    name: stock-manager-9 API 141
+    hostedBy: stock/stock-manager-9
+    style: REST
+  - id: stock/api-142
+    name: stock-worker-10 API 142
+    hostedBy: stock/stock-worker-10
+    style: REST
+  - id: stock/api-143
+    name: stock-manager-11 API 143
+    hostedBy: stock/stock-manager-11
+    style: gRPC
+  - id: stock/api-144
+    name: stock-manager-12 API 144
+    hostedBy: stock/stock-manager-12
+    style: REST
+  - id: stock/api-145
+    name: stock-sync-13 API 145
+    hostedBy: stock/stock-sync-13
+    style: gRPC
+  - id: stock/api-146
+    name: stock-adapter-14 API 146
+    hostedBy: stock/stock-adapter-14
+    style: REST
+  - id: stock/api-147
+    name: stock-worker-15 API 147
+    hostedBy: stock/stock-worker-15
+    style: REST
+  - id: stock/api-148
+    name: stock-sync-16 API 148
+    hostedBy: stock/stock-sync-16
+    style: gRPC
+  - id: stock/api-149
+    name: stock-engine-17 API 149
+    hostedBy: stock/stock-engine-17
+    style: GraphQL
+  - id: stock/api-150
+    name: stock-worker-18 API 150
+    hostedBy: stock/stock-worker-18
+    style: GraphQL
+  - id: stock/api-151
+    name: stock-adapter-19 API 151
+    hostedBy: stock/stock-adapter-19
+    style: REST
+  - id: stock/api-152
+    name: stock-manager-20 API 152
+    hostedBy: stock/stock-manager-20
+    style: gRPC
+  - id: stock/api-153
+    name: stock-sync-21 API 153
+    hostedBy: stock/stock-sync-21
+    style: gRPC
+  - id: stock/api-154
+    name: stock-engine-22 API 154
+    hostedBy: stock/stock-engine-22
+    style: REST
+  - id: stock/api-155
+    name: stock-sync-23 API 155
+    hostedBy: stock/stock-sync-23
+    style: REST
+  - id: stock/api-532
+    name: stock-service-0 API 532
+    hostedBy: stock/stock-service-0
+    style: REST
+  - id: stock/api-533
+    name: stock-worker-1 API 533
+    hostedBy: stock/stock-worker-1
+    style: GraphQL
+  - id: stock/api-534
+    name: stock-engine-2 API 534
+    hostedBy: stock/stock-engine-2
+    style: REST
+  - id: stock/api-535
+    name: stock-service-3 API 535
+    hostedBy: stock/stock-service-3
+    style: REST
+  - id: stock/api-536
+    name: stock-adapter-4 API 536
+    hostedBy: stock/stock-adapter-4
+    style: gRPC
+  - id: stock/api-537
+    name: stock-gateway-5 API 537
+    hostedBy: stock/stock-gateway-5
+    style: GraphQL
+  - id: stock/api-538
+    name: stock-adapter-6 API 538
+    hostedBy: stock/stock-adapter-6
+    style: REST
+  - id: stock/api-539
+    name: stock-manager-7 API 539
+    hostedBy: stock/stock-manager-7
+    style: gRPC
+  - id: stock/api-540
+    name: stock-manager-8 API 540
+    hostedBy: stock/stock-manager-8
+    style: gRPC
+  - id: stock/api-541
+    name: stock-manager-9 API 541
+    hostedBy: stock/stock-manager-9
+    style: REST
+  - id: stock/api-542
+    name: stock-worker-10 API 542
+    hostedBy: stock/stock-worker-10
+    style: GraphQL
+  - id: stock/api-543
+    name: stock-manager-11 API 543
+    hostedBy: stock/stock-manager-11
+    style: REST
+  - id: stock/api-544
+    name: stock-manager-12 API 544
+    hostedBy: stock/stock-manager-12
+    style: REST
+  - id: stock/api-545
+    name: stock-sync-13 API 545
+    hostedBy: stock/stock-sync-13
+    style: REST
+  - id: stock/api-546
+    name: stock-adapter-14 API 546
+    hostedBy: stock/stock-adapter-14
+    style: GraphQL
+  - id: stock/api-547
+    name: stock-worker-15 API 547
+    hostedBy: stock/stock-worker-15
+    style: REST
+  - id: stock/api-548
+    name: stock-sync-16 API 548
+    hostedBy: stock/stock-sync-16
+    style: REST
+  - id: stock/api-549
+    name: stock-engine-17 API 549
+    hostedBy: stock/stock-engine-17
+    style: gRPC
+  - id: stock/api-550
+    name: stock-worker-18 API 550
+    hostedBy: stock/stock-worker-18
+    style: gRPC
+  - id: stock/api-551
+    name: stock-adapter-19 API 551
+    hostedBy: stock/stock-adapter-19
+    style: REST
+  - id: stock/api-552
+    name: stock-manager-20 API 552
+    hostedBy: stock/stock-manager-20
+    style: REST
+  - id: stock/api-553
+    name: stock-sync-21 API 553
+    hostedBy: stock/stock-sync-21
+    style: REST
+  - id: stock/api-554
+    name: stock-engine-22 API 554
+    hostedBy: stock/stock-engine-22
+    style: GraphQL
+  - id: stock/api-555
+    name: stock-sync-23 API 555
+    hostedBy: stock/stock-sync-23
+    style: gRPC
+topics:
+  - id: stock/topic-4
+    name: stock.event-4.v1
+    ownedBy: stock/stock-adapter-6
+    cluster: finance-kafka
+  - id: stock/topic-7
+    name: stock.event-7.v1
+    ownedBy: stock/stock-service-0
+    cluster: finance-kafka
+  - id: stock/topic-43
+    name: stock.event-43.v1
+    ownedBy: stock/stock-manager-11
+    cluster: finance-kafka
+  - id: stock/topic-57
+    name: stock.event-57.v1
+    ownedBy: stock/stock-manager-8
+    cluster: finance-kafka
+  - id: stock/topic-77
+    name: stock.event-77.v1
+    ownedBy: stock/stock-worker-15
+    cluster: finance-kafka
+  - id: stock/topic-92
+    name: stock.event-92.v1
+    ownedBy: stock/stock-manager-20
+    cluster: finance-kafka
+  - id: stock/topic-109
+    name: stock.event-109.v1
+    ownedBy: stock/stock-manager-20
+    cluster: finance-kafka
+  - id: stock/topic-128
+    name: stock.event-128.v1
+    ownedBy: stock/stock-gateway-5
+    cluster: finance-kafka
+  - id: stock/topic-157
+    name: stock.event-157.v1
+    ownedBy: stock/stock-service-0
+    cluster: finance-kafka
+  - id: stock/topic-160
+    name: stock.event-160.v1
+    ownedBy: stock/stock-service-3
+    cluster: finance-kafka
+  - id: stock/topic-170
+    name: stock.event-170.v1
+    ownedBy: stock/stock-worker-18
+    cluster: finance-kafka
+  - id: stock/topic-180
+    name: stock.event-180.v1
+    ownedBy: stock/stock-adapter-6
+    cluster: finance-kafka
+  - id: stock/topic-197
+    name: stock.event-197.v1
+    ownedBy: stock/stock-adapter-6
+    cluster: finance-kafka
+  - id: stock/topic-208
+    name: stock.event-208.v1
+    ownedBy: stock/stock-engine-17
+    cluster: finance-kafka
+  - id: stock/topic-214
+    name: stock.event-214.v1
+    ownedBy: stock/stock-manager-11
+    cluster: finance-kafka
+  - id: stock/topic-215
+    name: stock.event-215.v1
+    ownedBy: stock/stock-worker-18
+    cluster: finance-kafka
+  - id: stock/topic-220
+    name: stock.event-220.v1
+    ownedBy: stock/stock-gateway-5
+    cluster: finance-kafka
+  - id: stock/topic-229
+    name: stock.event-229.v1
+    ownedBy: stock/stock-sync-21
+    cluster: finance-kafka
+  - id: stock/topic-239
+    name: stock.event-239.v1
+    ownedBy: stock/stock-service-3
+    cluster: finance-kafka
+channels:
+  - id: stock/channel-2
+    name: webhook 2
+    technology: HTTP webhook
+    ownedBy: stock/stock-adapter-19
+datastores:
+  - id: stock/store-0
+    name: stock-db-0
+    technology: s3
+    ownedBy: stock/stock-engine-17
+  - id: stock/store-29
+    name: stock-db-29
+    technology: postgres
+    ownedBy: stock/stock-worker-15
+  - id: stock/store-40
+    name: stock-db-40
+    technology: s3
+    ownedBy: stock/stock-adapter-4
+connections:
+  - from: stock/stock-engine-2
+    to: carrier/auth-api
+  - from: stock/stock-service-3
+    to: carrier/auth-api
+  - from: stock/stock-adapter-4
+    to: carrier/notify-api
+  - from: stock/stock-gateway-5
+    to: carrier/feature-flags-api
+  - from: stock/stock-worker-10
+    to: carrier/feature-flags-api
+  - from: stock/stock-manager-12
+    to: carrier/notify-api
+  - from: stock/stock-sync-13
+    to: carrier/auth-api
+  - from: stock/stock-engine-17
+    to: carrier/feature-flags-api
+  - from: stock/stock-worker-18
+    to: carrier/auth-api
+  - from: stock/stock-manager-20
+    to: carrier/feature-flags-api
+  - from: stock/stock-engine-22
+    to: carrier/auth-api
+  - from: session/topic-135
+    to: stock/stock-worker-1
+  - from: stock/stock-manager-7
+    to: stock/api-138
+  - from: stock/stock-manager-20
+    to: account/api-166
+  - from: stock/stock-sync-21
+    to: stock/api-532
+  - from: stock/stock-sync-21
+    to: consent/api-209
+  - from: stock/stock-worker-10
+    to: tracking/api-84
+  - from: review/topic-59
+    to: stock/stock-sync-21
+  - from: stock/stock-manager-12
+    to: stock/api-153
+  - from: stock/stock-engine-22
+    to: ticket/api-248
+  - from: stock/topic-77
+    to: stock/stock-sync-16
+  - from: stock/stock-sync-13
+    to: stock/api-545
+  - from: pricing/topic-47
+    to: stock/stock-manager-11
+  - from: label/topic-191
+    to: stock/stock-sync-16
+  - from: stock/stock-engine-22
+    to: stock/api-154
+  - from: stock/stock-worker-1
+    to: tracking/api-489
+  - from: stock/topic-197
+    to: stock/stock-sync-13
+  - from: stock/stock-manager-8
+    to: review/api-241
+  - from: stock/stock-adapter-6
+    to: stock/api-136
+  - from: stock/stock-sync-16
+    to: label/api-82
+  - from: stock/stock-adapter-4
+    to: dispatch/api-291
+  - from: stock/stock-worker-1
+    to: stock/api-547
+  - from: stock/stock-manager-11
+    to: stock/api-150
+  - from: stock/stock-worker-18
+    to: stock/api-535
+  - from: stock/stock-manager-20
+    to: ticket/api-253
+  - from: stock/stock-worker-18
+    to: stock/topic-109
+  - from: stock/stock-sync-21
+    to: profile/api-587
+  - from: stock/stock-sync-13
+    to: stock/api-141
+  - from: stock/stock-adapter-14
+    to: stock/api-132
+  - from: tracking/topic-182
+    to: stock/stock-manager-7
+  - from: stock/stock-gateway-5
+    to: stock/api-548
+  - from: stock/stock-worker-18
+    to: dispatch/api-283
+  - from: stock/stock-sync-13
+    to: fraud/api-340
+  - from: stock/stock-manager-8
+    to: tax/api-337
+  - from: stock/stock-adapter-19
+    to: stock/topic-215
+  - from: stock/stock-manager-7
+    to: pricing/api-530
+  - from: stock/stock-sync-21
+    to: stock/api-151
+  - from: stock/stock-engine-2
+    to: catalog/api-100
+  - from: stock/stock-sync-21
+    to: stock/api-137
+  - from: stock/topic-157
+    to: stock/stock-engine-22
+  - from: stock/stock-worker-15
+    to: consent/api-207
+  - from: stock/stock-manager-20
+    to: stock/api-535
+  - from: stock/topic-170
+    to: stock/stock-worker-15
+  - from: stock/stock-worker-18
+    to: stock/api-153
+  - from: stock/stock-gateway-5
+    to: stock/topic-128
+  - from: stock/stock-worker-1
+    to: chat/api-264
+  - from: stock/stock-adapter-4
+    to: chat/api-260
+  - from: stock/stock-service-3
+    to: stock/api-534
+  - from: stock/stock-sync-13
+    to: stock/topic-43
+  - from: stock/stock-worker-18
+    to: stock/api-148
+  - from: stock/stock-sync-21
+    to: stock/topic-170
+  - from: stock/stock-manager-7
+    to: dispatch/api-289
+  - from: stock/stock-worker-1
+    to: stock/topic-215
+  - from: stock/stock-sync-23
+    to: stock/api-533
+  - from: stock/stock-adapter-14
+    to: stock/api-532
+  - from: stock/stock-service-0
+    to: label/api-480
+  - from: stock/stock-sync-21
+    to: stock/api-533
+  - from: stock/stock-adapter-4
+    to: carrier/api-308
+  - from: returns/topic-33
+    to: stock/stock-adapter-4
+  - from: session/topic-135
+    to: stock/stock-manager-7
+  - from: stock/stock-manager-20
+    to: stock/topic-43
+  - from: stock/stock-sync-21
+    to: chat/api-260
+  - from: stock/stock-sync-21
+    to: stock/api-153
+  - from: stock/stock-manager-8
+    to: stock/api-554
+  - from: stock/stock-worker-1
+    to: stock/topic-4
+  - from: stock/stock-adapter-19
+    to: stock/topic-208
+  - from: stock/stock-adapter-4
+    to: stock/api-544
+  - from: stock/stock-engine-17
+    to: stock/topic-170
+  - from: stock/stock-manager-11
+    to: tracking/api-85
+  - from: stock/stock-service-0
+    to: session/api-198
+  - from: catalog/topic-32
+    to: stock/stock-gateway-5
+  - from: stock/stock-engine-17
+    to: pricing/api-113
+  - from: stock/stock-service-3
+    to: tracking/api-491
+  - from: stock/stock-manager-11
+    to: stock/api-143
+  - from: stock/stock-sync-16
+    to: routing/api-270
+  - from: stock/stock-sync-16
+    to: stock/api-149
+  - from: stock/stock-adapter-19
+    to: payment/api-563
+  - from: stock/topic-229
+    to: stock/stock-adapter-14
+  - from: stock/stock-worker-1
+    to: stock/api-546
+  - from: order/topic-165
+    to: stock/stock-engine-2
+  - from: stock/stock-sync-16
+    to: stock/api-550
+  - from: stock/stock-manager-11
+    to: chat/api-260
+  - from: consent/topic-73
+    to: stock/stock-sync-21
+  - from: stock/stock-worker-15
+    to: stock/topic-239
+  - from: stock/stock-sync-13
+    to: stock/api-134
+  - from: stock/topic-180
+    to: stock/stock-manager-8
+  - from: stock/topic-170
+    to: stock/stock-manager-12
+  - from: stock/stock-sync-16
+    to: returns/api-425
+  - from: stock/stock-sync-16
+    to: profile/api-189
+  - from: stock/topic-157
+    to: stock/stock-gateway-5
+  - from: stock/stock-adapter-6
+    to: stock/topic-180
+  - from: stock/stock-manager-9
+    to: routing/api-268
+  - from: stock/stock-sync-13
+    to: tracking/api-87
+  - from: stock/stock-sync-16
+    to: ticket/api-256
+  - from: stock/stock-sync-16
+    to: stock/topic-57
+  - from: stock/stock-manager-7
+    to: ticket/api-248

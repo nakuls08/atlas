@@ -1,0 +1,291 @@
+domain:
+  id: ticket
+  name: Ticket
+  department: data
+  owningTeam: team-ticket
+  reviewedAt: 2026-07-01
+  reviewedBy: pe
+systems:
+  - id: ticket/sys-0
+    name: ticket system 0
+  - id: ticket/sys-1
+    name: ticket system 1
+  - id: ticket/sys-2
+    name: ticket system 2
+  - id: ticket/sys-3
+    name: ticket system 3
+  - id: ticket/sys-4
+    name: ticket system 4
+services:
+  - id: ticket/ticket-worker-0
+    name: ticket-worker-0
+    owningTeam: team-ticket
+  - id: ticket/ticket-manager-1
+    name: ticket-manager-1
+    owningTeam: team-ticket
+    system: ticket/sys-4
+  - id: ticket/ticket-service-2
+    name: ticket-service-2
+    owningTeam: team-ticket
+    system: ticket/sys-2
+  - id: ticket/ticket-manager-3
+    name: ticket-manager-3
+    owningTeam: team-ticket
+    system: ticket/sys-3
+  - id: ticket/ticket-engine-4
+    name: ticket-engine-4
+    owningTeam: team-ticket
+    system: ticket/sys-3
+  - id: ticket/ticket-sync-5
+    name: ticket-sync-5
+    owningTeam: team-ticket
+    system: ticket/sys-1
+  - id: ticket/ticket-worker-6
+    name: ticket-worker-6
+    owningTeam: team-ticket
+    system: ticket/sys-4
+  - id: ticket/ticket-manager-7
+    name: ticket-manager-7
+    owningTeam: team-ticket
+    system: ticket/sys-0
+  - id: ticket/ticket-manager-8
+    name: ticket-manager-8
+    owningTeam: team-ticket
+    system: ticket/sys-1
+apis:
+  - id: ticket/api-248
+    name: ticket-worker-0 API 248
+    hostedBy: ticket/ticket-worker-0
+    style: REST
+  - id: ticket/api-249
+    name: ticket-manager-1 API 249
+    hostedBy: ticket/ticket-manager-1
+    style: REST
+  - id: ticket/api-250
+    name: ticket-service-2 API 250
+    hostedBy: ticket/ticket-service-2
+    style: gRPC
+  - id: ticket/api-251
+    name: ticket-manager-3 API 251
+    hostedBy: ticket/ticket-manager-3
+    style: GraphQL
+  - id: ticket/api-252
+    name: ticket-engine-4 API 252
+    hostedBy: ticket/ticket-engine-4
+    style: gRPC
+  - id: ticket/api-253
+    name: ticket-sync-5 API 253
+    hostedBy: ticket/ticket-sync-5
+    style: gRPC
+  - id: ticket/api-254
+    name: ticket-worker-6 API 254
+    hostedBy: ticket/ticket-worker-6
+    style: REST
+  - id: ticket/api-255
+    name: ticket-manager-7 API 255
+    hostedBy: ticket/ticket-manager-7
+    style: REST
+  - id: ticket/api-256
+    name: ticket-manager-8 API 256
+    hostedBy: ticket/ticket-manager-8
+    style: REST
+topics:
+  - id: ticket/topic-27
+    name: ticket.event-27.v1
+    ownedBy: ticket/ticket-manager-7
+    cluster: data-kafka
+  - id: ticket/topic-102
+    name: ticket.event-102.v1
+    ownedBy: ticket/ticket-engine-4
+    cluster: data-kafka
+  - id: ticket/topic-199
+    name: ticket.event-199.v1
+    ownedBy: ticket/ticket-engine-4
+    cluster: data-kafka
+  - id: ticket/topic-236
+    name: ticket.event-236.v1
+    ownedBy: ticket/ticket-service-2
+    cluster: data-kafka
+  - id: ticket/topic-240
+    name: ticket.event-240.v1
+    ownedBy: ticket/ticket-manager-8
+    cluster: data-kafka
+  - id: ticket/topic-245
+    name: ticket.event-245.v1
+    ownedBy: ticket/ticket-worker-0
+    cluster: data-kafka
+channels: []
+datastores: []
+connections:
+  - from: ticket/ticket-sync-5
+    to: carrier/auth-api
+  - from: ticket/ticket-manager-7
+    to: carrier/notify-api
+  - from: ticket/ticket-manager-1
+    to: routing/api-274
+  - from: ticket/ticket-manager-7
+    to: ticket/topic-236
+  - from: ticket/ticket-manager-1
+    to: ticket/topic-240
+  - from: ticket/ticket-engine-4
+    to: routing/api-275
+  - from: ticket/ticket-service-2
+    to: carrier/api-299
+  - from: ticket/ticket-sync-5
+    to: chat/api-258
+  - from: ticket/ticket-manager-8
+    to: profile/api-180
+  - from: ticket/ticket-engine-4
+    to: dispatch/api-291
+  - from: ticket/ticket-manager-7
+    to: ticket/topic-102
+  - from: ticket/ticket-manager-3
+    to: ticket/topic-236
+  - from: ticket/ticket-service-2
+    to: pricing/api-129
+  - from: ticket/ticket-worker-6
+    to: ticket/api-252
+  - from: ticket/ticket-manager-1
+    to: ticket/topic-245
+  - from: ticket/ticket-manager-1
+    to: carrier/api-293
+  - from: ticket/ticket-manager-1
+    to: ticket/topic-236
+  - from: ticket/ticket-service-2
+    to: ticket/topic-240
+  - from: ticket/ticket-sync-5
+    to: carrier/api-293
+  - from: ticket/ticket-worker-0
+    to: ticket/api-249
+  - from: ticket/ticket-worker-0
+    to: ticket/topic-240
+  - from: ticket/ticket-manager-1
+    to: routing/api-268
+  - from: ticket/ticket-manager-8
+    to: ticket/api-248
+  - from: ticket/ticket-manager-7
+    to: ticket/api-248
+  - from: ticket/ticket-service-2
+    to: ticket/topic-102
+  - from: ticket/topic-236
+    to: ticket/ticket-manager-8
+  - from: checkout/topic-209
+    to: ticket/ticket-manager-7
+  - from: ticket/ticket-engine-4
+    to: ticket/topic-27
+  - from: ticket/ticket-manager-7
+    to: dispatch/api-282
+  - from: ticket/ticket-manager-3
+    to: chat/api-263
+  - from: ticket/ticket-worker-6
+    to: ticket/topic-245
+  - from: ticket/ticket-worker-0
+    to: ticket/api-254
+  - from: ticket/ticket-worker-6
+    to: ticket/api-251
+  - from: ticket/ticket-manager-8
+    to: routing/api-270
+  - from: fraud/topic-193
+    to: ticket/ticket-manager-3
+  - from: ticket/topic-199
+    to: ticket/ticket-manager-3
+  - from: checkout/topic-231
+    to: ticket/ticket-worker-0
+  - from: ticket/ticket-service-2
+    to: carrier/api-301
+  - from: ticket/ticket-worker-0
+    to: ticket/topic-27
+  - from: ticket/ticket-service-2
+    to: tax/api-334
+  - from: ticket/ticket-manager-3
+    to: chat/api-261
+  - from: carrier/topic-151
+    to: ticket/ticket-service-2
+  - from: ticket/ticket-manager-8
+    to: notify/api-397
+  - from: ticket/ticket-manager-3
+    to: routing/api-272
+  - from: ticket/ticket-sync-5
+    to: ticket/topic-199
+  - from: ticket/ticket-engine-4
+    to: ticket/api-255
+  - from: ticket/ticket-worker-6
+    to: ticket/topic-102
+  - from: ticket/ticket-worker-0
+    to: tax/api-329
+  - from: ticket/ticket-manager-1
+    to: chat/api-261
+  - from: ticket/ticket-sync-5
+    to: routing/api-267
+  - from: ticket/ticket-service-2
+    to: ticket/topic-199
+  - from: ticket/ticket-sync-5
+    to: checkout/api-382
+  - from: ticket/ticket-manager-1
+    to: warehouse/api-312
+  - from: ticket/ticket-manager-3
+    to: ticket/api-255
+  - from: ticket/ticket-service-2
+    to: ticket/api-256
+  - from: ticket/ticket-manager-1
+    to: ticket/api-254
+  - from: ticket/ticket-manager-3
+    to: ticket/topic-27
+  - from: ticket/ticket-sync-5
+    to: chat/api-266
+  - from: ticket/ticket-sync-5
+    to: ticket/api-253
+  - from: ticket/ticket-worker-0
+    to: ticket/topic-245
+  - from: ticket/ticket-manager-1
+    to: ticket/api-252
+  - from: ticket/ticket-manager-3
+    to: checkout/api-376
+  - from: ticket/ticket-manager-3
+    to: profile/api-595
+  - from: ticket/ticket-manager-8
+    to: ticket/topic-236
+  - from: ticket/ticket-worker-6
+    to: ticket/api-254
+  - from: ticket/ticket-manager-7
+    to: ticket/api-255
+  - from: ticket/ticket-manager-8
+    to: ticket/api-255
+  - from: ticket/ticket-manager-1
+    to: dispatch/api-286
+  - from: ticket/ticket-worker-6
+    to: notify/api-397
+  - from: ticket/ticket-service-2
+    to: ticket/api-255
+  - from: ticket/ticket-worker-0
+    to: ticket/topic-236
+  - from: ticket/ticket-service-2
+    to: warehouse/api-316
+  - from: dispatch/topic-17
+    to: ticket/ticket-manager-7
+  - from: notify/topic-127
+    to: ticket/ticket-manager-1
+  - from: ticket/topic-236
+    to: ticket/ticket-worker-0
+  - from: ticket/topic-240
+    to: ticket/ticket-sync-5
+  - from: ticket/ticket-sync-5
+    to: warehouse/api-323
+  - from: ticket/ticket-manager-7
+    to: ticket/api-249
+  - from: ticket/ticket-worker-0
+    to: ticket/api-256
+  - from: ticket/ticket-manager-7
+    to: chat/api-264
+  - from: ticket/ticket-manager-8
+    to: ticket/topic-199
+  - from: ticket/ticket-worker-0
+    to: ticket/topic-102
+  - from: ticket/ticket-manager-3
+    to: consent/api-29
+  - from: routing/topic-108
+    to: ticket/ticket-manager-3
+  - from: ticket/ticket-manager-8
+    to: loyalty/api-358
+  - from: ticket/ticket-manager-1
+    to: tax/api-337

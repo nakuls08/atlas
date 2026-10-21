@@ -1,0 +1,44 @@
+domain:
+  id: runtime
+  name: Runtime
+  department: platform
+  owningTeam: team-platform
+  reviewedAt: 2026-08-15
+  reviewedBy: lee
+services:
+  - id: runtime/feature-flags
+    name: feature-flags
+    owningTeam: team-platform
+    role: platform
+  - id: runtime/config-service
+    name: config-service
+    owningTeam: team-platform
+    role: platform
+  - id: runtime/secrets
+    name: secrets
+    owningTeam: team-platform
+    role: platform
+apis:
+  - id: runtime/flags-api
+    name: Flags API
+    hostedBy: runtime/feature-flags
+    style: REST
+    audience: internal
+  - id: runtime/config-api
+    name: Config API
+    hostedBy: runtime/config-service
+    style: gRPC
+    audience: internal
+  - id: runtime/secrets-api
+    name: Secrets API
+    hostedBy: runtime/secrets
+    style: gRPC
+    audience: internal
+datastores:
+  - id: runtime/secrets-db
+    name: secrets-db
+    technology: hsm
+    ownedBy: runtime/secrets
+connections:
+  - from: runtime/feature-flags
+    to: ext/launchdarkly

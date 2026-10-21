@@ -1,0 +1,427 @@
+domain:
+  id: account
+  name: Account
+  department: commerce
+  owningTeam: team-account
+  reviewedAt: 2026-07-01
+  reviewedBy: pe
+systems:
+  - id: account/sys-0
+    name: account system 0
+  - id: account/sys-1
+    name: account system 1
+  - id: account/sys-2
+    name: account system 2
+  - id: account/sys-3
+    name: account system 3
+services:
+  - id: account/account-gateway-0
+    name: account-gateway-0
+    owningTeam: team-account
+  - id: account/account-engine-1
+    name: account-engine-1
+    owningTeam: team-account
+  - id: account/account-worker-2
+    name: account-worker-2
+    owningTeam: team-account
+    system: account/sys-0
+  - id: account/account-service-3
+    name: account-service-3
+    owningTeam: team-account
+    system: account/sys-3
+  - id: account/account-adapter-4
+    name: account-adapter-4
+    owningTeam: team-account
+    system: account/sys-2
+  - id: account/account-sync-5
+    name: account-sync-5
+    owningTeam: team-account
+    system: account/sys-1
+  - id: account/account-manager-6
+    name: account-manager-6
+    owningTeam: team-account
+    system: account/sys-3
+    status: planned
+  - id: account/account-worker-7
+    name: account-worker-7
+    owningTeam: team-account
+  - id: account/account-sync-8
+    name: account-sync-8
+    owningTeam: team-account
+    system: account/sys-3
+  - id: account/account-engine-9
+    name: account-engine-9
+    owningTeam: team-account
+  - id: account/account-sync-10
+    name: account-sync-10
+    owningTeam: team-account
+    system: account/sys-2
+  - id: account/account-manager-11
+    name: account-manager-11
+    owningTeam: team-account
+    system: account/sys-1
+  - id: account/account-adapter-12
+    name: account-adapter-12
+    owningTeam: team-account
+    system: account/sys-1
+  - id: account/account-manager-13
+    name: account-manager-13
+    owningTeam: team-account
+    system: account/sys-0
+apis:
+  - id: account/api-166
+    name: account-gateway-0 API 166
+    hostedBy: account/account-gateway-0
+    style: REST
+  - id: account/api-167
+    name: account-engine-1 API 167
+    hostedBy: account/account-engine-1
+    style: REST
+  - id: account/api-168
+    name: account-worker-2 API 168
+    hostedBy: account/account-worker-2
+    style: GraphQL
+  - id: account/api-169
+    name: account-service-3 API 169
+    hostedBy: account/account-service-3
+    style: REST
+  - id: account/api-170
+    name: account-adapter-4 API 170
+    hostedBy: account/account-adapter-4
+    style: GraphQL
+  - id: account/api-171
+    name: account-sync-5 API 171
+    hostedBy: account/account-sync-5
+    style: REST
+  - id: account/api-172
+    name: account-manager-6 API 172
+    hostedBy: account/account-manager-6
+    style: gRPC
+  - id: account/api-173
+    name: account-worker-7 API 173
+    hostedBy: account/account-worker-7
+    style: REST
+  - id: account/api-174
+    name: account-sync-8 API 174
+    hostedBy: account/account-sync-8
+    style: REST
+  - id: account/api-175
+    name: account-engine-9 API 175
+    hostedBy: account/account-engine-9
+    style: REST
+  - id: account/api-176
+    name: account-sync-10 API 176
+    hostedBy: account/account-sync-10
+    style: REST
+  - id: account/api-177
+    name: account-manager-11 API 177
+    hostedBy: account/account-manager-11
+    style: REST
+  - id: account/api-178
+    name: account-adapter-12 API 178
+    hostedBy: account/account-adapter-12
+    style: gRPC
+  - id: account/api-179
+    name: account-manager-13 API 179
+    hostedBy: account/account-manager-13
+    style: REST
+  - id: account/api-566
+    name: account-gateway-0 API 566
+    hostedBy: account/account-gateway-0
+    style: gRPC
+  - id: account/api-567
+    name: account-engine-1 API 567
+    hostedBy: account/account-engine-1
+    style: GraphQL
+  - id: account/api-568
+    name: account-worker-2 API 568
+    hostedBy: account/account-worker-2
+    style: GraphQL
+  - id: account/api-569
+    name: account-service-3 API 569
+    hostedBy: account/account-service-3
+    style: REST
+  - id: account/api-570
+    name: account-adapter-4 API 570
+    hostedBy: account/account-adapter-4
+    style: REST
+  - id: account/api-571
+    name: account-sync-5 API 571
+    hostedBy: account/account-sync-5
+    style: gRPC
+  - id: account/api-572
+    name: account-manager-6 API 572
+    hostedBy: account/account-manager-6
+    style: GraphQL
+  - id: account/api-573
+    name: account-worker-7 API 573
+    hostedBy: account/account-worker-7
+    style: GraphQL
+  - id: account/api-574
+    name: account-sync-8 API 574
+    hostedBy: account/account-sync-8
+    style: REST
+  - id: account/api-575
+    name: account-engine-9 API 575
+    hostedBy: account/account-engine-9
+    style: gRPC
+  - id: account/api-576
+    name: account-sync-10 API 576
+    hostedBy: account/account-sync-10
+    style: REST
+  - id: account/api-577
+    name: account-manager-11 API 577
+    hostedBy: account/account-manager-11
+    style: gRPC
+  - id: account/api-578
+    name: account-adapter-12 API 578
+    hostedBy: account/account-adapter-12
+    style: REST
+  - id: account/api-579
+    name: account-manager-13 API 579
+    hostedBy: account/account-manager-13
+    style: GraphQL
+topics:
+  - id: account/topic-5
+    name: account.event-5.v1
+    ownedBy: account/account-manager-11
+    cluster: commerce-kafka
+  - id: account/topic-25
+    name: account.event-25.v1
+    ownedBy: account/account-worker-2
+    cluster: commerce-kafka
+  - id: account/topic-29
+    name: account.event-29.v1
+    ownedBy: account/account-sync-10
+    cluster: commerce-kafka
+  - id: account/topic-54
+    name: account.event-54.v1
+    ownedBy: account/account-adapter-4
+    cluster: commerce-kafka
+  - id: account/topic-74
+    name: account.event-74.v1
+    ownedBy: account/account-sync-5
+    cluster: commerce-kafka
+  - id: account/topic-95
+    name: account.event-95.v1
+    ownedBy: account/account-engine-1
+    cluster: commerce-kafka
+  - id: account/topic-133
+    name: account.event-133.v1
+    ownedBy: account/account-manager-13
+    cluster: commerce-kafka
+  - id: account/topic-184
+    name: account.event-184.v1
+    ownedBy: account/account-sync-10
+    cluster: commerce-kafka
+  - id: account/topic-202
+    name: account.event-202.v1
+    ownedBy: account/account-service-3
+    cluster: commerce-kafka
+  - id: account/topic-219
+    name: account.event-219.v1
+    ownedBy: account/account-engine-9
+    cluster: commerce-kafka
+channels:
+  - id: account/channel-16
+    name: SQS queue 16
+    technology: EDI
+    ownedBy: account/account-engine-1
+datastores:
+  - id: account/store-19
+    name: account-db-19
+    technology: dynamodb
+    ownedBy: account/account-sync-8
+  - id: account/store-47
+    name: account-db-47
+    technology: redis
+    ownedBy: account/account-sync-5
+connections:
+  - from: account/account-engine-1
+    to: carrier/notify-api
+  - from: account/account-worker-2
+    to: carrier/notify-api
+  - from: account/account-service-3
+    to: carrier/auth-api
+  - from: account/account-manager-6
+    to: carrier/auth-api
+  - from: account/account-engine-9
+    to: carrier/auth-api
+  - from: account/account-adapter-12
+    to: carrier/feature-flags-api
+  - from: account/account-manager-13
+    to: carrier/feature-flags-api
+  - from: account/account-worker-2
+    to: promo/api-245
+  - from: account/account-worker-2
+    to: account/topic-25
+  - from: account/account-adapter-12
+    to: carrier/notify-api
+  - from: account/account-sync-8
+    to: payment/api-563
+  - from: account/account-gateway-0
+    to: search/api-222
+  - from: account/account-worker-7
+    to: consent/api-205
+  - from: account/account-gateway-0
+    to: tax/api-334
+  - from: account/account-service-3
+    to: account/api-168
+  - from: account/account-manager-11
+    to: warehouse/api-318
+  - from: account/account-service-3
+    to: account/api-172
+  - from: account/account-adapter-4
+    to: account/topic-184
+  - from: account/account-sync-8
+    to: account/topic-29
+  - from: account/account-engine-9
+    to: consent/api-212
+  - from: account/account-manager-6
+    to: pricing/api-114
+  - from: account/account-manager-11
+    to: consent/api-208
+  - from: account/account-manager-13
+    to: review/api-239
+  - from: account/account-sync-5
+    to: account/topic-29
+  - from: account/account-gateway-0
+    to: account/api-173
+  - from: account/account-gateway-0
+    to: payment/api-557
+  - from: account/account-gateway-0
+    to: refund/api-37
+  - from: account/account-sync-5
+    to: account/api-176
+  - from: account/account-sync-5
+    to: account/topic-184
+  - from: account/account-manager-11
+    to: stock/api-149
+  - from: account/account-gateway-0
+    to: refund/api-45
+  - from: account/topic-74
+    to: account/account-engine-1
+  - from: warehouse/topic-42
+    to: account/account-sync-5
+  - from: account/account-adapter-4
+    to: account/api-572
+  - from: account/account-adapter-12
+    to: account/topic-25
+  - from: search/topic-3
+    to: account/account-service-3
+  - from: account/topic-133
+    to: account/account-manager-11
+  - from: account/account-engine-1
+    to: notify/api-386
+  - from: account/account-engine-1
+    to: account/api-178
+  - from: account/account-sync-5
+    to: search/api-220
+  - from: account/account-worker-2
+    to: consent/api-212
+  - from: account/account-sync-5
+    to: tracking/api-92
+  - from: account/account-worker-7
+    to: account/api-578
+  - from: account/account-worker-7
+    to: consent/api-208
+  - from: profile/topic-93
+    to: account/account-engine-9
+  - from: account/account-service-3
+    to: account/api-577
+  - from: account/account-sync-10
+    to: account/api-573
+  - from: account/account-gateway-0
+    to: account/api-572
+  - from: account/account-worker-7
+    to: account/api-167
+  - from: account/account-manager-13
+    to: account/api-572
+  - from: account/account-sync-8
+    to: account/api-169
+  - from: account/account-engine-9
+    to: account/api-574
+  - from: account/account-adapter-4
+    to: returns/api-423
+  - from: account/account-worker-2
+    to: carrier/auth-api
+  - from: account/account-manager-6
+    to: account/api-173
+  - from: account/account-engine-9
+    to: promo/api-244
+  - from: account/account-sync-10
+    to: warehouse/api-324
+  - from: account/account-gateway-0
+    to: promo/api-247
+  - from: account/account-worker-7
+    to: account/topic-54
+  - from: account/account-sync-5
+    to: payment/api-558
+  - from: account/account-manager-13
+    to: account/topic-133
+  - from: consent/topic-114
+    to: account/account-adapter-4
+  - from: account/account-sync-8
+    to: account/topic-54
+  - from: account/account-manager-13
+    to: promo/api-246
+  - from: account/account-adapter-12
+    to: search/api-228
+  - from: account/account-engine-1
+    to: account/api-579
+  - from: account/account-adapter-4
+    to: account/api-170
+  - from: account/account-adapter-12
+    to: review/api-232
+  - from: account/account-sync-8
+    to: account/topic-202
+  - from: account/account-adapter-4
+    to: search/api-221
+  - from: account/account-sync-10
+    to: account/topic-95
+  - from: account/account-engine-1
+    to: review/api-238
+  - from: account/account-worker-2
+    to: profile/api-195
+  - from: account/account-manager-11
+    to: review/api-232
+  - from: account/account-manager-11
+    to: cart/api-371
+  - from: account/account-sync-5
+    to: tax/api-331
+  - from: account/account-service-3
+    to: account/api-176
+  - from: account/account-manager-11
+    to: payment/api-565
+  - from: account/account-engine-1
+    to: promo/api-244
+  - from: account/account-worker-7
+    to: account/topic-5
+  - from: profile/topic-196
+    to: account/account-service-3
+  - from: account/account-adapter-12
+    to: account/api-572
+  - from: account/account-service-3
+    to: account/topic-219
+  - from: account/account-sync-8
+    to: promo/api-246
+  - from: account/account-gateway-0
+    to: account/topic-25
+  - from: account/account-worker-2
+    to: account/api-168
+  - from: account/account-worker-2
+    to: account/topic-95
+  - from: account/account-service-3
+    to: account/topic-25
+  - from: account/account-manager-13
+    to: account/api-176
+  - from: account/topic-25
+    to: account/account-worker-2
+  - from: account/account-manager-6
+    to: account/api-175
+  - from: account/account-engine-1
+    to: search/api-223
+  - from: account/account-engine-9
+    to: account/api-577
+  - from: account/topic-184
+    to: account/account-manager-11

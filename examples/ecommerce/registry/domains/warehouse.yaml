@@ -1,0 +1,61 @@
+domain:
+  id: warehouse
+  name: Warehouse
+  department: fulfilment
+  owningTeam: team-wms
+  reviewedAt: 2026-08-15
+  reviewedBy: maria
+systems:
+  - id: warehouse/wms
+    name: Warehouse management
+services:
+  - id: warehouse/wms-gateway
+    name: wms-gateway
+    owningTeam: team-wms
+    system: warehouse/wms
+  - id: warehouse/warehouse-locations
+    name: warehouse-locations
+    owningTeam: team-wms
+    system: warehouse/wms
+  - id: warehouse/packing
+    name: packing
+    owningTeam: team-wms
+    system: warehouse/wms
+apis:
+  - id: warehouse/wms-api
+    name: WMS API
+    hostedBy: warehouse/wms-gateway
+    style: REST
+    audience: internal
+  - id: warehouse/locations-api
+    name: Locations API
+    hostedBy: warehouse/warehouse-locations
+    style: REST
+    audience: internal
+topics:
+  - id: warehouse/pick-completed
+    name: pick.completed.v1
+    ownedBy: warehouse/wms-gateway
+    cluster: fulfilment-events
+  - id: warehouse/parcel-packed
+    name: parcel.packed.v1
+    ownedBy: warehouse/packing
+    cluster: fulfilment-events
+datastores:
+  - id: warehouse/warehouse-locations-db
+    name: warehouse-locations-db
+    technology: postgres
+    ownedBy: warehouse/warehouse-locations
+connections:
+  - from: warehouse/wms-gateway
+    to: ext/manhattan
+  - from: warehouse/wms-gateway
+    to: warehouse/pick-completed
+  - from: orders/fulfilment-requested
+    to: warehouse/wms-gateway
+  - from: warehouse/packing
+    to: shipping/label-api
+  - from: warehouse/packing
+    to: warehouse/parcel-packed
+  - from: warehouse/pick-completed
+    to: warehouse/packing

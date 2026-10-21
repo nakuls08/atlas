@@ -1,0 +1,9 @@
+domain: { id: ledger, name: Ledger, department: finance, owningTeam: team-ledger,
+          reviewedAt: 2026-07-10, reviewedBy: omar }
+services:
+  - { id: ledger/ledger-writer, name: ledger-writer, owningTeam: team-ledger }
+apis:
+  - { id: ledger/ledger-api, name: Ledger API, hostedBy: ledger/ledger-writer, style: gRPC, audience: internal }
+connections:
+  - { from: billing/refund-issued, to: ledger/ledger-writer }
+  - { from: ledger/ledger-writer, to: billing/invoice-api-v1 }

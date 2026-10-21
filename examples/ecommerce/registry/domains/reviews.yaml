@@ -1,0 +1,61 @@
+domain:
+  id: reviews
+  name: Reviews
+  department: customer
+  owningTeam: team-ugc
+  reviewedAt: 2026-08-15
+  reviewedBy: sofia
+services:
+  - id: reviews/reviews-read
+    name: reviews-read
+    owningTeam: team-ugc
+  - id: reviews/reviews-ingest
+    name: reviews-ingest
+    owningTeam: team-ugc
+  - id: reviews/moderation
+    name: moderation
+    owningTeam: team-ugc
+apis:
+  - id: reviews/reviews-api
+    name: Reviews API
+    hostedBy: reviews/reviews-read
+    style: REST
+    audience: public
+  - id: reviews/submit-review-api
+    name: Submit Review API
+    hostedBy: reviews/reviews-ingest
+    style: REST
+    audience: public
+topics:
+  - id: reviews/review-submitted
+    name: review.submitted.v1
+    ownedBy: reviews/reviews-ingest
+    cluster: customer-events
+  - id: reviews/review-published
+    name: review.published.v1
+    ownedBy: reviews/moderation
+    cluster: customer-events
+datastores:
+  - id: reviews/reviews-read-db
+    name: reviews-read-db
+    technology: elasticsearch
+    ownedBy: reviews/reviews-read
+connections:
+  - from: reviews/reviews-read
+    to: edge/auth-api
+  - from: reviews/review-published
+    to: reviews/reviews-read
+  - from: reviews/reviews-ingest
+    to: orders/order-history-api
+  - from: reviews/reviews-ingest
+    to: edge/auth-api
+  - from: reviews/reviews-ingest
+    to: reviews/review-submitted
+  - from: reviews/moderation
+    to: ml/model-serving-api
+  - from: reviews/moderation
+    to: ext/openai
+  - from: reviews/moderation
+    to: reviews/review-published
+  - from: reviews/review-submitted
+    to: reviews/moderation

@@ -1,0 +1,64 @@
+domain:
+  id: pricing
+  name: Pricing
+  department: commerce
+  owningTeam: team-pricing
+  reviewedAt: 2026-08-15
+  reviewedBy: jonas
+services:
+  - id: pricing/pricing
+    name: pricing
+    owningTeam: team-pricing
+  - id: pricing/price-rules
+    name: price-rules
+    owningTeam: team-pricing
+  - id: pricing/currency
+    name: currency
+    owningTeam: team-pricing
+apis:
+  - id: pricing/price-api
+    name: Price API
+    hostedBy: pricing/pricing
+    style: gRPC
+    audience: internal
+  - id: pricing/price-rules-api
+    name: Price Rules API
+    hostedBy: pricing/price-rules
+    style: REST
+    audience: internal
+  - id: pricing/fx-api
+    name: FX API
+    hostedBy: pricing/currency
+    style: REST
+    audience: internal
+topics:
+  - id: pricing/price-changed
+    name: price.changed.v1
+    ownedBy: pricing/pricing
+    cluster: commerce-events
+datastores:
+  - id: pricing/pricing-db
+    name: pricing-db
+    technology: postgres
+    ownedBy: pricing/pricing
+  - id: pricing/price-rules-db
+    name: price-rules-db
+    technology: postgres
+    ownedBy: pricing/price-rules
+  - id: pricing/currency-db
+    name: currency-db
+    technology: redis
+    ownedBy: pricing/currency
+connections:
+  - from: pricing/pricing
+    to: pricing/fx-api
+  - from: pricing/pricing
+    to: pricing/price-rules-api
+  - from: pricing/pricing
+    to: pricing/price-changed
+  - from: costing/cost-updated
+    to: pricing/pricing
+  - from: promotions/promotion-updated
+    to: pricing/pricing
+  - from: pricing/currency
+    to: ext/fx-rates

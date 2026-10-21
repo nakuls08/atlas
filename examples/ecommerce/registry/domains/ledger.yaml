@@ -1,0 +1,47 @@
+domain:
+  id: ledger
+  name: Ledger
+  department: finance
+  owningTeam: team-ledger
+  reviewedAt: 2026-08-15
+  reviewedBy: omar
+services:
+  - id: ledger/general-ledger
+    name: general-ledger
+    owningTeam: team-ledger
+  - id: ledger/reconciliation
+    name: reconciliation
+    owningTeam: team-ledger
+apis:
+  - id: ledger/ledger-api
+    name: Ledger API
+    hostedBy: ledger/general-ledger
+    style: gRPC
+    audience: internal
+channels:
+  - id: ledger/bank-statements
+    name: Bank statements
+    technology: SFTP
+    ownedBy: ledger/reconciliation
+datastores:
+  - id: ledger/general-ledger-db
+    name: general-ledger-db
+    technology: postgres
+    ownedBy: ledger/general-ledger
+connections:
+  - from: payments/payment-captured
+    to: ledger/general-ledger
+  - from: refunds/refund-issued
+    to: ledger/general-ledger
+  - from: billing/invoice-issued
+    to: ledger/general-ledger
+  - from: payouts/payout-sent
+    to: ledger/general-ledger
+  - from: ledger/reconciliation
+    to: ledger/ledger-api
+  - from: ledger/reconciliation
+    to: ext/adyen
+  - from: ledger/reconciliation
+    to: ext/stripe
+  - from: ledger/bank-statements
+    to: ledger/reconciliation

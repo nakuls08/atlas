@@ -1,0 +1,325 @@
+domain:
+  id: cart
+  name: Cart
+  department: marketing
+  owningTeam: team-cart
+  reviewedAt: 2025-11-01
+  reviewedBy: pe
+systems:
+  - id: cart/sys-0
+    name: cart system 0
+  - id: cart/sys-1
+    name: cart system 1
+  - id: cart/sys-2
+    name: cart system 2
+services:
+  - id: cart/cart-manager-0
+    name: cart-manager-0
+    owningTeam: team-cart
+    system: cart/sys-0
+  - id: cart/cart-adapter-1
+    name: cart-adapter-1
+    owningTeam: team-cart
+  - id: cart/cart-engine-2
+    name: cart-engine-2
+    owningTeam: team-cart
+  - id: cart/cart-manager-3
+    name: cart-manager-3
+    owningTeam: team-cart
+    system: cart/sys-2
+  - id: cart/cart-gateway-4
+    name: cart-gateway-4
+    owningTeam: team-cart
+    system: cart/sys-2
+  - id: cart/cart-service-5
+    name: cart-service-5
+    owningTeam: team-cart
+    system: cart/sys-0
+  - id: cart/cart-engine-6
+    name: cart-engine-6
+    owningTeam: team-cart
+    system: cart/sys-0
+  - id: cart/cart-gateway-7
+    name: cart-gateway-7
+    owningTeam: team-cart
+    system: cart/sys-2
+  - id: cart/cart-manager-8
+    name: cart-manager-8
+    owningTeam: team-cart
+    system: cart/sys-0
+  - id: cart/cart-service-9
+    name: cart-service-9
+    owningTeam: team-cart
+    system: cart/sys-2
+  - id: cart/cart-manager-10
+    name: cart-manager-10
+    owningTeam: team-cart
+    system: cart/sys-0
+apis:
+  - id: cart/api-363
+    name: cart-manager-0 API 363
+    hostedBy: cart/cart-manager-0
+    style: REST
+  - id: cart/api-364
+    name: cart-adapter-1 API 364
+    hostedBy: cart/cart-adapter-1
+    style: GraphQL
+  - id: cart/api-365
+    name: cart-engine-2 API 365
+    hostedBy: cart/cart-engine-2
+    style: GraphQL
+  - id: cart/api-366
+    name: cart-manager-3 API 366
+    hostedBy: cart/cart-manager-3
+    style: GraphQL
+  - id: cart/api-367
+    name: cart-gateway-4 API 367
+    hostedBy: cart/cart-gateway-4
+    style: GraphQL
+  - id: cart/api-368
+    name: cart-service-5 API 368
+    hostedBy: cart/cart-service-5
+    style: GraphQL
+  - id: cart/api-369
+    name: cart-engine-6 API 369
+    hostedBy: cart/cart-engine-6
+    style: REST
+  - id: cart/api-370
+    name: cart-gateway-7 API 370
+    hostedBy: cart/cart-gateway-7
+    style: REST
+  - id: cart/api-371
+    name: cart-manager-8 API 371
+    hostedBy: cart/cart-manager-8
+    style: gRPC
+  - id: cart/api-372
+    name: cart-service-9 API 372
+    hostedBy: cart/cart-service-9
+    style: GraphQL
+  - id: cart/api-373
+    name: cart-manager-10 API 373
+    hostedBy: cart/cart-manager-10
+    style: GraphQL
+topics:
+  - id: cart/topic-30
+    name: cart.event-30.v1
+    ownedBy: cart/cart-manager-0
+    cluster: marketing-kafka
+  - id: cart/topic-96
+    name: cart.event-96.v1
+    ownedBy: cart/cart-service-9
+    cluster: marketing-kafka
+  - id: cart/topic-115
+    name: cart.event-115.v1
+    ownedBy: cart/cart-service-9
+    cluster: marketing-kafka
+  - id: cart/topic-144
+    name: cart.event-144.v1
+    ownedBy: cart/cart-adapter-1
+    cluster: marketing-kafka
+  - id: cart/topic-169
+    name: cart.event-169.v1
+    ownedBy: cart/cart-gateway-7
+    cluster: marketing-kafka
+  - id: cart/topic-198
+    name: cart.event-198.v1
+    ownedBy: cart/cart-gateway-4
+    cluster: marketing-kafka
+  - id: cart/topic-206
+    name: cart.event-206.v1
+    ownedBy: cart/cart-engine-6
+    cluster: marketing-kafka
+  - id: cart/topic-210
+    name: cart.event-210.v1
+    ownedBy: cart/cart-manager-10
+    cluster: marketing-kafka
+  - id: cart/topic-212
+    name: cart.event-212.v1
+    ownedBy: cart/cart-manager-3
+    cluster: marketing-kafka
+  - id: cart/topic-218
+    name: cart.event-218.v1
+    ownedBy: cart/cart-service-9
+    cluster: marketing-kafka
+channels: []
+datastores: []
+connections:
+  - from: cart/cart-manager-3
+    to: carrier/notify-api
+  - from: cart/cart-gateway-7
+    to: carrier/auth-api
+  - from: cart/cart-manager-8
+    to: carrier/feature-flags-api
+  - from: cart/cart-gateway-7
+    to: cart/api-367
+  - from: cart/cart-manager-10
+    to: cart/api-371
+  - from: cart/topic-96
+    to: cart/cart-engine-6
+  - from: cart/cart-engine-6
+    to: cart/api-364
+  - from: cart/cart-service-5
+    to: cart/topic-212
+  - from: cart/cart-service-9
+    to: cart/api-371
+  - from: loyalty/topic-104
+    to: cart/cart-manager-10
+  - from: cart/cart-manager-0
+    to: cart/api-363
+  - from: cart/cart-service-5
+    to: cart/topic-96
+  - from: notify/topic-58
+    to: cart/cart-gateway-4
+  - from: cart/topic-198
+    to: cart/cart-gateway-4
+  - from: cart/cart-adapter-1
+    to: cart/topic-115
+  - from: cart/cart-service-9
+    to: cart/topic-144
+  - from: cart/cart-service-9
+    to: tracking/api-94
+  - from: cart/cart-gateway-4
+    to: fraud/api-349
+  - from: cart/topic-218
+    to: cart/cart-gateway-4
+  - from: cart/cart-engine-6
+    to: ledger/api-58
+  - from: cart/cart-engine-2
+    to: cart/api-372
+  - from: cart/cart-adapter-1
+    to: cart/topic-169
+  - from: cart/topic-206
+    to: cart/cart-service-9
+  - from: stock/topic-57
+    to: cart/cart-service-5
+  - from: cart/cart-engine-6
+    to: fraud/api-343
+  - from: fraud/topic-110
+    to: cart/cart-service-5
+  - from: cart/cart-service-9
+    to: tracking/api-491
+  - from: cart/cart-adapter-1
+    to: cart/topic-218
+  - from: cart/cart-gateway-4
+    to: stock/api-142
+  - from: cart/cart-engine-2
+    to: cart/topic-218
+  - from: cart/cart-engine-2
+    to: notify/api-389
+  - from: cart/cart-service-9
+    to: cart/api-364
+  - from: cart/cart-adapter-1
+    to: loyalty/api-360
+  - from: cart/cart-gateway-4
+    to: cart/api-366
+  - from: cart/cart-manager-3
+    to: cart/api-363
+  - from: cart/cart-manager-8
+    to: notify/api-394
+  - from: cart/cart-manager-10
+    to: ledger/api-59
+  - from: cart/cart-engine-2
+    to: cart/api-365
+  - from: cart/cart-manager-10
+    to: cart/api-366
+  - from: cart/cart-manager-8
+    to: notify/api-386
+  - from: cart/cart-manager-3
+    to: ticket/api-253
+  - from: cart/cart-manager-10
+    to: review/api-241
+  - from: cart/cart-manager-3
+    to: pricing/api-513
+  - from: cart/cart-service-9
+    to: stock/api-153
+  - from: cart/cart-engine-6
+    to: cart/api-363
+  - from: cart/cart-manager-10
+    to: label/api-73
+  - from: cart/cart-manager-8
+    to: cart/api-373
+  - from: cart/cart-manager-0
+    to: cart/api-368
+  - from: cart/cart-manager-0
+    to: cart/topic-96
+  - from: cart/topic-218
+    to: cart/cart-gateway-7
+  - from: cart/cart-gateway-4
+    to: cart/api-370
+  - from: cart/cart-gateway-7
+    to: tracking/api-91
+  - from: cart/cart-manager-0
+    to: pricing/api-516
+  - from: cart/cart-service-9
+    to: catalog/api-510
+  - from: cart/cart-service-5
+    to: cart/topic-30
+  - from: cart/cart-manager-8
+    to: cart/topic-198
+  - from: stock/topic-215
+    to: cart/cart-manager-8
+  - from: cart/cart-gateway-7
+    to: pricing/api-124
+  - from: label/topic-2
+    to: cart/cart-gateway-7
+  - from: cart/cart-gateway-7
+    to: cart/api-370
+  - from: cart/cart-manager-3
+    to: cart/api-370
+  - from: cart/cart-manager-3
+    to: cart/topic-218
+  - from: cart/cart-engine-6
+    to: cart/topic-169
+  - from: cart/cart-manager-0
+    to: cart/topic-210
+  - from: payment/topic-148
+    to: cart/cart-manager-0
+  - from: loyalty/topic-106
+    to: cart/cart-manager-3
+  - from: cart/cart-adapter-1
+    to: cart/api-368
+  - from: cart/cart-manager-0
+    to: cart/api-371
+  - from: cart/cart-manager-0
+    to: loyalty/api-361
+  - from: cart/cart-service-9
+    to: ticket/api-256
+  - from: cart/cart-engine-6
+    to: pricing/api-115
+  - from: cart/cart-adapter-1
+    to: cart/topic-96
+  - from: cart/cart-manager-8
+    to: fraud/api-339
+  - from: cart/cart-service-9
+    to: cart/api-372
+  - from: cart/cart-service-5
+    to: catalog/api-496
+  - from: cart/cart-manager-8
+    to: cart/api-370
+  - from: cart/cart-manager-3
+    to: loyalty/api-355
+  - from: cart/cart-manager-10
+    to: catalog/api-504
+  - from: cart/cart-service-5
+    to: pricing/api-524
+  - from: cart/topic-169
+    to: cart/cart-engine-2
+  - from: cart/topic-96
+    to: cart/cart-gateway-4
+  - from: cart/cart-adapter-1
+    to: loyalty/api-353
+  - from: cart/cart-engine-2
+    to: pricing/api-112
+  - from: cart/cart-manager-3
+    to: cart/topic-206
+  - from: cart/cart-service-5
+    to: cart/api-364
+  - from: cart/cart-adapter-1
+    to: cart/api-364
+  - from: cart/topic-210
+    to: cart/cart-engine-2
+  - from: cart/cart-adapter-1
+    to: cart/api-367
+  - from: cart/cart-gateway-7
+    to: fraud/fraud-gateway-4
+    gap: legacy, no spec

@@ -1,0 +1,10 @@
+domain: { id: notifications, name: Notifications, department: platform, owningTeam: team-identity,
+          reviewedAt: 2026-09-01, reviewedBy: lee }
+services:
+  - { id: notifications/notify-service, name: notify-service, owningTeam: team-identity, role: platform }
+apis:
+  - { id: notifications/notify-api, name: Notify API, hostedBy: notifications/notify-service, style: REST,
+      audience: internal }
+connections:
+  - { from: notifications/notify-service, to: ext/sendgrid }
+  - { from: billing/refund-issued, to: notifications/notify-service }

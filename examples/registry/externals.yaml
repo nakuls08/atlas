@@ -1,0 +1,7 @@
+externals:
+  - { id: ext/dhl, name: DHL, kind: partner, ownerTeam: team-shipping }
+  - { id: ext/stripe, name: Stripe, kind: SaaS, ownerTeam: team-billing }
+  - { id: ext/sendgrid, name: SendGrid, kind: SaaS, ownerTeam: team-identity }
+connections:
+  - { from: ext/dhl, to: returns/returns-api }
+  - { from: ext/dhl, to: shipping/tracking-api }

@@ -1,0 +1,86 @@
+domain:
+  id: accounts
+  name: Accounts
+  department: customer
+  owningTeam: team-accounts
+  reviewedAt: 2026-08-15
+  reviewedBy: sofia
+services:
+  - id: accounts/customer-identity
+    name: customer-identity
+    owningTeam: team-accounts
+  - id: accounts/customer-profile
+    name: customer-profile
+    owningTeam: team-accounts
+  - id: accounts/address-book
+    name: address-book
+    owningTeam: team-accounts
+  - id: accounts/consent
+    name: consent
+    owningTeam: team-accounts
+apis:
+  - id: accounts/customer-login-api
+    name: Customer Login API
+    hostedBy: accounts/customer-identity
+    style: REST
+    audience: public
+  - id: accounts/profile-api
+    name: Profile API
+    hostedBy: accounts/customer-profile
+    style: REST
+    audience: internal
+  - id: accounts/address-book-api
+    name: Address Book API
+    hostedBy: accounts/address-book
+    style: REST
+    audience: internal
+  - id: accounts/consent-api
+    name: Consent API
+    hostedBy: accounts/consent
+    style: REST
+    audience: internal
+topics:
+  - id: accounts/customer-registered
+    name: customer.registered.v1
+    ownedBy: accounts/customer-identity
+    cluster: customer-events
+  - id: accounts/customer-updated
+    name: customer.updated.v1
+    ownedBy: accounts/customer-profile
+    cluster: customer-events
+  - id: accounts/consent-changed
+    name: consent.changed.v1
+    ownedBy: accounts/consent
+    cluster: customer-events
+datastores:
+  - id: accounts/customer-identity-db
+    name: customer-identity-db
+    technology: postgres
+    ownedBy: accounts/customer-identity
+  - id: accounts/customer-profile-db
+    name: customer-profile-db
+    technology: postgres
+    ownedBy: accounts/customer-profile
+  - id: accounts/address-book-db
+    name: address-book-db
+    technology: postgres
+    ownedBy: accounts/address-book
+  - id: accounts/consent-db
+    name: consent-db
+    technology: postgres
+    ownedBy: accounts/consent
+connections:
+  - from: accounts/customer-identity
+    to: ext/auth0
+  - from: accounts/customer-identity
+    to: edge/auth-api
+  - from: accounts/customer-identity
+    to: accounts/customer-registered
+  - from: accounts/customer-profile
+    to: accounts/customer-updated
+  - from: accounts/customer-registered
+    to: accounts/customer-profile
+  - from: accounts/address-book
+    to: checkout/address-api
+  - from: accounts/consent
+    to: accounts/consent-changed

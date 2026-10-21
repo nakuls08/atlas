@@ -1,0 +1,52 @@
+domain:
+  id: personalization
+  name: Personalization
+  department: digital
+  owningTeam: team-reco
+  reviewedAt: 2026-08-15
+  reviewedBy: amara
+services:
+  - id: personalization/recommendations
+    name: recommendations
+    owningTeam: team-reco
+  - id: personalization/reco-trainer
+    name: reco-trainer
+    owningTeam: team-reco
+  - id: personalization/experimentation
+    name: experimentation
+    owningTeam: team-reco
+apis:
+  - id: personalization/recommendations-api
+    name: Recommendations API
+    hostedBy: personalization/recommendations
+    style: gRPC
+    audience: internal
+  - id: personalization/experiments-api
+    name: Experiments API
+    hostedBy: personalization/experimentation
+    style: REST
+    audience: internal
+datastores:
+  - id: personalization/recommendations-db
+    name: recommendations-db
+    technology: redis
+    ownedBy: personalization/recommendations
+  - id: personalization/reco-trainer-db
+    name: reco-trainer-db
+    technology: s3
+    ownedBy: personalization/reco-trainer
+  - id: personalization/experimentation-db
+    name: experimentation-db
+    technology: postgres
+    ownedBy: personalization/experimentation
+connections:
+  - from: personalization/recommendations
+    to: ml/feature-store-api
+  - from: personalization/recommendations
+    to: ml/model-serving-api
+  - from: personalization/reco-trainer
+    to: ext/snowflake
+  - from: orders/order-placed
+    to: personalization/reco-trainer
+  - from: events/product-viewed
+    to: personalization/reco-trainer

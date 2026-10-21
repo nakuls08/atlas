@@ -1,0 +1,318 @@
+domain:
+  id: tax
+  name: Tax
+  department: platform
+  owningTeam: team-tax
+  reviewedAt: 2025-11-01
+  reviewedBy: pe
+systems:
+  - id: tax/sys-0
+    name: tax system 0
+  - id: tax/sys-1
+    name: tax system 1
+  - id: tax/sys-2
+    name: tax system 2
+services:
+  - id: tax/tax-service-0
+    name: tax-service-0
+    owningTeam: team-tax
+  - id: tax/tax-gateway-1
+    name: tax-gateway-1
+    owningTeam: team-tax
+    system: tax/sys-0
+  - id: tax/tax-sync-2
+    name: tax-sync-2
+    owningTeam: team-tax
+    system: tax/sys-0
+  - id: tax/tax-sync-3
+    name: tax-sync-3
+    owningTeam: team-tax
+    system: tax/sys-2
+  - id: tax/tax-manager-4
+    name: tax-manager-4
+    owningTeam: team-tax
+    system: tax/sys-0
+  - id: tax/tax-sync-5
+    name: tax-sync-5
+    owningTeam: team-tax
+    system: tax/sys-0
+    status: planned
+  - id: tax/tax-manager-6
+    name: tax-manager-6
+    owningTeam: team-tax
+  - id: tax/tax-engine-7
+    name: tax-engine-7
+    owningTeam: team-tax
+  - id: tax/tax-engine-8
+    name: tax-engine-8
+    owningTeam: team-tax
+    system: tax/sys-1
+  - id: tax/tax-engine-9
+    name: tax-engine-9
+    owningTeam: team-tax
+    system: tax/sys-2
+apis:
+  - id: tax/api-328
+    name: tax-service-0 API 328
+    hostedBy: tax/tax-service-0
+    style: REST
+  - id: tax/api-329
+    name: tax-gateway-1 API 329
+    hostedBy: tax/tax-gateway-1
+    style: REST
+  - id: tax/api-330
+    name: tax-sync-2 API 330
+    hostedBy: tax/tax-sync-2
+    style: GraphQL
+  - id: tax/api-331
+    name: tax-sync-3 API 331
+    hostedBy: tax/tax-sync-3
+    style: REST
+  - id: tax/api-332
+    name: tax-manager-4 API 332
+    hostedBy: tax/tax-manager-4
+    style: REST
+  - id: tax/api-333
+    name: tax-sync-5 API 333
+    hostedBy: tax/tax-sync-5
+    style: gRPC
+  - id: tax/api-334
+    name: tax-manager-6 API 334
+    hostedBy: tax/tax-manager-6
+    style: gRPC
+  - id: tax/api-335
+    name: tax-engine-7 API 335
+    hostedBy: tax/tax-engine-7
+    style: GraphQL
+  - id: tax/api-336
+    name: tax-engine-8 API 336
+    hostedBy: tax/tax-engine-8
+    style: REST
+  - id: tax/api-337
+    name: tax-engine-9 API 337
+    hostedBy: tax/tax-engine-9
+    style: GraphQL
+topics:
+  - id: tax/topic-26
+    name: tax.event-26.v1
+    ownedBy: tax/tax-sync-5
+    cluster: platform-kafka
+  - id: tax/topic-28
+    name: tax.event-28.v1
+    ownedBy: tax/tax-sync-3
+    cluster: platform-kafka
+  - id: tax/topic-37
+    name: tax.event-37.v1
+    ownedBy: tax/tax-engine-9
+    cluster: platform-kafka
+  - id: tax/topic-40
+    name: tax.event-40.v1
+    ownedBy: tax/tax-sync-5
+    cluster: platform-kafka
+  - id: tax/topic-62
+    name: tax.event-62.v1
+    ownedBy: tax/tax-engine-9
+    cluster: platform-kafka
+  - id: tax/topic-68
+    name: tax.event-68.v1
+    ownedBy: tax/tax-manager-6
+    cluster: platform-kafka
+  - id: tax/topic-130
+    name: tax.event-130.v1
+    ownedBy: tax/tax-sync-5
+    cluster: platform-kafka
+  - id: tax/topic-172
+    name: tax.event-172.v1
+    ownedBy: tax/tax-sync-3
+    cluster: platform-kafka
+channels: []
+datastores:
+  - id: tax/store-11
+    name: tax-db-11
+    technology: redis
+    ownedBy: tax/tax-manager-4
+  - id: tax/store-51
+    name: tax-db-51
+    technology: dynamodb
+    ownedBy: tax/tax-manager-4
+  - id: tax/store-55
+    name: tax-db-55
+    technology: postgres
+    ownedBy: tax/tax-sync-2
+connections:
+  - from: tax/tax-sync-3
+    to: carrier/auth-api
+  - from: tax/tax-engine-9
+    to: carrier/feature-flags-api
+  - from: tax/tax-sync-2
+    to: loyalty/api-353
+  - from: tax/tax-manager-4
+    to: tax/api-334
+  - from: tax/tax-engine-8
+    to: order/api-6
+  - from: tax/tax-sync-5
+    to: cart/api-369
+  - from: invoice/topic-173
+    to: tax/tax-engine-9
+  - from: tax/tax-gateway-1
+    to: warehouse/api-322
+  - from: tax/tax-engine-7
+    to: tax/topic-26
+  - from: tax/tax-gateway-1
+    to: tax/api-334
+  - from: tax/tax-service-0
+    to: tax/api-337
+  - from: tax/topic-68
+    to: tax/tax-sync-2
+  - from: tax/tax-sync-2
+    to: tax/api-334
+  - from: tax/tax-gateway-1
+    to: tax/topic-130
+  - from: tax/tax-manager-4
+    to: tax/topic-130
+  - from: tax/tax-manager-4
+    to: review/api-235
+  - from: tax/tax-service-0
+    to: tax/topic-26
+  - from: tax/tax-gateway-1
+    to: tax/api-336
+  - from: tax/tax-service-0
+    to: returns/api-422
+  - from: tax/tax-engine-8
+    to: tax/api-328
+  - from: tax/topic-37
+    to: tax/tax-sync-3
+  - from: tax/tax-engine-7
+    to: carrier/api-297
+  - from: tax/tax-sync-2
+    to: warehouse/api-312
+  - from: cart/topic-212
+    to: tax/tax-service-0
+  - from: warehouse/topic-139
+    to: tax/tax-manager-4
+  - from: tax/tax-sync-3
+    to: warehouse/api-327
+  - from: tax/tax-sync-2
+    to: tax/topic-62
+  - from: tax/tax-service-0
+    to: tax/api-330
+  - from: tax/tax-manager-4
+    to: tax/api-336
+  - from: tax/tax-engine-9
+    to: loyalty/api-357
+  - from: tax/tax-gateway-1
+    to: tax/api-331
+  - from: tax/tax-sync-5
+    to: ledger/api-54
+  - from: tax/tax-sync-2
+    to: tax/topic-26
+  - from: tax/tax-manager-6
+    to: refund/api-439
+  - from: returns/topic-38
+    to: tax/tax-engine-9
+  - from: tax/tax-gateway-1
+    to: tax/api-337
+  - from: tax/tax-engine-7
+    to: tax/topic-172
+  - from: tax/tax-engine-8
+    to: returns/api-423
+  - from: tax/tax-engine-9
+    to: cart/api-363
+  - from: tax/topic-26
+    to: tax/tax-manager-4
+  - from: tax/tax-service-0
+    to: carrier/api-300
+  - from: tax/tax-gateway-1
+    to: tax/api-330
+  - from: tax/tax-engine-7
+    to: refund/api-37
+  - from: review/topic-14
+    to: tax/tax-engine-9
+  - from: tax/tax-sync-5
+    to: tax/api-331
+  - from: tax/tax-service-0
+    to: loyalty/api-351
+  - from: tax/tax-engine-8
+    to: tax/topic-130
+  - from: tax/tax-gateway-1
+    to: tax/topic-62
+  - from: tax/topic-40
+    to: tax/tax-gateway-1
+  - from: tax/tax-engine-9
+    to: order/api-403
+  - from: tax/topic-37
+    to: tax/tax-sync-5
+  - from: tax/tax-engine-8
+    to: tax/api-335
+  - from: tax/tax-engine-8
+    to: tax/topic-40
+  - from: tax/tax-manager-6
+    to: invoice/api-451
+  - from: tax/tax-sync-2
+    to: carrier/api-303
+  - from: tax/tax-engine-8
+    to: tax/topic-68
+  - from: tax/tax-manager-4
+    to: loyalty/api-350
+  - from: tax/tax-manager-6
+    to: tax/topic-37
+  - from: tax/tax-engine-7
+    to: order/api-413
+  - from: tax/tax-sync-5
+    to: ticket/api-249
+  - from: tax/tax-sync-5
+    to: tax/api-332
+  - from: tax/tax-sync-5
+    to: tax/topic-130
+  - from: loyalty/topic-227
+    to: tax/tax-manager-4
+  - from: tax/tax-manager-6
+    to: tax/api-333
+  - from: tax/tax-gateway-1
+    to: carrier/api-300
+  - from: tax/tax-service-0
+    to: chat/api-259
+  - from: tax/tax-engine-9
+    to: tax/api-333
+  - from: tax/tax-engine-7
+    to: returns/api-423
+  - from: tax/tax-sync-5
+    to: tax/api-334
+  - from: tax/tax-engine-8
+    to: cart/api-371
+  - from: tax/tax-engine-8
+    to: tax/topic-28
+  - from: tax/tax-engine-7
+    to: tax/api-336
+  - from: tax/tax-manager-4
+    to: tax/api-337
+  - from: tax/tax-sync-3
+    to: tax/api-333
+  - from: tax/tax-gateway-1
+    to: tax/topic-26
+  - from: cart/topic-218
+    to: tax/tax-gateway-1
+  - from: tax/tax-manager-6
+    to: invoice/api-449
+  - from: tax/tax-engine-8
+    to: payment/api-157
+  - from: tax/tax-manager-4
+    to: tax/api-332
+  - from: tax/tax-manager-4
+    to: carrier/api-306
+  - from: tax/tax-sync-3
+    to: tax/api-328
+  - from: tax/topic-28
+    to: tax/tax-manager-6
+  - from: tax/tax-sync-2
+    to: returns/api-421
+  - from: tax/tax-engine-8
+    to: tax/topic-26
+  - from: tax/tax-manager-4
+    to: ledger/api-58
+  - from: tax/tax-manager-6
+    to: carrier/api-298
+  - from: tax/tax-engine-8
+    to: refund/api-444
+  - from: tax/tax-engine-9
+    to: warehouse/api-319

@@ -1,0 +1,61 @@
+{
+  "name": "atlas",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Draws a system architecture as one zoomable board, from YAML registries kept in git",
+  "license": "MIT",
+  "author": "Nakul Shukla",
+  "homepage": "https://nakuls08.github.io/atlas/",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nakuls08/atlas.git"
+  },
+  "bugs": {
+    "url": "https://github.com/nakuls08/atlas/issues"
+  },
+  "engines": {
+    "node": ">=22.12"
+  },
+  "bin": {
+    "atlas": "./bin/atlas.mjs"
+  },
+  "scripts": {
+    "atlas": "tsx src/cli/main.ts",
+    "validate:example": "tsx src/cli/main.ts validate -r examples",
+    "build:example": "tsx src/cli/main.ts build -r examples -o dist/example",
+    "bench:gen": "tsx scripts/gen-benchmark.ts",
+    "build:bench": "tsx src/cli/main.ts build -r bench -o dist/bench",
+    "ecommerce:gen": "tsx scripts/gen-ecommerce.ts",
+    "build:ecommerce": "tsx src/cli/main.ts build -r examples/ecommerce -o dist/ecommerce",
+    "test": "vitest run",
+    "type-check": "tsc --noEmit",
+    "perf": "tsx scripts/perf.ts dist/bench/index.html",
+    "spec0:fixture": "tsx scripts/gen-spec0-fixture.ts",
+    "build:spec0": "tsx src/cli/main.ts build-spec0 --snapshot examples/spec0/snapshot.json --details examples/spec0/details.json -o dist/spec0",
+    "build:demo": "tsx scripts/build-demo.ts"
+  },
+  "dependencies": {
+    "@fontsource/caveat": "^5.3.0",
+    "@fontsource/fraunces": "^5.3.0",
+    "@fontsource/inter": "^5.3.0",
+    "@fontsource/jetbrains-mono": "^5.3.0",
+    "d3-interpolate": "^3.0.1",
+    "d3-selection": "^3.0.0",
+    "d3-zoom": "^3.0.0",
+    "elkjs": "^0.12.0",
+    "esbuild": "^0.28.2",
+    "tsx": "^4.23.15",
+    "yaml": "^2.9.1"
+  },
+  "devDependencies": {
+    "@types/d3-interpolate": "^3.0.4",
+    "@types/d3-selection": "^3.0.12",
+    "@types/d3-zoom": "^3.0.9",
+    "@types/node": "^26.6.4",
+    "fontkit": "^2.0.4",
+    "playwright-core": "^1.63.0",
+    "typescript": "^7.0.2",
+    "vitest": "^5.0.3"
+  }
+}

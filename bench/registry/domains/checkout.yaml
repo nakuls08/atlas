@@ -1,0 +1,351 @@
+domain:
+  id: checkout
+  name: Checkout
+  department: support
+  owningTeam: team-checkout
+  reviewedAt: 2026-07-01
+  reviewedBy: pe
+systems:
+  - id: checkout/sys-0
+    name: checkout system 0
+services:
+  - id: checkout/checkout-sync-0
+    name: checkout-sync-0
+    owningTeam: team-checkout
+    system: checkout/sys-0
+  - id: checkout/checkout-engine-1
+    name: checkout-engine-1
+    owningTeam: team-checkout
+    system: checkout/sys-0
+  - id: checkout/checkout-worker-2
+    name: checkout-worker-2
+    owningTeam: team-checkout
+    system: checkout/sys-0
+  - id: checkout/checkout-manager-3
+    name: checkout-manager-3
+    owningTeam: team-checkout
+    system: checkout/sys-0
+  - id: checkout/checkout-sync-4
+    name: checkout-sync-4
+    owningTeam: team-checkout
+    system: checkout/sys-0
+  - id: checkout/checkout-sync-5
+    name: checkout-sync-5
+    owningTeam: team-checkout
+  - id: checkout/checkout-worker-6
+    name: checkout-worker-6
+    owningTeam: team-checkout
+    system: checkout/sys-0
+  - id: checkout/checkout-service-7
+    name: checkout-service-7
+    owningTeam: team-checkout
+  - id: checkout/checkout-manager-8
+    name: checkout-manager-8
+    owningTeam: team-checkout
+    system: checkout/sys-0
+  - id: checkout/checkout-gateway-9
+    name: checkout-gateway-9
+    owningTeam: team-checkout
+    system: checkout/sys-0
+  - id: checkout/checkout-engine-10
+    name: checkout-engine-10
+    owningTeam: team-checkout
+  - id: checkout/checkout-gateway-11
+    name: checkout-gateway-11
+    owningTeam: team-checkout
+    system: checkout/sys-0
+    ownership: disputed
+    claimant: carrier
+apis:
+  - id: checkout/api-374
+    name: checkout-sync-0 API 374
+    hostedBy: checkout/checkout-sync-0
+    style: GraphQL
+  - id: checkout/api-375
+    name: checkout-engine-1 API 375
+    hostedBy: checkout/checkout-engine-1
+    style: gRPC
+  - id: checkout/api-376
+    name: checkout-worker-2 API 376
+    hostedBy: checkout/checkout-worker-2
+    style: REST
+  - id: checkout/api-377
+    name: checkout-manager-3 API 377
+    hostedBy: checkout/checkout-manager-3
+    style: GraphQL
+  - id: checkout/api-378
+    name: checkout-sync-4 API 378
+    hostedBy: checkout/checkout-sync-4
+    style: GraphQL
+  - id: checkout/api-379
+    name: checkout-sync-5 API 379
+    hostedBy: checkout/checkout-sync-5
+    style: REST
+  - id: checkout/api-380
+    name: checkout-worker-6 API 380
+    hostedBy: checkout/checkout-worker-6
+    style: REST
+  - id: checkout/api-381
+    name: checkout-service-7 API 381
+    hostedBy: checkout/checkout-service-7
+    style: GraphQL
+  - id: checkout/api-382
+    name: checkout-manager-8 API 382
+    hostedBy: checkout/checkout-manager-8
+    style: REST
+  - id: checkout/api-383
+    name: checkout-gateway-9 API 383
+    hostedBy: checkout/checkout-gateway-9
+    style: REST
+  - id: checkout/api-384
+    name: checkout-engine-10 API 384
+    hostedBy: checkout/checkout-engine-10
+    style: gRPC
+  - id: checkout/api-385
+    name: checkout-gateway-11 API 385
+    hostedBy: checkout/checkout-gateway-11
+    style: REST
+topics:
+  - id: checkout/topic-84
+    name: checkout.event-84.v1
+    ownedBy: checkout/checkout-sync-5
+    cluster: support-kafka
+  - id: checkout/topic-125
+    name: checkout.event-125.v1
+    ownedBy: checkout/checkout-sync-0
+    cluster: support-kafka
+  - id: checkout/topic-154
+    name: checkout.event-154.v1
+    ownedBy: checkout/checkout-engine-1
+    cluster: support-kafka
+  - id: checkout/topic-167
+    name: checkout.event-167.v1
+    ownedBy: checkout/checkout-sync-4
+    cluster: support-kafka
+  - id: checkout/topic-209
+    name: checkout.event-209.v1
+    ownedBy: checkout/checkout-manager-8
+    cluster: support-kafka
+  - id: checkout/topic-231
+    name: checkout.event-231.v1
+    ownedBy: checkout/checkout-sync-0
+    cluster: support-kafka
+  - id: checkout/topic-232
+    name: checkout.event-232.v1
+    ownedBy: checkout/checkout-sync-4
+    cluster: support-kafka
+  - id: checkout/topic-241
+    name: checkout.event-241.v1
+    ownedBy: checkout/checkout-gateway-11
+    cluster: support-kafka
+channels: []
+datastores:
+  - id: checkout/store-30
+    name: checkout-db-30
+    technology: s3
+    ownedBy: checkout/checkout-sync-0
+  - id: checkout/store-57
+    name: checkout-db-57
+    technology: redis
+    ownedBy: checkout/checkout-gateway-11
+connections:
+  - from: checkout/checkout-manager-3
+    to: carrier/feature-flags-api
+  - from: checkout/checkout-gateway-11
+    to: notify/api-394
+  - from: checkout/checkout-manager-3
+    to: checkout/topic-209
+  - from: checkout/checkout-worker-6
+    to: checkout/api-374
+  - from: checkout/checkout-worker-6
+    to: checkout/topic-209
+  - from: checkout/checkout-gateway-9
+    to: session/api-597
+  - from: checkout/topic-154
+    to: checkout/checkout-gateway-11
+  - from: checkout/topic-167
+    to: checkout/checkout-gateway-9
+  - from: checkout/checkout-sync-0
+    to: checkout/api-383
+  - from: checkout/checkout-gateway-9
+    to: checkout/topic-231
+  - from: checkout/checkout-gateway-9
+    to: warehouse/api-315
+  - from: checkout/checkout-gateway-11
+    to: returns/api-414
+  - from: checkout/checkout-sync-4
+    to: checkout/topic-241
+  - from: checkout/checkout-service-7
+    to: checkout/topic-167
+  - from: checkout/checkout-gateway-9
+    to: checkout/api-378
+  - from: checkout/checkout-sync-0
+    to: checkout/topic-209
+  - from: checkout/checkout-sync-5
+    to: invoice/api-447
+  - from: checkout/checkout-sync-0
+    to: checkout/topic-125
+  - from: checkout/checkout-manager-3
+    to: checkout/api-378
+  - from: checkout/topic-209
+    to: checkout/checkout-worker-6
+  - from: profile/topic-103
+    to: checkout/checkout-sync-5
+  - from: checkout/checkout-worker-6
+    to: checkout/api-382
+  - from: checkout/checkout-sync-4
+    to: returns/api-415
+  - from: checkout/checkout-gateway-11
+    to: checkout/api-379
+  - from: checkout/checkout-engine-1
+    to: refund/api-430
+  - from: checkout/checkout-engine-1
+    to: checkout/api-382
+  - from: checkout/checkout-service-7
+    to: checkout/api-376
+  - from: checkout/topic-231
+    to: checkout/checkout-gateway-9
+  - from: checkout/checkout-gateway-11
+    to: profile/api-593
+  - from: checkout/checkout-sync-5
+    to: checkout/api-376
+  - from: ledger/topic-136
+    to: checkout/checkout-worker-6
+  - from: checkout/checkout-sync-0
+    to: checkout/api-378
+  - from: checkout/checkout-worker-2
+    to: checkout/api-380
+  - from: checkout/checkout-gateway-9
+    to: checkout/topic-167
+  - from: checkout/checkout-engine-10
+    to: checkout/topic-231
+  - from: checkout/checkout-manager-3
+    to: checkout/topic-231
+  - from: checkout/topic-154
+    to: checkout/checkout-engine-1
+  - from: checkout/checkout-manager-8
+    to: account/api-579
+  - from: checkout/checkout-gateway-9
+    to: checkout/topic-241
+  - from: checkout/topic-125
+    to: checkout/checkout-worker-2
+  - from: consent/topic-85
+    to: checkout/checkout-gateway-11
+  - from: checkout/checkout-engine-1
+    to: checkout/topic-84
+  - from: checkout/checkout-manager-8
+    to: checkout/api-375
+  - from: checkout/checkout-sync-0
+    to: refund/api-41
+  - from: checkout/checkout-manager-8
+    to: checkout/api-374
+  - from: checkout/checkout-sync-4
+    to: checkout/api-374
+  - from: checkout/checkout-worker-2
+    to: checkout/topic-84
+  - from: checkout/checkout-sync-5
+    to: notify/api-395
+  - from: checkout/checkout-manager-8
+    to: invoice/api-450
+  - from: checkout/topic-84
+    to: checkout/checkout-manager-3
+  - from: checkout/checkout-manager-8
+    to: notify/api-391
+  - from: checkout/checkout-gateway-9
+    to: checkout/api-380
+  - from: checkout/checkout-worker-6
+    to: checkout/api-376
+  - from: checkout/checkout-sync-0
+    to: checkout/api-376
+  - from: checkout/checkout-worker-6
+    to: checkout/topic-167
+  - from: checkout/checkout-service-7
+    to: ledger/api-58
+  - from: checkout/checkout-sync-5
+    to: pricing/api-522
+  - from: session/topic-135
+    to: checkout/checkout-gateway-9
+  - from: checkout/checkout-worker-2
+    to: checkout/api-374
+  - from: checkout/checkout-service-7
+    to: checkout/api-374
+  - from: checkout/checkout-engine-1
+    to: account/api-577
+  - from: checkout/checkout-service-7
+    to: checkout/topic-209
+  - from: checkout/checkout-gateway-9
+    to: checkout/api-374
+  - from: checkout/checkout-service-7
+    to: session/api-199
+  - from: checkout/checkout-worker-2
+    to: session/api-202
+  - from: checkout/checkout-worker-2
+    to: checkout/topic-209
+  - from: checkout/checkout-sync-5
+    to: checkout/api-377
+  - from: checkout/checkout-sync-5
+    to: checkout/api-379
+  - from: checkout/checkout-sync-0
+    to: checkout/api-380
+  - from: checkout/checkout-engine-1
+    to: checkout/api-374
+  - from: checkout/checkout-manager-8
+    to: checkout/topic-125
+  - from: consent/topic-73
+    to: checkout/checkout-manager-3
+  - from: review/topic-66
+    to: checkout/checkout-service-7
+  - from: checkout/checkout-manager-3
+    to: checkout/api-384
+  - from: checkout/checkout-engine-10
+    to: cart/api-370
+  - from: checkout/checkout-gateway-9
+    to: order/api-403
+  - from: checkout/checkout-worker-2
+    to: checkout/topic-125
+  - from: checkout/checkout-engine-1
+    to: checkout/api-385
+  - from: checkout/checkout-engine-1
+    to: checkout/api-381
+  - from: checkout/checkout-gateway-9
+    to: ledger/api-460
+  - from: checkout/checkout-worker-2
+    to: checkout/api-382
+  - from: checkout/checkout-service-7
+    to: checkout/topic-154
+  - from: checkout/checkout-worker-6
+    to: checkout/api-378
+  - from: checkout/topic-209
+    to: checkout/checkout-manager-3
+  - from: checkout/checkout-sync-5
+    to: checkout/api-381
+  - from: checkout/checkout-manager-3
+    to: refund/api-42
+  - from: checkout/checkout-manager-3
+    to: checkout/api-379
+  - from: checkout/checkout-sync-0
+    to: ledger/api-456
+  - from: checkout/checkout-sync-0
+    to: checkout/topic-154
+  - from: checkout/checkout-sync-5
+    to: consent/api-214
+  - from: checkout/checkout-sync-4
+    to: session/api-201
+  - from: checkout/checkout-manager-3
+    to: consent/api-21
+  - from: checkout/checkout-sync-0
+    to: notify/api-391
+  - from: checkout/checkout-engine-1
+    to: payment/api-161
+  - from: checkout/checkout-worker-6
+    to: checkout/topic-231
+  - from: checkout/checkout-manager-3
+    to: checkout/api-382
+  - from: checkout/checkout-worker-2
+    to: checkout/topic-241
+  - from: checkout/checkout-gateway-11
+    to: refund/api-38
+  - from: checkout/checkout-manager-3
+    to: payment/api-161
+  - from: session/topic-135
+    to: checkout/checkout-sync-4

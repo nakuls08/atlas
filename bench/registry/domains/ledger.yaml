@@ -1,0 +1,471 @@
+domain:
+  id: ledger
+  name: Ledger
+  department: logistics
+  owningTeam: team-ledger
+  reviewedAt: 2025-11-01
+  reviewedBy: pe
+systems:
+  - id: ledger/sys-0
+    name: ledger system 0
+  - id: ledger/sys-1
+    name: ledger system 1
+  - id: ledger/sys-2
+    name: ledger system 2
+services:
+  - id: ledger/ledger-engine-0
+    name: ledger-engine-0
+    owningTeam: team-ledger
+    system: ledger/sys-1
+  - id: ledger/ledger-gateway-1
+    name: ledger-gateway-1
+    owningTeam: team-ledger
+    system: ledger/sys-2
+  - id: ledger/ledger-manager-2
+    name: ledger-manager-2
+    owningTeam: team-ledger
+    system: ledger/sys-0
+  - id: ledger/ledger-engine-3
+    name: ledger-engine-3
+    owningTeam: team-ledger
+    system: ledger/sys-0
+  - id: ledger/ledger-adapter-4
+    name: ledger-adapter-4
+    owningTeam: team-ledger
+  - id: ledger/ledger-sync-5
+    name: ledger-sync-5
+    owningTeam: team-ledger
+  - id: ledger/ledger-gateway-6
+    name: ledger-gateway-6
+    owningTeam: team-ledger
+    system: ledger/sys-1
+  - id: ledger/ledger-manager-7
+    name: ledger-manager-7
+    owningTeam: team-ledger
+    system: ledger/sys-1
+  - id: ledger/ledger-adapter-8
+    name: ledger-adapter-8
+    owningTeam: team-ledger
+    system: ledger/sys-0
+  - id: ledger/ledger-adapter-9
+    name: ledger-adapter-9
+    owningTeam: team-ledger
+  - id: ledger/ledger-engine-10
+    name: ledger-engine-10
+    owningTeam: team-ledger
+    system: ledger/sys-1
+  - id: ledger/ledger-service-11
+    name: ledger-service-11
+    owningTeam: team-ledger
+    system: ledger/sys-0
+  - id: ledger/ledger-engine-12
+    name: ledger-engine-12
+    owningTeam: team-ledger
+    system: ledger/sys-1
+  - id: ledger/ledger-service-13
+    name: ledger-service-13
+    owningTeam: team-ledger
+    system: ledger/sys-1
+  - id: ledger/ledger-worker-14
+    name: ledger-worker-14
+    owningTeam: team-ledger
+    system: ledger/sys-1
+  - id: ledger/ledger-service-15
+    name: ledger-service-15
+    owningTeam: team-ledger
+    system: ledger/sys-2
+apis:
+  - id: ledger/api-52
+    name: ledger-engine-0 API 52
+    hostedBy: ledger/ledger-engine-0
+    style: gRPC
+  - id: ledger/api-53
+    name: ledger-gateway-1 API 53
+    hostedBy: ledger/ledger-gateway-1
+    style: GraphQL
+  - id: ledger/api-54
+    name: ledger-manager-2 API 54
+    hostedBy: ledger/ledger-manager-2
+    style: GraphQL
+  - id: ledger/api-55
+    name: ledger-engine-3 API 55
+    hostedBy: ledger/ledger-engine-3
+    style: gRPC
+  - id: ledger/api-56
+    name: ledger-adapter-4 API 56
+    hostedBy: ledger/ledger-adapter-4
+    style: REST
+  - id: ledger/api-57
+    name: ledger-sync-5 API 57
+    hostedBy: ledger/ledger-sync-5
+    style: REST
+  - id: ledger/api-58
+    name: ledger-gateway-6 API 58
+    hostedBy: ledger/ledger-gateway-6
+    style: gRPC
+  - id: ledger/api-59
+    name: ledger-manager-7 API 59
+    hostedBy: ledger/ledger-manager-7
+    style: REST
+  - id: ledger/api-60
+    name: ledger-adapter-8 API 60
+    hostedBy: ledger/ledger-adapter-8
+    style: REST
+  - id: ledger/api-61
+    name: ledger-adapter-9 API 61
+    hostedBy: ledger/ledger-adapter-9
+    style: gRPC
+  - id: ledger/api-62
+    name: ledger-engine-10 API 62
+    hostedBy: ledger/ledger-engine-10
+    style: gRPC
+  - id: ledger/api-63
+    name: ledger-service-11 API 63
+    hostedBy: ledger/ledger-service-11
+    style: GraphQL
+  - id: ledger/api-64
+    name: ledger-engine-12 API 64
+    hostedBy: ledger/ledger-engine-12
+    style: gRPC
+  - id: ledger/api-65
+    name: ledger-service-13 API 65
+    hostedBy: ledger/ledger-service-13
+    style: GraphQL
+  - id: ledger/api-66
+    name: ledger-worker-14 API 66
+    hostedBy: ledger/ledger-worker-14
+    style: GraphQL
+  - id: ledger/api-67
+    name: ledger-service-15 API 67
+    hostedBy: ledger/ledger-service-15
+    style: REST
+  - id: ledger/api-452
+    name: ledger-engine-0 API 452
+    hostedBy: ledger/ledger-engine-0
+    style: GraphQL
+  - id: ledger/api-453
+    name: ledger-gateway-1 API 453
+    hostedBy: ledger/ledger-gateway-1
+    style: gRPC
+  - id: ledger/api-454
+    name: ledger-manager-2 API 454
+    hostedBy: ledger/ledger-manager-2
+    style: REST
+  - id: ledger/api-455
+    name: ledger-engine-3 API 455
+    hostedBy: ledger/ledger-engine-3
+    style: REST
+  - id: ledger/api-456
+    name: ledger-adapter-4 API 456
+    hostedBy: ledger/ledger-adapter-4
+    style: gRPC
+  - id: ledger/api-457
+    name: ledger-sync-5 API 457
+    hostedBy: ledger/ledger-sync-5
+    style: gRPC
+  - id: ledger/api-458
+    name: ledger-gateway-6 API 458
+    hostedBy: ledger/ledger-gateway-6
+    style: REST
+  - id: ledger/api-459
+    name: ledger-manager-7 API 459
+    hostedBy: ledger/ledger-manager-7
+    style: REST
+  - id: ledger/api-460
+    name: ledger-adapter-8 API 460
+    hostedBy: ledger/ledger-adapter-8
+    style: gRPC
+  - id: ledger/api-461
+    name: ledger-adapter-9 API 461
+    hostedBy: ledger/ledger-adapter-9
+    style: REST
+  - id: ledger/api-462
+    name: ledger-engine-10 API 462
+    hostedBy: ledger/ledger-engine-10
+    style: REST
+  - id: ledger/api-463
+    name: ledger-service-11 API 463
+    hostedBy: ledger/ledger-service-11
+    style: REST
+  - id: ledger/api-464
+    name: ledger-engine-12 API 464
+    hostedBy: ledger/ledger-engine-12
+    style: gRPC
+  - id: ledger/api-465
+    name: ledger-service-13 API 465
+    hostedBy: ledger/ledger-service-13
+    style: REST
+  - id: ledger/api-466
+    name: ledger-worker-14 API 466
+    hostedBy: ledger/ledger-worker-14
+    style: REST
+  - id: ledger/api-467
+    name: ledger-service-15 API 467
+    hostedBy: ledger/ledger-service-15
+    style: REST
+topics:
+  - id: ledger/topic-31
+    name: ledger.event-31.v1
+    ownedBy: ledger/ledger-adapter-8
+    cluster: logistics-kafka
+  - id: ledger/topic-34
+    name: ledger.event-34.v1
+    ownedBy: ledger/ledger-sync-5
+    cluster: logistics-kafka
+  - id: ledger/topic-89
+    name: ledger.event-89.v1
+    ownedBy: ledger/ledger-engine-0
+    cluster: logistics-kafka
+  - id: ledger/topic-111
+    name: ledger.event-111.v1
+    ownedBy: ledger/ledger-manager-2
+    cluster: logistics-kafka
+  - id: ledger/topic-136
+    name: ledger.event-136.v1
+    ownedBy: ledger/ledger-engine-3
+    cluster: logistics-kafka
+  - id: ledger/topic-228
+    name: ledger.event-228.v1
+    ownedBy: ledger/ledger-service-15
+    cluster: logistics-kafka
+channels: []
+datastores:
+  - id: ledger/store-10
+    name: ledger-db-10
+    technology: redis
+    ownedBy: ledger/ledger-adapter-8
+  - id: ledger/store-46
+    name: ledger-db-46
+    technology: dynamodb
+    ownedBy: ledger/ledger-adapter-9
+connections:
+  - from: invoice/topic-173
+    to: ledger/ledger-engine-0
+  - from: invoice/topic-173
+    to: ledger/ledger-gateway-1
+  - from: invoice/topic-173
+    to: ledger/ledger-manager-2
+  - from: invoice/topic-173
+    to: ledger/ledger-engine-3
+  - from: invoice/topic-173
+    to: ledger/ledger-adapter-4
+  - from: invoice/topic-173
+    to: ledger/ledger-sync-5
+  - from: invoice/topic-173
+    to: ledger/ledger-gateway-6
+  - from: invoice/topic-173
+    to: ledger/ledger-manager-7
+  - from: invoice/topic-173
+    to: ledger/ledger-adapter-8
+  - from: invoice/topic-173
+    to: ledger/ledger-adapter-9
+  - from: invoice/topic-173
+    to: ledger/ledger-engine-10
+  - from: invoice/topic-173
+    to: ledger/ledger-service-11
+  - from: invoice/topic-173
+    to: ledger/ledger-engine-12
+  - from: invoice/topic-173
+    to: ledger/ledger-service-13
+  - from: invoice/topic-173
+    to: ledger/ledger-worker-14
+  - from: invoice/topic-173
+    to: ledger/ledger-service-15
+  - from: ledger/ledger-gateway-1
+    to: carrier/notify-api
+  - from: ledger/ledger-manager-2
+    to: carrier/auth-api
+  - from: ledger/ledger-gateway-6
+    to: carrier/feature-flags-api
+  - from: ledger/ledger-adapter-8
+    to: carrier/auth-api
+  - from: ledger/ledger-engine-10
+    to: carrier/feature-flags-api
+  - from: ledger/ledger-service-13
+    to: ledger/topic-34
+  - from: ledger/ledger-adapter-9
+    to: ledger/topic-111
+  - from: ledger/ledger-engine-12
+    to: refund/api-37
+  - from: ledger/ledger-manager-2
+    to: ledger/topic-34
+  - from: ledger/ledger-sync-5
+    to: payment/api-161
+  - from: ledger/ledger-service-11
+    to: ledger/api-466
+  - from: ledger/ledger-engine-12
+    to: ledger/api-459
+  - from: ledger/ledger-service-13
+    to: label/api-82
+  - from: ledger/ledger-engine-0
+    to: ledger/topic-136
+  - from: ledger/ledger-manager-7
+    to: ledger/topic-31
+  - from: ledger/ledger-engine-12
+    to: ledger/topic-89
+  - from: ledger/ledger-engine-0
+    to: ledger/api-464
+  - from: ledger/ledger-gateway-6
+    to: ledger/topic-136
+  - from: ledger/ledger-manager-2
+    to: ledger/api-52
+  - from: ledger/ledger-engine-12
+    to: ledger/api-55
+  - from: ledger/ledger-manager-2
+    to: ledger/api-457
+  - from: ledger/ledger-adapter-9
+    to: label/api-80
+  - from: ledger/ledger-gateway-1
+    to: ledger/api-461
+  - from: ledger/ledger-service-15
+    to: ledger/api-52
+  - from: ledger/ledger-gateway-6
+    to: catalog/api-498
+  - from: ledger/ledger-adapter-9
+    to: refund/api-42
+  - from: ledger/ledger-manager-7
+    to: ledger/api-457
+  - from: ledger/ledger-service-13
+    to: ledger/topic-228
+  - from: ledger/ledger-engine-0
+    to: stock/api-132
+  - from: ledger/ledger-engine-3
+    to: ledger/topic-31
+  - from: ledger/ledger-adapter-9
+    to: tracking/api-490
+  - from: ledger/topic-111
+    to: ledger/ledger-manager-2
+  - from: ledger/ledger-engine-12
+    to: invoice/api-447
+  - from: ledger/topic-31
+    to: ledger/ledger-adapter-9
+  - from: ledger/ledger-gateway-6
+    to: tracking/api-493
+  - from: ledger/ledger-service-15
+    to: ledger/api-465
+  - from: catalog/topic-189
+    to: ledger/ledger-sync-5
+  - from: ledger/ledger-adapter-9
+    to: ledger/api-59
+  - from: ledger/ledger-service-15
+    to: ledger/api-53
+  - from: ledger/topic-111
+    to: ledger/ledger-sync-5
+  - from: ledger/ledger-service-15
+    to: promo/api-244
+  - from: ledger/ledger-manager-2
+    to: ledger/topic-111
+  - from: ledger/ledger-manager-7
+    to: ledger/topic-89
+  - from: ledger/ledger-engine-3
+    to: ledger/api-465
+  - from: ledger/ledger-adapter-8
+    to: ledger/api-459
+  - from: pricing/topic-47
+    to: ledger/ledger-engine-3
+  - from: ledger/ledger-adapter-4
+    to: ledger/api-452
+  - from: ledger/ledger-sync-5
+    to: pricing/api-126
+  - from: ledger/ledger-gateway-6
+    to: ledger/api-66
+  - from: ledger/ledger-worker-14
+    to: stock/api-550
+  - from: ledger/ledger-adapter-9
+    to: pricing/api-122
+  - from: ledger/ledger-engine-12
+    to: search/api-220
+  - from: ledger/ledger-sync-5
+    to: stock/api-132
+  - from: order/topic-107
+    to: ledger/ledger-engine-10
+  - from: ledger/ledger-service-11
+    to: order/api-400
+  - from: ledger/ledger-engine-3
+    to: ledger/topic-89
+  - from: ledger/ledger-gateway-6
+    to: review/api-235
+  - from: ledger/ledger-adapter-9
+    to: ledger/topic-34
+  - from: ledger/topic-136
+    to: ledger/ledger-engine-0
+  - from: ledger/ledger-adapter-4
+    to: review/api-237
+  - from: ledger/ledger-service-11
+    to: checkout/api-377
+  - from: ledger/ledger-gateway-6
+    to: checkout/api-377
+  - from: ledger/ledger-manager-7
+    to: ledger/api-459
+  - from: ledger/topic-111
+    to: ledger/ledger-worker-14
+  - from: ledger/ledger-manager-7
+    to: order/api-401
+  - from: ledger/ledger-adapter-4
+    to: stock/api-133
+  - from: ledger/ledger-gateway-6
+    to: ledger/api-59
+  - from: ledger/ledger-engine-12
+    to: refund/api-432
+  - from: ledger/ledger-engine-10
+    to: ticket/api-252
+  - from: ledger/topic-136
+    to: ledger/ledger-engine-3
+  - from: ledger/ledger-engine-0
+    to: pricing/api-524
+  - from: ledger/ledger-engine-12
+    to: pricing/api-121
+  - from: ledger/ledger-engine-10
+    to: ledger/api-57
+  - from: ledger/ledger-manager-7
+    to: ledger/api-61
+  - from: ledger/ledger-service-13
+    to: stock/api-539
+  - from: ledger/ledger-adapter-9
+    to: ledger/api-67
+  - from: ledger/ledger-service-13
+    to: ledger/api-457
+  - from: ledger/ledger-service-11
+    to: order/api-15
+  - from: ledger/ledger-adapter-8
+    to: refund/api-438
+  - from: ledger/ledger-gateway-1
+    to: ledger/api-67
+  - from: ledger/ledger-engine-3
+    to: ledger/api-57
+  - from: ledger/ledger-engine-10
+    to: ledger/topic-89
+  - from: loyalty/topic-63
+    to: ledger/ledger-engine-10
+  - from: ledger/ledger-manager-7
+    to: ledger/topic-111
+  - from: ledger/ledger-service-13
+    to: invoice/api-451
+  - from: ledger/ledger-service-15
+    to: ledger/api-460
+  - from: ledger/ledger-engine-0
+    to: order/api-413
+  - from: ledger/ledger-engine-0
+    to: returns/api-418
+  - from: ledger/ledger-engine-0
+    to: ledger/api-462
+  - from: ledger/ledger-gateway-1
+    to: session/api-203
+  - from: ledger/ledger-gateway-6
+    to: label/api-80
+  - from: ledger/ledger-gateway-6
+    to: refund/api-446
+  - from: ledger/ledger-engine-3
+    to: ledger/api-457
+  - from: ledger/ledger-adapter-9
+    to: tracking/api-494
+  - from: ledger/ledger-adapter-8
+    to: ledger/topic-111
+  - from: ledger/ledger-engine-3
+    to: ledger/api-53
+  - from: ledger/ledger-engine-3
+    to: ledger/topic-136
+  - from: ledger/ledger-worker-14
+    to: ledger/api-461
+  - from: ledger/ledger-service-15
+    to: tracking/api-84

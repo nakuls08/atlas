@@ -1,0 +1,79 @@
+domain:
+  id: checkout
+  name: Checkout
+  department: commerce
+  owningTeam: team-checkout
+  reviewedAt: 2026-08-15
+  reviewedBy: jonas
+systems:
+  - id: checkout/orchestration
+    name: Checkout orchestration
+services:
+  - id: checkout/checkout
+    name: checkout
+    owningTeam: team-checkout
+    system: checkout/orchestration
+  - id: checkout/address-validation
+    name: address-validation
+    owningTeam: team-checkout
+    system: checkout/orchestration
+  - id: checkout/shipping-quotes
+    name: shipping-quotes
+    owningTeam: team-checkout
+apis:
+  - id: checkout/checkout-api
+    name: Checkout API
+    hostedBy: checkout/checkout
+    style: REST
+    audience: internal
+  - id: checkout/address-api
+    name: Address API
+    hostedBy: checkout/address-validation
+    style: REST
+    audience: internal
+  - id: checkout/shipping-quote-api
+    name: Shipping Quote API
+    hostedBy: checkout/shipping-quotes
+    style: REST
+    audience: internal
+topics:
+  - id: checkout/checkout-completed
+    name: checkout.completed.v1
+    ownedBy: checkout/checkout
+    cluster: commerce-events
+datastores:
+  - id: checkout/checkout-db
+    name: checkout-db
+    technology: postgres
+    ownedBy: checkout/checkout
+connections:
+  - from: checkout/checkout
+    to: cart/cart-api
+  - from: checkout/checkout
+    to: pricing/price-api
+  - from: checkout/checkout
+    to: tax/tax-api
+  - from: checkout/checkout
+    to: checkout/address-api
+  - from: checkout/checkout
+    to: checkout/shipping-quote-api
+  - from: checkout/checkout
+    to: payments/payments-api
+  - from: checkout/checkout
+    to: risk/fraud-score-api
+  - from: checkout/checkout
+    to: orders/order-api-v2
+  - from: checkout/checkout
+    to: loyalty/loyalty-api
+  - from: checkout/checkout
+    to: promotions/coupon-api
+  - from: checkout/checkout
+    to: runtime/flags-api
+  - from: checkout/checkout
+    to: checkout/checkout-completed
+  - from: checkout/address-validation
+    to: ext/loqate
+  - from: checkout/shipping-quotes
+    to: shipping/delivery-promise-api
+  - from: checkout/shipping-quotes
+    to: shipping/carrier-api

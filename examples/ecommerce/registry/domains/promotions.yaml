@@ -1,0 +1,58 @@
+domain:
+  id: promotions
+  name: Promotions
+  department: commerce
+  owningTeam: team-promo
+  reviewedAt: 2026-08-15
+  reviewedBy: jonas
+services:
+  - id: promotions/promotions-eval
+    name: promotions-eval
+    owningTeam: team-promo
+  - id: promotions/promotions-admin
+    name: promotions-admin
+    owningTeam: team-promo
+  - id: promotions/coupon-service
+    name: coupon-service
+    owningTeam: team-promo
+apis:
+  - id: promotions/promotion-eval-api
+    name: Promotion Eval API
+    hostedBy: promotions/promotions-eval
+    style: gRPC
+    audience: internal
+  - id: promotions/promotions-admin-api
+    name: Promotions Admin API
+    hostedBy: promotions/promotions-admin
+    style: REST
+    audience: internal
+  - id: promotions/coupon-api
+    name: Coupon API
+    hostedBy: promotions/coupon-service
+    style: REST
+    audience: internal
+topics:
+  - id: promotions/promotion-updated
+    name: promotion.updated.v1
+    ownedBy: promotions/promotions-admin
+    cluster: commerce-events
+datastores:
+  - id: promotions/promotions-eval-db
+    name: promotions-eval-db
+    technology: redis
+    ownedBy: promotions/promotions-eval
+  - id: promotions/promotions-admin-db
+    name: promotions-admin-db
+    technology: postgres
+    ownedBy: promotions/promotions-admin
+  - id: promotions/coupon-service-db
+    name: coupon-service-db
+    technology: postgres
+    ownedBy: promotions/coupon-service
+connections:
+  - from: promotions/promotions-eval
+    to: promotions/coupon-api
+  - from: promotions/promotion-updated
+    to: promotions/promotions-eval
+  - from: promotions/promotions-admin
+    to: promotions/promotion-updated

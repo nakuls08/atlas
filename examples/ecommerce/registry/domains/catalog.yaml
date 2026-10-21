@@ -1,0 +1,94 @@
+domain:
+  id: catalog
+  name: Catalog
+  department: commerce
+  owningTeam: team-catalog
+  reviewedAt: 2026-08-15
+  reviewedBy: jonas
+systems:
+  - id: catalog/pim
+    name: Product information
+services:
+  - id: catalog/product-service
+    name: product-service
+    owningTeam: team-catalog
+    system: catalog/pim
+  - id: catalog/catalog-read
+    name: catalog-read
+    owningTeam: team-catalog
+  - id: catalog/taxonomy
+    name: taxonomy
+    owningTeam: team-catalog
+    system: catalog/pim
+  - id: catalog/attribute-service
+    name: attribute-service
+    owningTeam: team-catalog
+    system: catalog/pim
+  - id: catalog/product-import
+    name: product-import
+    owningTeam: team-catalog
+    system: catalog/pim
+apis:
+  - id: catalog/product-api
+    name: Product API
+    hostedBy: catalog/product-service
+    style: REST
+    audience: internal
+  - id: catalog/product-admin-api
+    name: Product Admin API
+    hostedBy: catalog/product-service
+    style: REST
+    audience: internal
+  - id: catalog/catalog-read-api
+    name: Catalog Read API
+    hostedBy: catalog/catalog-read
+    style: REST
+    audience: internal
+  - id: catalog/taxonomy-api
+    name: Taxonomy API
+    hostedBy: catalog/taxonomy
+    style: REST
+    audience: internal
+  - id: catalog/attributes-api
+    name: Attributes API
+    hostedBy: catalog/attribute-service
+    style: REST
+    audience: internal
+topics:
+  - id: catalog/product-updated
+    name: product.updated.v1
+    ownedBy: catalog/product-service
+    cluster: commerce-events
+channels:
+  - id: catalog/supplier-catalogue-drop
+    name: Supplier catalogue drop
+    technology: SFTP
+    ownedBy: catalog/product-import
+datastores:
+  - id: catalog/product-service-db
+    name: product-service-db
+    technology: postgres
+    ownedBy: catalog/product-service
+  - id: catalog/catalog-read-db
+    name: catalog-read-db
+    technology: redis
+    ownedBy: catalog/catalog-read
+  - id: catalog/taxonomy-db
+    name: taxonomy-db
+    technology: postgres
+    ownedBy: catalog/taxonomy
+connections:
+  - from: catalog/product-service
+    to: catalog/product-updated
+  - from: sellers/listing-published
+    to: catalog/product-service
+  - from: catalog/product-updated
+    to: catalog/catalog-read
+  - from: pricing/price-changed
+    to: catalog/catalog-read
+  - from: catalog/product-import
+    to: catalog/product-admin-api
+  - from: catalog/product-import
+    to: legacy/legacy-catalog-api
+  - from: catalog/supplier-catalogue-drop
+    to: catalog/product-import

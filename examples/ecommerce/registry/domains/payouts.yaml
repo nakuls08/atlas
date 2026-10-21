@@ -1,0 +1,36 @@
+domain:
+  id: payouts
+  name: Seller payouts
+  department: finance
+  owningTeam: team-marketplace-finance
+  reviewedAt: 2026-08-15
+  reviewedBy: omar
+services:
+  - id: payouts/payout-service
+    name: payout-service
+    owningTeam: team-marketplace-finance
+apis:
+  - id: payouts/payout-api
+    name: Payout API
+    hostedBy: payouts/payout-service
+    style: REST
+    audience: internal
+topics:
+  - id: payouts/payout-sent
+    name: payout.sent.v1
+    ownedBy: payouts/payout-service
+    cluster: finance-events
+datastores:
+  - id: payouts/payout-service-db
+    name: payout-service-db
+    technology: postgres
+    ownedBy: payouts/payout-service
+connections:
+  - from: payouts/payout-service
+    to: ext/stripe
+  - from: payouts/payout-service
+    to: payouts/payout-sent
+  - from: shipping/shipment-delivered
+    to: payouts/payout-service
+  - from: orders/order-placed
+    to: payouts/payout-service

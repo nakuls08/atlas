@@ -1,0 +1,44 @@
+domain:
+  id: loyalty
+  name: Loyalty
+  department: customer
+  owningTeam: team-loyalty
+  reviewedAt: 2026-08-15
+  reviewedBy: sofia
+services:
+  - id: loyalty/loyalty
+    name: loyalty
+    owningTeam: team-loyalty
+  - id: loyalty/rewards-catalog
+    name: rewards-catalog
+    owningTeam: team-loyalty
+apis:
+  - id: loyalty/loyalty-api
+    name: Loyalty API
+    hostedBy: loyalty/loyalty
+    style: REST
+    audience: internal
+  - id: loyalty/rewards-api
+    name: Rewards API
+    hostedBy: loyalty/rewards-catalog
+    style: REST
+    audience: internal
+topics:
+  - id: loyalty/points-earned
+    name: points.earned.v1
+    ownedBy: loyalty/loyalty
+    cluster: customer-events
+datastores:
+  - id: loyalty/loyalty-db
+    name: loyalty-db
+    technology: postgres
+    ownedBy: loyalty/loyalty
+connections:
+  - from: loyalty/loyalty
+    to: loyalty/points-earned
+  - from: orders/order-placed
+    to: loyalty/loyalty
+  - from: returns/return-received
+    to: loyalty/loyalty
+  - from: loyalty/rewards-catalog
+    to: loyalty/loyalty-api

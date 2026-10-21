@@ -1,0 +1,484 @@
+domain:
+  id: consent
+  name: Consent
+  department: commerce
+  owningTeam: team-consent
+  reviewedAt: 2026-07-01
+  reviewedBy: pe
+systems:
+  - id: consent/sys-0
+    name: consent system 0
+  - id: consent/sys-1
+    name: consent system 1
+  - id: consent/sys-2
+    name: consent system 2
+  - id: consent/sys-3
+    name: consent system 3
+services:
+  - id: consent/consent-service-0
+    name: consent-service-0
+    owningTeam: team-consent
+    system: consent/sys-2
+  - id: consent/consent-worker-1
+    name: consent-worker-1
+    owningTeam: team-consent
+    system: consent/sys-2
+  - id: consent/consent-engine-2
+    name: consent-engine-2
+    owningTeam: team-consent
+    status: planned
+  - id: consent/consent-manager-3
+    name: consent-manager-3
+    owningTeam: team-consent
+  - id: consent/consent-engine-4
+    name: consent-engine-4
+    owningTeam: team-consent
+  - id: consent/consent-adapter-5
+    name: consent-adapter-5
+    owningTeam: team-consent
+    system: consent/sys-2
+  - id: consent/consent-adapter-6
+    name: consent-adapter-6
+    owningTeam: team-consent
+    system: consent/sys-0
+  - id: consent/consent-adapter-7
+    name: consent-adapter-7
+    owningTeam: team-consent
+    system: consent/sys-3
+  - id: consent/consent-engine-8
+    name: consent-engine-8
+    owningTeam: team-consent
+    system: consent/sys-1
+  - id: consent/consent-adapter-9
+    name: consent-adapter-9
+    owningTeam: team-consent
+  - id: consent/consent-sync-10
+    name: consent-sync-10
+    owningTeam: team-consent
+  - id: consent/consent-gateway-11
+    name: consent-gateway-11
+    owningTeam: team-consent
+    system: consent/sys-0
+  - id: consent/consent-gateway-12
+    name: consent-gateway-12
+    owningTeam: team-consent
+    system: consent/sys-1
+  - id: consent/consent-adapter-13
+    name: consent-adapter-13
+    owningTeam: team-consent
+    system: consent/sys-3
+apis:
+  - id: consent/api-17
+    name: webhooks API 17
+    hostedBy: consent/consent-adapter-6
+    style: REST
+    tags:
+      - orders
+  - id: consent/api-18
+    name: orders API 18
+    hostedBy: consent/consent-adapter-6
+    style: REST
+    tags:
+      - customers
+  - id: consent/api-19
+    name: customers API 19
+    hostedBy: consent/consent-adapter-6
+    style: REST
+    tags:
+      - admin
+  - id: consent/api-20
+    name: reports API 20
+    hostedBy: consent/consent-adapter-6
+    style: gRPC
+    tags:
+      - reports
+  - id: consent/api-21
+    name: webhooks API 21
+    hostedBy: consent/consent-adapter-6
+    style: REST
+    tags:
+      - webhooks
+  - id: consent/api-22
+    name: reports API 22
+    hostedBy: consent/consent-adapter-6
+    style: REST
+    tags:
+      - orders
+  - id: consent/api-23
+    name: webhooks API 23
+    hostedBy: consent/consent-adapter-6
+    style: REST
+    tags:
+      - customers
+  - id: consent/api-24
+    name: webhooks API 24
+    hostedBy: consent/consent-adapter-6
+    style: REST
+    tags:
+      - admin
+  - id: consent/api-25
+    name: reports API 25
+    hostedBy: consent/consent-adapter-6
+    style: gRPC
+    tags:
+      - reports
+  - id: consent/api-26
+    name: admin API 26
+    hostedBy: consent/consent-adapter-6
+    style: REST
+    tags:
+      - webhooks
+  - id: consent/api-27
+    name: webhooks API 27
+    hostedBy: consent/consent-adapter-6
+    style: gRPC
+    tags:
+      - orders
+  - id: consent/api-28
+    name: admin API 28
+    hostedBy: consent/consent-adapter-6
+    style: gRPC
+    tags:
+      - customers
+  - id: consent/api-29
+    name: webhooks API 29
+    hostedBy: consent/consent-adapter-6
+    style: REST
+    tags:
+      - admin
+  - id: consent/api-30
+    name: admin API 30
+    hostedBy: consent/consent-adapter-6
+    style: gRPC
+    tags:
+      - reports
+  - id: consent/api-205
+    name: consent-service-0 API 205
+    hostedBy: consent/consent-service-0
+    style: REST
+  - id: consent/api-206
+    name: consent-worker-1 API 206
+    hostedBy: consent/consent-worker-1
+    style: REST
+  - id: consent/api-207
+    name: consent-engine-2 API 207
+    hostedBy: consent/consent-engine-2
+    style: gRPC
+  - id: consent/api-208
+    name: consent-manager-3 API 208
+    hostedBy: consent/consent-manager-3
+    style: REST
+  - id: consent/api-209
+    name: consent-engine-4 API 209
+    hostedBy: consent/consent-engine-4
+    style: gRPC
+  - id: consent/api-210
+    name: consent-adapter-5 API 210
+    hostedBy: consent/consent-adapter-5
+    style: REST
+  - id: consent/api-212
+    name: consent-adapter-7 API 212
+    hostedBy: consent/consent-adapter-7
+    style: GraphQL
+  - id: consent/api-213
+    name: consent-engine-8 API 213
+    hostedBy: consent/consent-engine-8
+    style: REST
+  - id: consent/api-214
+    name: consent-adapter-9 API 214
+    hostedBy: consent/consent-adapter-9
+    style: GraphQL
+  - id: consent/api-215
+    name: consent-sync-10 API 215
+    hostedBy: consent/consent-sync-10
+    style: GraphQL
+  - id: consent/api-216
+    name: consent-gateway-11 API 216
+    hostedBy: consent/consent-gateway-11
+    style: GraphQL
+  - id: consent/api-217
+    name: consent-gateway-12 API 217
+    hostedBy: consent/consent-gateway-12
+    style: GraphQL
+  - id: consent/api-218
+    name: consent-adapter-13 API 218
+    hostedBy: consent/consent-adapter-13
+    style: REST
+topics:
+  - id: consent/topic-19
+    name: consent.event-19.v1
+    ownedBy: consent/consent-engine-2
+    cluster: commerce-kafka
+  - id: consent/topic-73
+    name: consent.event-73.v1
+    ownedBy: consent/consent-engine-2
+    cluster: commerce-kafka
+  - id: consent/topic-85
+    name: consent.event-85.v1
+    ownedBy: consent/consent-gateway-11
+    cluster: commerce-kafka
+  - id: consent/topic-114
+    name: consent.event-114.v1
+    ownedBy: consent/consent-adapter-6
+    cluster: commerce-kafka
+  - id: consent/topic-225
+    name: consent.event-225.v1
+    ownedBy: consent/consent-engine-4
+    cluster: commerce-kafka
+channels:
+  - id: consent/channel-19
+    name: SQS queue 19
+    technology: EDI
+    ownedBy: consent/consent-worker-1
+datastores:
+  - id: consent/store-38
+    name: consent-db-38
+    technology: dynamodb
+    ownedBy: consent/consent-service-0
+connections:
+  - from: consent/consent-worker-1
+    to: carrier/notify-api
+  - from: consent/consent-engine-4
+    to: carrier/auth-api
+  - from: consent/consent-adapter-5
+    to: carrier/notify-api
+  - from: consent/consent-sync-10
+    to: carrier/feature-flags-api
+  - from: consent/consent-gateway-11
+    to: carrier/auth-api
+  - from: consent/consent-gateway-12
+    to: consent/api-205
+  - from: consent/consent-gateway-11
+    to: consent/api-205
+  - from: consent/consent-sync-10
+    to: account/api-179
+  - from: consent/consent-engine-2
+    to: consent/api-216
+  - from: consent/consent-gateway-11
+    to: returns/api-419
+  - from: consent/consent-adapter-13
+    to: payment/api-560
+  - from: consent/consent-adapter-9
+    to: consent/api-27
+  - from: consent/consent-adapter-5
+    to: session/api-204
+  - from: consent/consent-gateway-12
+    to: consent/api-213
+  - from: consent/consent-adapter-9
+    to: consent/topic-19
+  - from: consent/consent-engine-2
+    to: tax/api-333
+  - from: consent/consent-gateway-11
+    to: consent/api-218
+  - from: consent/consent-engine-2
+    to: consent/topic-114
+  - from: consent/consent-service-0
+    to: consent/api-28
+  - from: consent/consent-engine-4
+    to: routing/api-267
+  - from: consent/consent-engine-8
+    to: promo/api-246
+  - from: consent/consent-engine-2
+    to: consent/topic-73
+  - from: consent/consent-sync-10
+    to: consent/topic-114
+  - from: consent/consent-service-0
+    to: consent/api-20
+  - from: consent/consent-sync-10
+    to: promo/api-246
+  - from: warehouse/topic-42
+    to: consent/consent-worker-1
+  - from: tax/topic-37
+    to: consent/consent-engine-8
+  - from: consent/consent-adapter-7
+    to: payment/api-156
+  - from: consent/consent-adapter-5
+    to: consent/api-214
+  - from: consent/consent-engine-4
+    to: consent/api-217
+  - from: consent/consent-manager-3
+    to: consent/api-216
+  - from: consent/consent-adapter-6
+    to: carrier/auth-api
+  - from: consent/topic-225
+    to: consent/consent-manager-3
+  - from: consent/consent-adapter-13
+    to: consent/api-22
+  - from: promo/topic-158
+    to: consent/consent-adapter-7
+  - from: consent/consent-gateway-12
+    to: consent/topic-114
+  - from: consent/consent-engine-8
+    to: consent/topic-114
+  - from: consent/consent-adapter-7
+    to: payment/api-564
+  - from: consent/consent-gateway-12
+    to: consent/api-21
+  - from: consent/consent-service-0
+    to: consent/api-213
+  - from: search/topic-176
+    to: consent/consent-gateway-12
+  - from: consent/consent-sync-10
+    to: carrier/api-298
+  - from: consent/consent-engine-2
+    to: consent/topic-225
+  - from: consent/consent-sync-10
+    to: consent/topic-225
+  - from: consent/consent-worker-1
+    to: consent/api-19
+  - from: consent/consent-adapter-13
+    to: returns/api-416
+  - from: consent/consent-gateway-12
+    to: consent/api-22
+  - from: consent/consent-engine-4
+    to: consent/topic-225
+  - from: consent/consent-adapter-5
+    to: profile/api-586
+  - from: consent/consent-adapter-13
+    to: tax/api-332
+  - from: consent/consent-adapter-13
+    to: tax/api-328
+  - from: consent/consent-manager-3
+    to: profile/api-583
+  - from: consent/consent-engine-2
+    to: tax/api-330
+  - from: consent/consent-adapter-9
+    to: tracking/api-94
+  - from: consent/consent-adapter-13
+    to: consent/topic-73
+  - from: consent/consent-adapter-6
+    to: session/api-204
+  - from: consent/consent-adapter-5
+    to: consent/api-210
+  - from: consent/consent-engine-4
+    to: carrier/api-305
+  - from: consent/consent-gateway-12
+    to: fraud/api-342
+  - from: consent/consent-engine-2
+    to: carrier/api-305
+  - from: consent/consent-engine-8
+    to: consent/topic-73
+  - from: consent/consent-service-0
+    to: consent/topic-73
+  - from: consent/consent-gateway-11
+    to: consent/api-207
+  - from: consent/consent-manager-3
+    to: consent/topic-73
+  - from: consent/consent-adapter-6
+    to: consent/api-17
+  - from: consent/consent-adapter-7
+    to: consent/api-213
+  - from: consent/consent-engine-2
+    to: warehouse/api-320
+  - from: consent/consent-service-0
+    to: profile/api-582
+  - from: search/topic-224
+    to: consent/consent-gateway-12
+  - from: consent/consent-worker-1
+    to: invoice/api-47
+  - from: consent/consent-manager-3
+    to: payment/api-565
+  - from: consent/consent-engine-8
+    to: consent/topic-19
+  - from: tax/topic-40
+    to: consent/consent-adapter-13
+  - from: consent/consent-engine-2
+    to: consent/api-20
+  - from: consent/consent-adapter-7
+    to: consent/api-209
+  - from: consent/consent-worker-1
+    to: warehouse/api-324
+  - from: consent/consent-gateway-12
+    to: payment/api-156
+  - from: consent/consent-engine-2
+    to: consent/api-22
+  - from: consent/consent-worker-1
+    to: review/api-238
+  - from: consent/consent-adapter-9
+    to: review/api-242
+  - from: consent/consent-service-0
+    to: review/api-237
+  - from: consent/consent-adapter-6
+    to: consent/topic-19
+  - from: consent/consent-engine-2
+    to: consent/api-30
+  - from: consent/consent-engine-8
+    to: account/api-179
+  - from: consent/consent-adapter-5
+    to: promo/api-246
+  - from: consent/topic-114
+    to: consent/consent-adapter-13
+  - from: consent/consent-engine-8
+    to: account/api-169
+  - from: consent/consent-service-0
+    to: consent/topic-114
+  - from: consent/topic-114
+    to: consent/consent-adapter-6
+  - from: tax/topic-40
+    to: consent/consent-adapter-6
+  - from: consent/consent-engine-4
+    to: consent/api-24
+  - from: consent/topic-19
+    to: consent/consent-engine-8
+  - from: consent/topic-19
+    to: consent/consent-gateway-12
+  - from: consent/consent-gateway-11
+    to: consent/api-18
+  - from: consent/consent-adapter-13
+    to: cart/api-370
+  - from: consent/consent-service-0
+    to: consent/topic-225
+  - from: consent/consent-manager-3
+    to: consent/api-217
+  - from: warehouse/topic-246
+    to: consent/consent-engine-4
+  - from: consent/consent-adapter-5
+    to: consent/api-19
+  - from: consent/consent-engine-2
+    to: consent/topic-19
+  - from: consent/consent-engine-2
+    to: chat/api-258
+  - from: consent/consent-gateway-12
+    to: account/api-571
+  - from: session/topic-53
+    to: consent/consent-engine-2
+  - from: consent/consent-gateway-12
+    to: consent/topic-73
+  - from: consent/consent-adapter-9
+    to: consent/topic-73
+  - from: promo/topic-158
+    to: consent/consent-adapter-13
+  - from: consent/consent-gateway-11
+    to: consent/api-19
+  - from: warehouse/topic-217
+    to: consent/consent-gateway-12
+  - from: consent/consent-adapter-13
+    to: consent/api-209
+  - from: consent/consent-worker-1
+    to: review/api-239
+  - from: consent/consent-engine-2
+    to: profile/api-190
+  - from: consent/consent-gateway-11
+    to: label/api-76
+  - from: consent/consent-adapter-9
+    to: carrier/feature-flags-api
+  - from: consent/consent-adapter-6
+    to: consent/api-206
+  - from: account/topic-54
+    to: consent/consent-gateway-11
+  - from: consent/consent-engine-4
+    to: consent/api-206
+  - from: consent/consent-manager-3
+    to: consent/api-207
+  - from: consent/consent-worker-1
+    to: consent/topic-19
+  - from: consent/consent-service-0
+    to: consent/api-208
+  - from: consent/consent-adapter-9
+    to: session/api-197
+  - from: consent/consent-adapter-7
+    to: consent/topic-225
+  - from: consent/consent-adapter-6
+    to: carrier/api-309
+  - from: consent/consent-worker-1
+    to: consent/topic-73

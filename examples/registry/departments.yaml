@@ -1,0 +1,4 @@
+departments:
+  - { id: logistics, name: Logistics, head: maria }
+  - { id: finance, name: Finance, head: omar }
+  - { id: platform, name: Platform, head: lee }

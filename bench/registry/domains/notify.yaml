@@ -1,0 +1,374 @@
+domain:
+  id: notify
+  name: Notify
+  department: support
+  owningTeam: team-notify
+  reviewedAt: 2026-07-01
+  reviewedBy: pe
+systems:
+  - id: notify/sys-0
+    name: notify system 0
+  - id: notify/sys-1
+    name: notify system 1
+services:
+  - id: notify/notify-engine-0
+    name: notify-engine-0
+    owningTeam: team-notify
+  - id: notify/notify-gateway-1
+    name: notify-gateway-1
+    owningTeam: team-notify
+    system: notify/sys-0
+  - id: notify/notify-engine-2
+    name: notify-engine-2
+    owningTeam: team-notify
+    system: notify/sys-1
+  - id: notify/notify-gateway-3
+    name: notify-gateway-3
+    owningTeam: team-notify
+    system: notify/sys-1
+  - id: notify/notify-worker-4
+    name: notify-worker-4
+    owningTeam: team-notify
+    system: notify/sys-1
+  - id: notify/notify-manager-5
+    name: notify-manager-5
+    owningTeam: team-notify
+    system: notify/sys-1
+  - id: notify/notify-gateway-6
+    name: notify-gateway-6
+    owningTeam: team-notify
+  - id: notify/notify-worker-7
+    name: notify-worker-7
+    owningTeam: team-notify
+  - id: notify/notify-service-8
+    name: notify-service-8
+    owningTeam: team-notify
+    system: notify/sys-1
+  - id: notify/notify-manager-9
+    name: notify-manager-9
+    owningTeam: team-notify
+    system: notify/sys-1
+  - id: notify/notify-sync-10
+    name: notify-sync-10
+    owningTeam: team-notify
+    system: notify/sys-0
+  - id: notify/notify-worker-11
+    name: notify-worker-11
+    owningTeam: team-notify
+    system: notify/sys-0
+  - id: notify/notify-service-12
+    name: notify-service-12
+    owningTeam: team-notify
+    system: notify/sys-0
+  - id: notify/notify-adapter-13
+    name: notify-adapter-13
+    owningTeam: team-notify
+    system: notify/sys-0
+apis:
+  - id: notify/api-386
+    name: notify-engine-0 API 386
+    hostedBy: notify/notify-engine-0
+    style: GraphQL
+  - id: notify/api-387
+    name: notify-gateway-1 API 387
+    hostedBy: notify/notify-gateway-1
+    style: GraphQL
+  - id: notify/api-388
+    name: notify-engine-2 API 388
+    hostedBy: notify/notify-engine-2
+    style: GraphQL
+  - id: notify/api-389
+    name: notify-gateway-3 API 389
+    hostedBy: notify/notify-gateway-3
+    style: REST
+  - id: notify/api-390
+    name: notify-worker-4 API 390
+    hostedBy: notify/notify-worker-4
+    style: GraphQL
+  - id: notify/api-391
+    name: notify-manager-5 API 391
+    hostedBy: notify/notify-manager-5
+    style: GraphQL
+  - id: notify/api-392
+    name: notify-gateway-6 API 392
+    hostedBy: notify/notify-gateway-6
+    style: gRPC
+  - id: notify/api-393
+    name: notify-worker-7 API 393
+    hostedBy: notify/notify-worker-7
+    style: gRPC
+  - id: notify/api-394
+    name: notify-service-8 API 394
+    hostedBy: notify/notify-service-8
+    style: gRPC
+  - id: notify/api-395
+    name: notify-manager-9 API 395
+    hostedBy: notify/notify-manager-9
+    style: gRPC
+  - id: notify/api-396
+    name: notify-sync-10 API 396
+    hostedBy: notify/notify-sync-10
+    style: REST
+  - id: notify/api-397
+    name: notify-worker-11 API 397
+    hostedBy: notify/notify-worker-11
+    style: GraphQL
+  - id: notify/api-398
+    name: notify-service-12 API 398
+    hostedBy: notify/notify-service-12
+    style: gRPC
+  - id: notify/api-399
+    name: notify-adapter-13 API 399
+    hostedBy: notify/notify-adapter-13
+    style: GraphQL
+topics:
+  - id: notify/topic-51
+    name: notify.event-51.v1
+    ownedBy: notify/notify-worker-4
+    cluster: support-kafka
+  - id: notify/topic-58
+    name: notify.event-58.v1
+    ownedBy: notify/notify-manager-9
+    cluster: support-kafka
+  - id: notify/topic-64
+    name: notify.event-64.v1
+    ownedBy: notify/notify-worker-7
+    cluster: support-kafka
+  - id: notify/topic-67
+    name: notify.event-67.v1
+    ownedBy: notify/notify-adapter-13
+    cluster: support-kafka
+  - id: notify/topic-101
+    name: notify.event-101.v1
+    ownedBy: notify/notify-engine-0
+    cluster: support-kafka
+  - id: notify/topic-127
+    name: notify.event-127.v1
+    ownedBy: notify/notify-worker-7
+    cluster: support-kafka
+  - id: notify/topic-150
+    name: notify.event-150.v1
+    ownedBy: notify/notify-gateway-3
+    cluster: support-kafka
+  - id: notify/topic-178
+    name: notify.event-178.v1
+    ownedBy: notify/notify-sync-10
+    cluster: support-kafka
+channels: []
+datastores:
+  - id: notify/store-48
+    name: notify-db-48
+    technology: redis
+    ownedBy: notify/notify-worker-7
+  - id: notify/store-50
+    name: notify-db-50
+    technology: postgres
+    ownedBy: notify/notify-adapter-13
+  - id: notify/store-54
+    name: notify-db-54
+    technology: s3
+    ownedBy: notify/notify-engine-2
+connections:
+  - from: notify/notify-engine-2
+    to: carrier/auth-api
+  - from: notify/notify-worker-4
+    to: carrier/notify-api
+  - from: notify/notify-gateway-6
+    to: carrier/notify-api
+  - from: notify/notify-service-12
+    to: notify/api-398
+  - from: notify/notify-manager-9
+    to: checkout/api-378
+  - from: notify/notify-service-12
+    to: notify/api-387
+  - from: notify/notify-service-8
+    to: payment/api-565
+  - from: notify/topic-150
+    to: notify/notify-gateway-1
+  - from: notify/notify-worker-11
+    to: ledger/api-57
+  - from: notify/notify-engine-0
+    to: order/api-3
+  - from: notify/notify-worker-11
+    to: notify/topic-178
+  - from: notify/notify-worker-11
+    to: notify/api-387
+  - from: notify/notify-worker-4
+    to: notify/topic-67
+  - from: notify/notify-worker-7
+    to: notify/api-389
+  - from: notify/notify-worker-7
+    to: tracking/api-483
+  - from: notify/notify-manager-9
+    to: notify/api-398
+  - from: notify/notify-gateway-1
+    to: consent/api-22
+  - from: notify/notify-sync-10
+    to: notify/topic-101
+  - from: notify/notify-worker-4
+    to: notify/topic-51
+  - from: notify/notify-gateway-3
+    to: notify/topic-58
+  - from: notify/notify-manager-5
+    to: stock/api-544
+  - from: notify/notify-service-8
+    to: consent/api-218
+  - from: notify/notify-gateway-1
+    to: notify/api-395
+  - from: notify/notify-sync-10
+    to: notify/topic-51
+  - from: notify/notify-gateway-6
+    to: notify/api-396
+  - from: notify/notify-service-8
+    to: checkout/api-374
+  - from: notify/notify-worker-7
+    to: notify/api-393
+  - from: notify/notify-gateway-1
+    to: consent/api-17
+  - from: notify/notify-sync-10
+    to: session/api-199
+  - from: notify/notify-manager-5
+    to: refund/api-439
+  - from: notify/notify-service-8
+    to: returns/api-421
+  - from: notify/notify-engine-0
+    to: ledger/api-455
+  - from: notify/notify-manager-9
+    to: notify/topic-178
+  - from: notify/topic-178
+    to: notify/notify-engine-2
+  - from: notify/notify-service-12
+    to: invoice/api-447
+  - from: notify/notify-gateway-1
+    to: notify/api-386
+  - from: notify/topic-64
+    to: notify/notify-service-12
+  - from: notify/notify-gateway-1
+    to: notify/topic-51
+  - from: notify/notify-gateway-1
+    to: notify/topic-64
+  - from: notify/notify-gateway-3
+    to: session/api-202
+  - from: notify/notify-gateway-6
+    to: notify/topic-64
+  - from: notify/notify-worker-11
+    to: notify/api-395
+  - from: invoice/topic-173
+    to: notify/notify-adapter-13
+  - from: notify/notify-sync-10
+    to: consent/api-212
+  - from: notify/notify-worker-4
+    to: notify/api-397
+  - from: notify/notify-adapter-13
+    to: order/api-14
+  - from: notify/notify-worker-7
+    to: notify/api-398
+  - from: notify/notify-worker-4
+    to: refund/api-443
+  - from: notify/notify-manager-9
+    to: notify/api-392
+  - from: notify/notify-sync-10
+    to: profile/api-190
+  - from: notify/notify-worker-7
+    to: notify/api-388
+  - from: notify/notify-worker-4
+    to: ledger/api-52
+  - from: notify/notify-gateway-6
+    to: cart/api-371
+  - from: notify/notify-worker-7
+    to: notify/api-387
+  - from: notify/notify-gateway-6
+    to: notify/api-392
+  - from: notify/notify-service-12
+    to: notify/api-399
+  - from: notify/notify-adapter-13
+    to: notify/api-391
+  - from: notify/topic-51
+    to: notify/notify-engine-0
+  - from: notify/notify-service-12
+    to: notify/api-390
+  - from: notify/notify-service-8
+    to: returns/api-418
+  - from: notify/notify-worker-4
+    to: notify/api-387
+  - from: session/topic-53
+    to: notify/notify-adapter-13
+  - from: notify/notify-manager-5
+    to: notify/api-387
+  - from: notify/notify-service-8
+    to: notify/api-387
+  - from: notify/topic-51
+    to: notify/notify-gateway-3
+  - from: notify/notify-manager-5
+    to: notify/api-391
+  - from: notify/notify-service-12
+    to: notify/api-392
+  - from: notify/notify-sync-10
+    to: notify/api-389
+  - from: ledger/topic-111
+    to: notify/notify-worker-11
+  - from: notify/notify-gateway-3
+    to: notify/topic-178
+  - from: notify/notify-gateway-3
+    to: checkout/api-377
+  - from: notify/notify-worker-11
+    to: notify/api-391
+  - from: refund/topic-10
+    to: notify/notify-worker-11
+  - from: notify/notify-sync-10
+    to: payment/api-163
+  - from: notify/notify-gateway-1
+    to: notify/api-387
+  - from: notify/notify-worker-11
+    to: notify/api-398
+  - from: notify/notify-adapter-13
+    to: checkout/api-377
+  - from: notify/notify-adapter-13
+    to: notify/api-399
+  - from: notify/topic-101
+    to: notify/notify-sync-10
+  - from: notify/notify-manager-9
+    to: notify/api-395
+  - from: notify/notify-service-12
+    to: notify/api-386
+  - from: notify/notify-manager-5
+    to: checkout/api-377
+  - from: notify/notify-worker-11
+    to: session/api-196
+  - from: profile/topic-196
+    to: notify/notify-worker-7
+  - from: notify/notify-manager-5
+    to: notify/api-388
+  - from: notify/notify-worker-4
+    to: checkout/api-379
+  - from: notify/notify-gateway-3
+    to: notify/api-392
+  - from: notify/notify-service-12
+    to: payment/api-560
+  - from: notify/notify-adapter-13
+    to: notify/topic-150
+  - from: notify/notify-service-8
+    to: returns/api-425
+  - from: notify/notify-manager-5
+    to: order/api-404
+  - from: notify/notify-sync-10
+    to: notify/api-386
+  - from: notify/notify-engine-0
+    to: order/api-8
+  - from: notify/notify-gateway-6
+    to: payment/api-559
+  - from: notify/notify-worker-4
+    to: consent/api-209
+  - from: checkout/topic-154
+    to: notify/notify-adapter-13
+  - from: notify/notify-adapter-13
+    to: notify/api-386
+  - from: notify/notify-gateway-1
+    to: order/api-410
+  - from: notify/notify-gateway-1
+    to: consent/api-20
+  - from: payment/topic-16
+    to: notify/notify-adapter-13
+  - from: notify/notify-worker-7
+    to: consent/consent-worker-1
+    gap: legacy, no spec

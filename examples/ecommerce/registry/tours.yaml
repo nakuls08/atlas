@@ -1,0 +1,56 @@
+tours:
+  - id: checkout
+    name: "Checkout: from click to paid order"
+    description: The money path, end to end
+    steps:
+      - focus: digital
+        caption: Shoppers arrive through the web storefront and the mobile apps. Both talk to a backend-for-frontend rather than to domain services
+          directly.
+      - focus: storefront/storefront-bff
+        caption: The Storefront BFF stitches about a dozen domain APIs (catalog, search, pricing, cart, recommendations) into one GraphQL graph.
+      - trace:
+          - storefront/web-storefront
+          - payments/payment-adyen
+        caption: "A checkout request: web → BFF → Checkout orchestration → Payments → the Adyen adapter."
+      - focus: payments
+        caption: Payment orchestration routes to four payment providers. Captures and disputes come back asynchronously through PSP webhooks.
+      - impact: payments/payment-orchestrator
+        direction: dependents
+        caption: "If payment orchestration is down, this is the blast radius: checkout, mobile, refunds and every flow behind them."
+      - focus: orders/order-placed
+        caption: "order.placed is the busiest event: fulfilment, finance, loyalty, messaging, marketplace and analytics all consume it."
+  - id: fulfilment
+    name: Order to doorstep
+    description: Workflow, warehouse and carriers
+    steps:
+      - trace:
+          - orders/order-workflow
+          - warehouse/wms-gateway
+        caption: Once payment is authorised and stock reserved, the order workflow raises a fulfilment request for the warehouse.
+      - focus: warehouse
+        caption: Warehouse management runs on Manhattan WMS behind a gateway; picking and packing emit events as parcels move.
+      - trace:
+          - warehouse/packing
+          - ext/dhl
+        caption: Packing prints labels through the carrier integration; DHL also receives a nightly manifest over SFTP.
+      - impact: shipping/carrier-gateway
+        direction: dependents
+        caption: The carrier gateway is a single point of failure for labels, quotes and delivery promises.
+  - id: returns
+    name: Returns and refunds
+    steps:
+      - trace:
+          - returns/returns-portal-bff
+          - payments/payment-stripe
+        caption: A return travels from the portal through the returns service; once received, the refund flows back through payments.
+      - impact: refunds/refund-service
+        direction: dependencies
+        caption: Everything a refund needs to succeed.
+  - id: legacy
+    name: Strangling the monolith
+    steps:
+      - focus: legacy/commerce-monolith
+        caption: The legacy commerce monolith still exposes twelve APIs, grouped here by area. Three are already deprecated.
+      - impact: legacy/commerce-monolith
+        direction: dependents
+        caption: "Who still calls it: invoicing, returns, catalog import and the support console."

@@ -1,0 +1,21 @@
+domain: { id: billing, name: Billing, department: finance, owningTeam: team-billing,
+          reviewedAt: 2026-08-01, reviewedBy: omar }
+services:
+  - { id: billing/refund-service, name: refund-service, owningTeam: team-billing, runtime: java }
+  - { id: billing/invoice-service, name: invoice-service, owningTeam: team-billing, runtime: java }
+apis:
+  - { id: billing/refund-api, name: Refund API, hostedBy: billing/refund-service, style: REST, audience: internal }
+  - { id: billing/invoice-api, name: Invoice API v2, hostedBy: billing/invoice-service, style: GraphQL,
+      audience: internal, supersedes: billing/invoice-api-v1 }
+  - { id: billing/invoice-api-v1, name: Invoice API v1, hostedBy: billing/invoice-service, style: REST,
+      audience: internal, status: deprecated }
+topics:
+  - { id: billing/refund-issued, name: refund.issued.v1, ownedBy: billing/refund-service, cluster: finance-main }
+connections:
+  - { from: billing/refund-service, to: ext/stripe }
+  - { from: billing/refund-service, to: ledger/ledger-api }
+  - { from: billing/refund-service, to: billing/refund-issued }
+  - { from: billing/refund-service, to: identity/auth-api }
+  - { from: billing/refund-issued, to: billing/invoice-service }
+  - { from: billing/refund-issued, to: returns/returns-intake }
+  - { from: billing/invoice-service, to: returns/returns-db }

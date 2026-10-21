@@ -1,0 +1,465 @@
+domain:
+  id: order
+  name: Order
+  department: logistics
+  owningTeam: team-order
+  reviewedAt: 2026-07-01
+  reviewedBy: pe
+systems:
+  - id: order/sys-0
+    name: order system 0
+  - id: order/sys-1
+    name: order system 1
+  - id: order/sys-2
+    name: order system 2
+services:
+  - id: order/order-adapter-0
+    name: order-adapter-0
+    owningTeam: team-order
+    system: order/sys-2
+  - id: order/order-sync-1
+    name: order-sync-1
+    owningTeam: team-order
+  - id: order/order-sync-2
+    name: order-sync-2
+    owningTeam: team-order
+    system: order/sys-1
+  - id: order/order-service-3
+    name: order-service-3
+    owningTeam: team-order
+  - id: order/order-engine-4
+    name: order-engine-4
+    owningTeam: team-order
+  - id: order/order-sync-5
+    name: order-sync-5
+    owningTeam: team-order
+    system: order/sys-0
+  - id: order/order-manager-6
+    name: order-manager-6
+    owningTeam: team-order
+  - id: order/order-gateway-7
+    name: order-gateway-7
+    owningTeam: team-order
+  - id: order/order-sync-8
+    name: order-sync-8
+    owningTeam: team-order
+  - id: order/order-sync-9
+    name: order-sync-9
+    owningTeam: team-order
+  - id: order/order-adapter-10
+    name: order-adapter-10
+    owningTeam: team-order
+    system: order/sys-1
+  - id: order/order-service-11
+    name: order-service-11
+    owningTeam: team-order
+    system: order/sys-0
+  - id: order/order-worker-12
+    name: order-worker-12
+    owningTeam: team-order
+    system: order/sys-0
+  - id: order/order-manager-13
+    name: order-manager-13
+    owningTeam: team-order
+    system: order/sys-1
+apis:
+  - id: order/api-3
+    name: orders API 3
+    hostedBy: order/order-gateway-7
+    style: REST
+    tags:
+      - orders
+  - id: order/api-4
+    name: webhooks API 4
+    hostedBy: order/order-gateway-7
+    style: REST
+    tags:
+      - customers
+  - id: order/api-5
+    name: orders API 5
+    hostedBy: order/order-gateway-7
+    style: gRPC
+    tags:
+      - admin
+  - id: order/api-6
+    name: orders API 6
+    hostedBy: order/order-gateway-7
+    style: REST
+    tags:
+      - reports
+  - id: order/api-7
+    name: orders API 7
+    hostedBy: order/order-gateway-7
+    style: gRPC
+    tags:
+      - webhooks
+  - id: order/api-8
+    name: admin API 8
+    hostedBy: order/order-gateway-7
+    style: REST
+    tags:
+      - orders
+  - id: order/api-9
+    name: orders API 9
+    hostedBy: order/order-gateway-7
+    style: REST
+    tags:
+      - customers
+  - id: order/api-10
+    name: admin API 10
+    hostedBy: order/order-gateway-7
+    style: gRPC
+    tags:
+      - admin
+  - id: order/api-11
+    name: webhooks API 11
+    hostedBy: order/order-gateway-7
+    style: REST
+    tags:
+      - reports
+  - id: order/api-12
+    name: admin API 12
+    hostedBy: order/order-gateway-7
+    style: REST
+    tags:
+      - webhooks
+  - id: order/api-13
+    name: orders API 13
+    hostedBy: order/order-gateway-7
+    style: REST
+    tags:
+      - orders
+  - id: order/api-14
+    name: reports API 14
+    hostedBy: order/order-gateway-7
+    style: gRPC
+    tags:
+      - customers
+  - id: order/api-15
+    name: customers API 15
+    hostedBy: order/order-gateway-7
+    style: gRPC
+    tags:
+      - admin
+  - id: order/api-16
+    name: customers API 16
+    hostedBy: order/order-gateway-7
+    style: gRPC
+    tags:
+      - reports
+  - id: order/api-400
+    name: order-adapter-0 API 400
+    hostedBy: order/order-adapter-0
+    style: REST
+  - id: order/api-401
+    name: order-sync-1 API 401
+    hostedBy: order/order-sync-1
+    style: GraphQL
+  - id: order/api-402
+    name: order-sync-2 API 402
+    hostedBy: order/order-sync-2
+    style: gRPC
+  - id: order/api-403
+    name: order-service-3 API 403
+    hostedBy: order/order-service-3
+    style: REST
+  - id: order/api-404
+    name: order-engine-4 API 404
+    hostedBy: order/order-engine-4
+    style: REST
+  - id: order/api-405
+    name: order-sync-5 API 405
+    hostedBy: order/order-sync-5
+    style: GraphQL
+  - id: order/api-406
+    name: order-manager-6 API 406
+    hostedBy: order/order-manager-6
+    style: REST
+  - id: order/api-408
+    name: order-sync-8 API 408
+    hostedBy: order/order-sync-8
+    style: REST
+  - id: order/api-409
+    name: order-sync-9 API 409
+    hostedBy: order/order-sync-9
+    style: GraphQL
+  - id: order/api-410
+    name: order-adapter-10 API 410
+    hostedBy: order/order-adapter-10
+    style: gRPC
+  - id: order/api-411
+    name: order-service-11 API 411
+    hostedBy: order/order-service-11
+    style: GraphQL
+  - id: order/api-412
+    name: order-worker-12 API 412
+    hostedBy: order/order-worker-12
+    style: REST
+  - id: order/api-413
+    name: order-manager-13 API 413
+    hostedBy: order/order-manager-13
+    style: GraphQL
+topics:
+  - id: order/topic-24
+    name: order.event-24.v1
+    ownedBy: order/order-engine-4
+    cluster: logistics-kafka
+  - id: order/topic-41
+    name: order.event-41.v1
+    ownedBy: order/order-service-11
+    cluster: logistics-kafka
+  - id: order/topic-83
+    name: order.event-83.v1
+    ownedBy: order/order-service-3
+    cluster: logistics-kafka
+  - id: order/topic-86
+    name: order.event-86.v1
+    ownedBy: order/order-manager-13
+    cluster: logistics-kafka
+  - id: order/topic-105
+    name: order.event-105.v1
+    ownedBy: order/order-adapter-0
+    cluster: logistics-kafka
+  - id: order/topic-107
+    name: order.event-107.v1
+    ownedBy: order/order-worker-12
+    cluster: logistics-kafka
+  - id: order/topic-165
+    name: order.event-165.v1
+    ownedBy: order/order-engine-4
+    cluster: logistics-kafka
+  - id: order/topic-238
+    name: order.event-238.v1
+    ownedBy: order/order-manager-13
+    cluster: logistics-kafka
+channels:
+  - id: order/channel-5
+    name: EDI feed 5
+    technology: SFTP
+    ownedBy: order/order-service-11
+  - id: order/channel-6
+    name: SQS queue 6
+    technology: EDI
+    ownedBy: order/order-adapter-10
+  - id: order/channel-11
+    name: SFTP drop 11
+    technology: HTTP webhook
+    ownedBy: order/order-sync-8
+datastores:
+  - id: order/store-52
+    name: order-db-52
+    technology: s3
+    ownedBy: order/order-engine-4
+connections:
+  - from: order/order-sync-2
+    to: carrier/auth-api
+  - from: order/order-service-3
+    to: carrier/feature-flags-api
+  - from: order/order-sync-2
+    to: pricing/api-126
+  - from: order/order-service-11
+    to: order/api-8
+  - from: promo/topic-1
+    to: order/order-sync-9
+  - from: order/order-worker-12
+    to: order/topic-83
+  - from: order/order-manager-13
+    to: stock/api-147
+  - from: order/order-sync-8
+    to: order/api-405
+  - from: order/order-service-3
+    to: refund/api-38
+  - from: order/order-manager-13
+    to: review/api-239
+  - from: order/order-engine-4
+    to: order/topic-24
+  - from: order/order-worker-12
+    to: refund/api-35
+  - from: order/order-sync-9
+    to: order/topic-107
+  - from: promo/topic-69
+    to: order/order-sync-2
+  - from: order/order-adapter-0
+    to: promo/api-247
+  - from: order/order-sync-9
+    to: notify/api-394
+  - from: order/order-service-3
+    to: order/api-403
+  - from: order/order-manager-6
+    to: catalog/api-497
+  - from: order/order-gateway-7
+    to: promo/api-247
+  - from: order/order-worker-12
+    to: order/api-5
+  - from: order/order-engine-4
+    to: invoice/api-50
+  - from: order/order-manager-13
+    to: pricing/api-515
+  - from: order/order-sync-8
+    to: ledger/api-454
+  - from: order/order-gateway-7
+    to: order/topic-41
+  - from: order/order-service-3
+    to: order/topic-83
+  - from: order/topic-86
+    to: order/order-service-11
+  - from: order/order-sync-9
+    to: order/api-16
+  - from: pricing/topic-65
+    to: order/order-sync-9
+  - from: order/order-engine-4
+    to: order/api-413
+  - from: order/order-engine-4
+    to: order/topic-165
+  - from: order/order-sync-5
+    to: invoice/api-47
+  - from: order/order-manager-6
+    to: order/topic-41
+  - from: order/order-manager-13
+    to: order/topic-24
+  - from: order/order-service-11
+    to: ledger/api-453
+  - from: search/topic-3
+    to: order/order-sync-2
+  - from: order/order-manager-6
+    to: refund/api-31
+  - from: order/order-sync-5
+    to: order/api-409
+  - from: order/topic-86
+    to: order/order-gateway-7
+  - from: order/order-engine-4
+    to: order/api-5
+  - from: order/order-sync-1
+    to: order/api-4
+  - from: order/order-gateway-7
+    to: catalog/api-506
+  - from: order/order-sync-9
+    to: review/api-238
+  - from: order/order-adapter-10
+    to: review/api-239
+  - from: order/order-service-3
+    to: order/topic-105
+  - from: order/order-sync-2
+    to: order/api-6
+  - from: order/order-sync-8
+    to: search/api-225
+  - from: promo/topic-230
+    to: order/order-adapter-0
+  - from: order/order-adapter-0
+    to: order/topic-41
+  - from: order/order-service-3
+    to: catalog/api-503
+  - from: order/order-service-11
+    to: catalog/api-107
+  - from: order/order-worker-12
+    to: order/api-15
+  - from: label/topic-76
+    to: order/order-engine-4
+  - from: order/order-gateway-7
+    to: order/api-405
+  - from: order/order-sync-9
+    to: stock/api-147
+  - from: order/order-sync-9
+    to: pricing/api-112
+  - from: order/order-sync-2
+    to: order/api-403
+  - from: order/order-sync-1
+    to: refund/api-443
+  - from: order/order-sync-1
+    to: search/api-226
+  - from: order/order-sync-5
+    to: order/api-400
+  - from: order/order-sync-9
+    to: catalog/api-507
+  - from: order/order-adapter-0
+    to: order/topic-83
+  - from: label/topic-2
+    to: order/order-engine-4
+  - from: order/order-worker-12
+    to: refund/api-437
+  - from: order/order-sync-1
+    to: order/api-409
+  - from: order/order-adapter-10
+    to: order/topic-165
+  - from: order/order-adapter-10
+    to: order/api-12
+  - from: order/order-worker-12
+    to: order/topic-107
+  - from: order/order-adapter-0
+    to: order/api-406
+  - from: order/order-worker-12
+    to: returns/api-427
+  - from: order/order-sync-2
+    to: order/topic-165
+  - from: order/order-manager-6
+    to: order/api-406
+  - from: order/order-adapter-10
+    to: stock/api-539
+  - from: order/order-adapter-0
+    to: order/api-405
+  - from: returns/topic-223
+    to: order/order-adapter-10
+  - from: order/order-service-11
+    to: ledger/api-61
+  - from: order/order-service-11
+    to: catalog/api-99
+  - from: order/order-sync-8
+    to: order/topic-86
+  - from: order/order-sync-9
+    to: order/topic-83
+  - from: tracking/topic-204
+    to: order/order-sync-9
+  - from: order/topic-105
+    to: order/order-adapter-0
+  - from: order/order-worker-12
+    to: invoice/api-47
+  - from: order/order-worker-12
+    to: order/topic-238
+  - from: order/order-engine-4
+    to: order/topic-86
+  - from: order/order-manager-6
+    to: order/topic-165
+  - from: order/order-engine-4
+    to: order/api-412
+  - from: order/order-sync-5
+    to: order/topic-105
+  - from: order/order-service-11
+    to: order/topic-165
+  - from: returns/topic-98
+    to: order/order-manager-6
+  - from: loyalty/topic-233
+    to: order/order-adapter-0
+  - from: order/order-gateway-7
+    to: order/api-8
+  - from: order/order-sync-5
+    to: order/api-413
+  - from: order/order-sync-2
+    to: order/api-413
+  - from: order/order-manager-13
+    to: search/api-223
+  - from: order/order-sync-1
+    to: order/topic-41
+  - from: order/order-engine-4
+    to: ticket/api-255
+  - from: order/order-service-3
+    to: order/api-402
+  - from: order/order-gateway-7
+    to: order/api-411
+  - from: order/topic-83
+    to: order/order-sync-9
+  - from: order/order-adapter-10
+    to: order/api-406
+  - from: order/order-gateway-7
+    to: order/topic-83
+  - from: order/topic-165
+    to: order/order-adapter-0
+  - from: order/order-manager-13
+    to: invoice/api-51
+  - from: order/order-sync-1
+    to: promo/api-244
+  - from: order/topic-86
+    to: order/order-adapter-10
+  - from: ledger/topic-228
+    to: order/order-service-3
+  - from: order/order-gateway-7
+    to: label/api-74

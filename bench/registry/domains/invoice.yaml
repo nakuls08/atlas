@@ -1,0 +1,289 @@
+domain:
+  id: invoice
+  name: Invoice
+  department: logistics
+  owningTeam: team-invoice
+  reviewedAt: 2026-07-01
+  reviewedBy: pe
+systems:
+  - id: invoice/sys-0
+    name: invoice system 0
+  - id: invoice/sys-1
+    name: invoice system 1
+  - id: invoice/sys-2
+    name: invoice system 2
+services:
+  - id: invoice/invoice-manager-0
+    name: invoice-manager-0
+    owningTeam: team-invoice
+    system: invoice/sys-1
+    status: planned
+  - id: invoice/invoice-engine-1
+    name: invoice-engine-1
+    owningTeam: team-invoice
+  - id: invoice/invoice-engine-2
+    name: invoice-engine-2
+    owningTeam: team-invoice
+    system: invoice/sys-0
+  - id: invoice/invoice-worker-3
+    name: invoice-worker-3
+    owningTeam: team-invoice
+    system: invoice/sys-2
+  - id: invoice/invoice-manager-4
+    name: invoice-manager-4
+    owningTeam: team-invoice
+    system: invoice/sys-0
+apis:
+  - id: invoice/api-47
+    name: invoice-manager-0 API 47
+    hostedBy: invoice/invoice-manager-0
+    style: REST
+  - id: invoice/api-48
+    name: invoice-engine-1 API 48
+    hostedBy: invoice/invoice-engine-1
+    style: REST
+  - id: invoice/api-49
+    name: invoice-engine-2 API 49
+    hostedBy: invoice/invoice-engine-2
+    style: REST
+  - id: invoice/api-50
+    name: invoice-worker-3 API 50
+    hostedBy: invoice/invoice-worker-3
+    style: GraphQL
+  - id: invoice/api-51
+    name: invoice-manager-4 API 51
+    hostedBy: invoice/invoice-manager-4
+    style: GraphQL
+  - id: invoice/api-447
+    name: invoice-manager-0 API 447
+    hostedBy: invoice/invoice-manager-0
+    style: GraphQL
+  - id: invoice/api-448
+    name: invoice-engine-1 API 448
+    hostedBy: invoice/invoice-engine-1
+    style: REST
+  - id: invoice/api-449
+    name: invoice-engine-2 API 449
+    hostedBy: invoice/invoice-engine-2
+    style: REST
+  - id: invoice/api-450
+    name: invoice-worker-3 API 450
+    hostedBy: invoice/invoice-worker-3
+    style: GraphQL
+  - id: invoice/api-451
+    name: invoice-manager-4 API 451
+    hostedBy: invoice/invoice-manager-4
+    style: REST
+topics:
+  - id: invoice/topic-173
+    name: invoice.event-173.v1
+    ownedBy: invoice/invoice-manager-0
+    cluster: logistics-kafka
+  - id: invoice/topic-177
+    name: invoice.event-177.v1
+    ownedBy: invoice/invoice-engine-2
+    cluster: logistics-kafka
+  - id: invoice/topic-185
+    name: invoice.event-185.v1
+    ownedBy: invoice/invoice-worker-3
+    cluster: logistics-kafka
+channels:
+  - id: invoice/channel-9
+    name: SQS queue 9
+    technology: SQS
+    ownedBy: invoice/invoice-manager-4
+datastores:
+  - id: invoice/store-28
+    name: invoice-db-28
+    technology: s3
+    ownedBy: invoice/invoice-engine-1
+connections:
+  - from: invoice/topic-173
+    to: invoice/invoice-manager-0
+  - from: invoice/topic-173
+    to: invoice/invoice-engine-1
+  - from: invoice/topic-173
+    to: invoice/invoice-engine-2
+  - from: invoice/topic-173
+    to: invoice/invoice-worker-3
+  - from: invoice/topic-173
+    to: invoice/invoice-manager-4
+  - from: invoice/invoice-manager-0
+    to: carrier/feature-flags-api
+  - from: invoice/invoice-worker-3
+    to: carrier/notify-api
+  - from: invoice/invoice-manager-4
+    to: invoice/api-49
+  - from: invoice/invoice-manager-0
+    to: ledger/api-465
+  - from: invoice/invoice-manager-4
+    to: search/api-222
+  - from: invoice/invoice-engine-2
+    to: label/api-70
+  - from: invoice/invoice-engine-1
+    to: order/api-410
+  - from: invoice/invoice-engine-2
+    to: invoice/topic-173
+  - from: invoice/invoice-manager-0
+    to: invoice/api-51
+  - from: invoice/invoice-engine-2
+    to: invoice/api-49
+  - from: invoice/invoice-manager-0
+    to: returns/api-427
+  - from: invoice/invoice-engine-2
+    to: refund/api-428
+  - from: invoice/invoice-worker-3
+    to: invoice/topic-177
+  - from: invoice/invoice-worker-3
+    to: label/api-79
+  - from: invoice/invoice-worker-3
+    to: returns/api-425
+  - from: invoice/invoice-manager-0
+    to: search/api-228
+  - from: invoice/invoice-worker-3
+    to: invoice/api-50
+  - from: invoice/invoice-manager-4
+    to: invoice/api-449
+  - from: invoice/invoice-manager-4
+    to: account/api-574
+  - from: consent/topic-73
+    to: invoice/invoice-manager-0
+  - from: invoice/invoice-engine-1
+    to: invoice/topic-185
+  - from: invoice/invoice-engine-1
+    to: refund/api-445
+  - from: invoice/invoice-engine-1
+    to: invoice/api-51
+  - from: invoice/invoice-worker-3
+    to: label/api-481
+  - from: invoice/invoice-engine-1
+    to: invoice/api-48
+  - from: invoice/invoice-engine-1
+    to: invoice/topic-173
+  - from: review/topic-141
+    to: invoice/invoice-engine-2
+  - from: invoice/invoice-manager-0
+    to: invoice/api-448
+  - from: invoice/invoice-manager-4
+    to: payment/api-562
+  - from: invoice/invoice-worker-3
+    to: refund/api-38
+  - from: invoice/invoice-manager-0
+    to: invoice/topic-185
+  - from: invoice/invoice-manager-4
+    to: refund/api-44
+  - from: invoice/invoice-manager-0
+    to: invoice/api-50
+  - from: invoice/invoice-worker-3
+    to: invoice/api-48
+  - from: invoice/topic-185
+    to: invoice/invoice-manager-4
+  - from: invoice/invoice-worker-3
+    to: invoice/topic-173
+  - from: invoice/invoice-engine-1
+    to: notify/api-387
+  - from: invoice/invoice-worker-3
+    to: pricing/api-526
+  - from: invoice/invoice-manager-0
+    to: checkout/api-384
+  - from: promo/topic-230
+    to: invoice/invoice-worker-3
+  - from: refund/topic-97
+    to: invoice/invoice-worker-3
+  - from: invoice/invoice-engine-1
+    to: pricing/api-124
+  - from: invoice/invoice-engine-2
+    to: catalog/api-500
+  - from: invoice/invoice-worker-3
+    to: review/api-233
+  - from: invoice/invoice-manager-4
+    to: invoice/api-447
+  - from: tracking/topic-205
+    to: invoice/invoice-manager-0
+  - from: invoice/invoice-worker-3
+    to: invoice/api-51
+  - from: invoice/invoice-engine-2
+    to: tracking/api-487
+  - from: label/topic-2
+    to: invoice/invoice-worker-3
+  - from: review/topic-56
+    to: invoice/invoice-manager-4
+  - from: invoice/invoice-worker-3
+    to: invoice/api-449
+  - from: invoice/invoice-engine-1
+    to: invoice/api-449
+  - from: invoice/invoice-worker-3
+    to: review/api-235
+  - from: label/topic-21
+    to: invoice/invoice-engine-1
+  - from: invoice/invoice-engine-1
+    to: pricing/api-530
+  - from: invoice/invoice-engine-1
+    to: label/api-478
+  - from: invoice/invoice-engine-1
+    to: returns/api-424
+  - from: invoice/invoice-engine-2
+    to: invoice/topic-185
+  - from: invoice/invoice-manager-4
+    to: pricing/api-527
+  - from: review/topic-249
+    to: invoice/invoice-engine-1
+  - from: invoice/invoice-manager-4
+    to: catalog/api-503
+  - from: invoice/invoice-engine-2
+    to: invoice/topic-177
+  - from: invoice/invoice-engine-1
+    to: label/api-80
+  - from: invoice/invoice-engine-2
+    to: promo/api-244
+  - from: invoice/invoice-engine-2
+    to: search/api-226
+  - from: invoice/topic-185
+    to: invoice/invoice-manager-0
+  - from: invoice/invoice-manager-4
+    to: review/api-235
+  - from: invoice/invoice-manager-0
+    to: pricing/api-519
+  - from: invoice/invoice-engine-2
+    to: invoice/api-451
+  - from: invoice/invoice-worker-3
+    to: refund/api-44
+  - from: invoice/invoice-engine-1
+    to: stock/api-536
+  - from: invoice/invoice-engine-1
+    to: invoice/topic-177
+  - from: invoice/invoice-manager-0
+    to: pricing/api-517
+  - from: invoice/topic-185
+    to: invoice/invoice-worker-3
+  - from: invoice/invoice-manager-0
+    to: invoice/topic-177
+  - from: invoice/invoice-manager-0
+    to: invoice/api-449
+  - from: invoice/invoice-engine-1
+    to: invoice/api-47
+  - from: invoice/invoice-manager-0
+    to: order/api-10
+  - from: invoice/invoice-engine-1
+    to: invoice/api-50
+  - from: promo/topic-69
+    to: invoice/invoice-worker-3
+  - from: invoice/invoice-manager-4
+    to: returns/api-426
+  - from: invoice/invoice-engine-1
+    to: ledger/api-62
+  - from: invoice/invoice-manager-0
+    to: notify/api-396
+  - from: invoice/invoice-engine-1
+    to: pricing/api-114
+  - from: returns/topic-33
+    to: invoice/invoice-engine-2
+  - from: invoice/invoice-manager-0
+    to: invoice/api-450
+  - from: invoice/invoice-manager-0
+    to: checkout/api-377
+  - from: invoice/invoice-manager-0
+    to: ledger/api-61
+  - from: invoice/invoice-engine-1
+    to: catalog/catalog-engine-2
+    gap: legacy, no spec

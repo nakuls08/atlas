@@ -1,0 +1,441 @@
+domain:
+  id: carrier
+  name: Carrier
+  department: platform
+  owningTeam: team-carrier
+  reviewedAt: 2025-11-01
+  reviewedBy: pe
+systems:
+  - id: carrier/sys-0
+    name: carrier system 0
+services:
+  - id: carrier/carrier-manager-0
+    name: auth-service
+    owningTeam: team-carrier
+    role: platform
+  - id: carrier/carrier-sync-1
+    name: notify-service
+    owningTeam: team-carrier
+    role: platform
+  - id: carrier/carrier-manager-2
+    name: feature-flags-service
+    owningTeam: team-carrier
+    system: carrier/sys-0
+    role: platform
+  - id: carrier/carrier-sync-3
+    name: carrier-sync-3
+    owningTeam: team-carrier
+    system: carrier/sys-0
+  - id: carrier/carrier-gateway-4
+    name: carrier-gateway-4
+    owningTeam: team-carrier
+  - id: carrier/carrier-engine-5
+    name: carrier-engine-5
+    owningTeam: team-carrier
+  - id: carrier/carrier-engine-6
+    name: carrier-engine-6
+    owningTeam: team-carrier
+    system: carrier/sys-0
+  - id: carrier/carrier-manager-7
+    name: carrier-manager-7
+    owningTeam: team-carrier
+  - id: carrier/carrier-sync-8
+    name: carrier-sync-8
+    owningTeam: team-carrier
+  - id: carrier/carrier-engine-9
+    name: carrier-engine-9
+    owningTeam: team-carrier
+    system: carrier/sys-0
+  - id: carrier/carrier-service-10
+    name: carrier-service-10
+    owningTeam: team-carrier
+    system: carrier/sys-0
+  - id: carrier/carrier-gateway-11
+    name: carrier-gateway-11
+    owningTeam: team-carrier
+    system: carrier/sys-0
+  - id: carrier/carrier-service-12
+    name: carrier-service-12
+    owningTeam: team-carrier
+  - id: carrier/carrier-gateway-13
+    name: carrier-gateway-13
+    owningTeam: team-carrier
+    system: carrier/sys-0
+  - id: carrier/carrier-service-14
+    name: carrier-service-14
+    owningTeam: team-carrier
+    system: carrier/sys-0
+  - id: carrier/carrier-adapter-15
+    name: carrier-adapter-15
+    owningTeam: team-carrier
+    system: carrier/sys-0
+  - id: carrier/carrier-service-16
+    name: carrier-service-16
+    owningTeam: team-carrier
+    system: carrier/sys-0
+  - id: carrier/carrier-manager-17
+    name: carrier-manager-17
+    owningTeam: team-carrier
+apis:
+  - id: carrier/auth-api
+    name: auth API
+    hostedBy: carrier/carrier-manager-0
+    style: REST
+  - id: carrier/notify-api
+    name: notify API
+    hostedBy: carrier/carrier-sync-1
+    style: REST
+  - id: carrier/feature-flags-api
+    name: feature-flags API
+    hostedBy: carrier/carrier-manager-2
+    style: REST
+  - id: carrier/api-292
+    name: carrier-manager-0 API 292
+    hostedBy: carrier/carrier-manager-0
+    style: GraphQL
+  - id: carrier/api-293
+    name: carrier-sync-1 API 293
+    hostedBy: carrier/carrier-sync-1
+    style: REST
+  - id: carrier/api-294
+    name: carrier-manager-2 API 294
+    hostedBy: carrier/carrier-manager-2
+    style: REST
+  - id: carrier/api-295
+    name: carrier-sync-3 API 295
+    hostedBy: carrier/carrier-sync-3
+    style: REST
+  - id: carrier/api-296
+    name: carrier-gateway-4 API 296
+    hostedBy: carrier/carrier-gateway-4
+    style: GraphQL
+  - id: carrier/api-297
+    name: carrier-engine-5 API 297
+    hostedBy: carrier/carrier-engine-5
+    style: REST
+  - id: carrier/api-298
+    name: carrier-engine-6 API 298
+    hostedBy: carrier/carrier-engine-6
+    style: REST
+  - id: carrier/api-299
+    name: carrier-manager-7 API 299
+    hostedBy: carrier/carrier-manager-7
+    style: REST
+  - id: carrier/api-300
+    name: carrier-sync-8 API 300
+    hostedBy: carrier/carrier-sync-8
+    style: GraphQL
+  - id: carrier/api-301
+    name: carrier-engine-9 API 301
+    hostedBy: carrier/carrier-engine-9
+    style: REST
+  - id: carrier/api-302
+    name: carrier-service-10 API 302
+    hostedBy: carrier/carrier-service-10
+    style: REST
+  - id: carrier/api-303
+    name: carrier-gateway-11 API 303
+    hostedBy: carrier/carrier-gateway-11
+    style: REST
+  - id: carrier/api-304
+    name: carrier-service-12 API 304
+    hostedBy: carrier/carrier-service-12
+    style: GraphQL
+  - id: carrier/api-305
+    name: carrier-gateway-13 API 305
+    hostedBy: carrier/carrier-gateway-13
+    style: REST
+  - id: carrier/api-306
+    name: carrier-service-14 API 306
+    hostedBy: carrier/carrier-service-14
+    style: GraphQL
+  - id: carrier/api-307
+    name: carrier-adapter-15 API 307
+    hostedBy: carrier/carrier-adapter-15
+    style: REST
+  - id: carrier/api-308
+    name: carrier-service-16 API 308
+    hostedBy: carrier/carrier-service-16
+    style: REST
+  - id: carrier/api-309
+    name: carrier-manager-17 API 309
+    hostedBy: carrier/carrier-manager-17
+    style: GraphQL
+topics:
+  - id: carrier/topic-13
+    name: carrier.event-13.v1
+    ownedBy: carrier/carrier-manager-17
+    cluster: platform-kafka
+  - id: carrier/topic-35
+    name: carrier.event-35.v1
+    ownedBy: carrier/carrier-manager-17
+    cluster: platform-kafka
+  - id: carrier/topic-61
+    name: carrier.event-61.v1
+    ownedBy: carrier/carrier-adapter-15
+    cluster: platform-kafka
+  - id: carrier/topic-100
+    name: carrier.event-100.v1
+    ownedBy: carrier/carrier-manager-0
+    cluster: platform-kafka
+  - id: carrier/topic-151
+    name: carrier.event-151.v1
+    ownedBy: carrier/carrier-gateway-4
+    cluster: platform-kafka
+  - id: carrier/topic-156
+    name: carrier.event-156.v1
+    ownedBy: carrier/carrier-gateway-11
+    cluster: platform-kafka
+  - id: carrier/topic-174
+    name: carrier.event-174.v1
+    ownedBy: carrier/carrier-gateway-4
+    cluster: platform-kafka
+  - id: carrier/topic-183
+    name: carrier.event-183.v1
+    ownedBy: carrier/carrier-service-16
+    cluster: platform-kafka
+  - id: carrier/topic-186
+    name: carrier.event-186.v1
+    ownedBy: carrier/carrier-adapter-15
+    cluster: platform-kafka
+  - id: carrier/topic-187
+    name: carrier.event-187.v1
+    ownedBy: carrier/carrier-manager-2
+    cluster: platform-kafka
+  - id: carrier/topic-242
+    name: carrier.event-242.v1
+    ownedBy: carrier/carrier-manager-0
+    cluster: platform-kafka
+channels:
+  - id: carrier/channel-3
+    name: EDI feed 3
+    technology: SQS
+    ownedBy: carrier/carrier-service-16
+  - id: carrier/channel-18
+    name: webhook 18
+    technology: HTTP webhook
+    ownedBy: carrier/carrier-manager-0
+datastores:
+  - id: carrier/store-12
+    name: carrier-db-12
+    technology: redis
+    ownedBy: carrier/carrier-gateway-4
+  - id: carrier/store-16
+    name: carrier-db-16
+    technology: postgres
+    ownedBy: carrier/carrier-engine-6
+  - id: carrier/store-27
+    name: carrier-db-27
+    technology: dynamodb
+    ownedBy: carrier/carrier-engine-9
+connections:
+  - from: carrier/carrier-manager-0
+    to: carrier/notify-api
+  - from: carrier/carrier-sync-1
+    to: carrier/auth-api
+  - from: carrier/carrier-engine-5
+    to: carrier/feature-flags-api
+  - from: carrier/carrier-engine-9
+    to: carrier/feature-flags-api
+  - from: carrier/carrier-gateway-13
+    to: carrier/notify-api
+  - from: carrier/carrier-adapter-15
+    to: carrier/notify-api
+  - from: carrier/carrier-service-16
+    to: carrier/feature-flags-api
+  - from: carrier/carrier-adapter-15
+    to: fraud/api-346
+  - from: carrier/carrier-service-14
+    to: tax/api-330
+  - from: carrier/carrier-engine-6
+    to: carrier/api-294
+  - from: carrier/carrier-engine-5
+    to: carrier/api-301
+  - from: carrier/carrier-manager-7
+    to: carrier/topic-186
+  - from: carrier/carrier-gateway-4
+    to: carrier/topic-156
+  - from: carrier/carrier-engine-5
+    to: order/api-408
+  - from: warehouse/topic-138
+    to: carrier/carrier-sync-8
+  - from: refund/topic-88
+    to: carrier/carrier-gateway-13
+  - from: carrier/carrier-service-16
+    to: carrier/topic-35
+  - from: carrier/carrier-service-12
+    to: returns/api-414
+  - from: carrier/carrier-manager-0
+    to: carrier/topic-61
+  - from: carrier/carrier-sync-3
+    to: carrier/topic-187
+  - from: carrier/carrier-engine-9
+    to: loyalty/api-357
+  - from: carrier/carrier-manager-0
+    to: warehouse/api-321
+  - from: carrier/carrier-gateway-11
+    to: returns/api-419
+  - from: carrier/carrier-adapter-15
+    to: carrier/topic-174
+  - from: carrier/carrier-sync-1
+    to: carrier/api-299
+  - from: carrier/carrier-manager-2
+    to: warehouse/api-317
+  - from: carrier/carrier-gateway-11
+    to: warehouse/api-327
+  - from: carrier/carrier-engine-5
+    to: carrier/topic-242
+  - from: carrier/carrier-engine-9
+    to: carrier/topic-151
+  - from: carrier/carrier-sync-1
+    to: carrier/api-303
+  - from: carrier/carrier-service-12
+    to: tax/api-334
+  - from: carrier/carrier-sync-3
+    to: carrier/api-308
+  - from: carrier/carrier-engine-9
+    to: carrier/api-304
+  - from: carrier/carrier-sync-1
+    to: carrier/api-302
+  - from: carrier/carrier-service-16
+    to: ledger/api-57
+  - from: carrier/carrier-engine-9
+    to: carrier/topic-100
+  - from: order/topic-86
+    to: carrier/carrier-service-12
+  - from: carrier/carrier-adapter-15
+    to: loyalty/api-361
+  - from: carrier/carrier-gateway-13
+    to: carrier/api-297
+  - from: carrier/carrier-sync-8
+    to: review/api-235
+  - from: carrier/carrier-service-16
+    to: carrier/api-295
+  - from: carrier/carrier-gateway-11
+    to: order/api-12
+  - from: carrier/carrier-sync-1
+    to: carrier/topic-156
+  - from: carrier/carrier-gateway-11
+    to: carrier/api-294
+  - from: carrier/carrier-manager-17
+    to: loyalty/api-351
+  - from: carrier/carrier-service-16
+    to: invoice/api-448
+  - from: carrier/carrier-service-14
+    to: carrier/api-297
+  - from: returns/topic-36
+    to: carrier/carrier-sync-1
+  - from: carrier/carrier-gateway-4
+    to: warehouse/api-326
+  - from: carrier/topic-151
+    to: carrier/carrier-engine-6
+  - from: carrier/carrier-engine-6
+    to: carrier/api-296
+  - from: invoice/topic-173
+    to: carrier/carrier-gateway-11
+  - from: carrier/carrier-manager-7
+    to: routing/api-277
+  - from: carrier/carrier-engine-6
+    to: carrier/topic-156
+  - from: carrier/carrier-manager-2
+    to: carrier/topic-183
+  - from: carrier/carrier-sync-1
+    to: cart/api-368
+  - from: carrier/carrier-manager-17
+    to: ledger/api-53
+  - from: carrier/carrier-service-10
+    to: loyalty/api-362
+  - from: carrier/carrier-gateway-11
+    to: carrier/topic-183
+  - from: carrier/carrier-engine-5
+    to: warehouse/api-326
+  - from: carrier/carrier-sync-3
+    to: carrier/api-304
+  - from: tax/topic-68
+    to: carrier/carrier-service-16
+  - from: carrier/carrier-service-16
+    to: warehouse/api-316
+  - from: carrier/carrier-gateway-4
+    to: carrier/api-301
+  - from: carrier/carrier-sync-8
+    to: returns/api-417
+  - from: carrier/carrier-manager-0
+    to: carrier/api-304
+  - from: carrier/carrier-sync-3
+    to: carrier/topic-35
+  - from: carrier/carrier-manager-0
+    to: carrier/api-306
+  - from: carrier/carrier-sync-1
+    to: carrier/api-292
+  - from: carrier/carrier-manager-0
+    to: carrier/topic-100
+  - from: carrier/carrier-service-12
+    to: warehouse/api-317
+  - from: carrier/carrier-service-16
+    to: carrier/api-293
+  - from: order/topic-41
+    to: carrier/carrier-service-12
+  - from: carrier/carrier-service-10
+    to: invoice/api-47
+  - from: carrier/carrier-sync-8
+    to: ticket/api-249
+  - from: carrier/carrier-manager-0
+    to: carrier/api-292
+  - from: carrier/carrier-engine-5
+    to: carrier/api-292
+  - from: ledger/topic-136
+    to: carrier/carrier-sync-8
+  - from: carrier/carrier-engine-6
+    to: carrier/api-308
+  - from: carrier/carrier-manager-2
+    to: carrier/api-304
+  - from: carrier/carrier-engine-6
+    to: carrier/topic-174
+  - from: carrier/carrier-service-10
+    to: carrier/topic-35
+  - from: carrier/carrier-service-14
+    to: carrier/topic-186
+  - from: carrier/carrier-sync-3
+    to: refund/api-39
+  - from: carrier/carrier-manager-17
+    to: carrier/api-298
+  - from: carrier/carrier-manager-17
+    to: carrier/topic-183
+  - from: carrier/carrier-gateway-13
+    to: order/api-412
+  - from: carrier/carrier-sync-8
+    to: tax/api-333
+  - from: carrier/carrier-gateway-11
+    to: carrier/topic-156
+  - from: carrier/carrier-manager-7
+    to: carrier/api-302
+  - from: carrier/carrier-manager-0
+    to: carrier/topic-242
+  - from: carrier/carrier-service-16
+    to: carrier/topic-186
+  - from: carrier/carrier-sync-3
+    to: invoice/api-451
+  - from: carrier/carrier-service-14
+    to: carrier/api-294
+  - from: carrier/carrier-manager-2
+    to: carrier/topic-13
+  - from: carrier/carrier-gateway-13
+    to: carrier/api-305
+  - from: carrier/carrier-gateway-13
+    to: carrier/api-307
+  - from: carrier/carrier-service-12
+    to: carrier/api-298
+  - from: carrier/carrier-manager-7
+    to: carrier/api-299
+  - from: carrier/carrier-engine-6
+    to: order/api-413
+  - from: carrier/carrier-sync-8
+    to: carrier/topic-174
+  - from: carrier/carrier-gateway-4
+    to: carrier/topic-183
+  - from: carrier/carrier-manager-7
+    to: carrier/api-298
+  - from: carrier/carrier-gateway-13
+    to: carrier/topic-156
+  - from: carrier/carrier-manager-17
+    to: carrier/api-308

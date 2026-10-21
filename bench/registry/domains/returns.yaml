@@ -1,0 +1,386 @@
+domain:
+  id: returns
+  name: Returns
+  department: logistics
+  owningTeam: team-returns
+  reviewedAt: 2026-07-01
+  reviewedBy: pe
+systems:
+  - id: returns/sys-0
+    name: returns system 0
+  - id: returns/sys-1
+    name: returns system 1
+  - id: returns/sys-2
+    name: returns system 2
+services:
+  - id: returns/returns-manager-0
+    name: returns-manager-0
+    owningTeam: team-returns
+    system: returns/sys-1
+  - id: returns/returns-adapter-1
+    name: returns-adapter-1
+    owningTeam: team-returns
+    system: returns/sys-0
+  - id: returns/returns-service-2
+    name: returns-service-2
+    owningTeam: team-returns
+    system: returns/sys-0
+  - id: returns/returns-gateway-3
+    name: returns-gateway-3
+    owningTeam: team-returns
+    system: returns/sys-0
+  - id: returns/returns-gateway-4
+    name: returns-gateway-4
+    owningTeam: team-returns
+  - id: returns/returns-service-5
+    name: returns-service-5
+    owningTeam: team-returns
+  - id: returns/returns-worker-6
+    name: returns-worker-6
+    owningTeam: team-returns
+    system: returns/sys-2
+  - id: returns/returns-engine-7
+    name: returns-engine-7
+    owningTeam: team-returns
+    system: returns/sys-0
+  - id: returns/returns-service-8
+    name: returns-service-8
+    owningTeam: team-returns
+  - id: returns/returns-service-9
+    name: returns-service-9
+    owningTeam: team-returns
+  - id: returns/returns-sync-10
+    name: returns-sync-10
+    owningTeam: team-returns
+    system: returns/sys-2
+  - id: returns/returns-manager-11
+    name: returns-manager-11
+    owningTeam: team-returns
+    system: returns/sys-1
+  - id: returns/returns-service-12
+    name: returns-service-12
+    owningTeam: team-returns
+  - id: returns/returns-engine-13
+    name: returns-engine-13
+    owningTeam: team-returns
+    system: returns/sys-1
+apis:
+  - id: returns/api-414
+    name: returns-manager-0 API 414
+    hostedBy: returns/returns-manager-0
+    style: gRPC
+  - id: returns/api-415
+    name: returns-adapter-1 API 415
+    hostedBy: returns/returns-adapter-1
+    style: REST
+  - id: returns/api-416
+    name: returns-service-2 API 416
+    hostedBy: returns/returns-service-2
+    style: REST
+  - id: returns/api-417
+    name: returns-gateway-3 API 417
+    hostedBy: returns/returns-gateway-3
+    style: gRPC
+  - id: returns/api-418
+    name: returns-gateway-4 API 418
+    hostedBy: returns/returns-gateway-4
+    style: REST
+  - id: returns/api-419
+    name: returns-service-5 API 419
+    hostedBy: returns/returns-service-5
+    style: REST
+  - id: returns/api-420
+    name: returns-worker-6 API 420
+    hostedBy: returns/returns-worker-6
+    style: REST
+  - id: returns/api-421
+    name: returns-engine-7 API 421
+    hostedBy: returns/returns-engine-7
+    style: REST
+  - id: returns/api-422
+    name: returns-service-8 API 422
+    hostedBy: returns/returns-service-8
+    style: REST
+  - id: returns/api-423
+    name: returns-service-9 API 423
+    hostedBy: returns/returns-service-9
+    style: REST
+  - id: returns/api-424
+    name: returns-sync-10 API 424
+    hostedBy: returns/returns-sync-10
+    style: REST
+  - id: returns/api-425
+    name: returns-manager-11 API 425
+    hostedBy: returns/returns-manager-11
+    style: REST
+  - id: returns/api-426
+    name: returns-service-12 API 426
+    hostedBy: returns/returns-service-12
+    style: GraphQL
+  - id: returns/api-427
+    name: returns-engine-13 API 427
+    hostedBy: returns/returns-engine-13
+    style: REST
+topics:
+  - id: returns/topic-33
+    name: returns.event-33.v1
+    ownedBy: returns/returns-service-5
+    cluster: logistics-kafka
+  - id: returns/topic-36
+    name: returns.event-36.v1
+    ownedBy: returns/returns-adapter-1
+    cluster: logistics-kafka
+  - id: returns/topic-38
+    name: returns.event-38.v1
+    ownedBy: returns/returns-service-9
+    cluster: logistics-kafka
+  - id: returns/topic-60
+    name: returns.event-60.v1
+    ownedBy: returns/returns-gateway-3
+    cluster: logistics-kafka
+  - id: returns/topic-98
+    name: returns.event-98.v1
+    ownedBy: returns/returns-engine-7
+    cluster: logistics-kafka
+  - id: returns/topic-116
+    name: returns.event-116.v1
+    ownedBy: returns/returns-service-5
+    cluster: logistics-kafka
+  - id: returns/topic-124
+    name: returns.event-124.v1
+    ownedBy: returns/returns-engine-13
+    cluster: logistics-kafka
+  - id: returns/topic-140
+    name: returns.event-140.v1
+    ownedBy: returns/returns-adapter-1
+    cluster: logistics-kafka
+  - id: returns/topic-142
+    name: returns.event-142.v1
+    ownedBy: returns/returns-sync-10
+    cluster: logistics-kafka
+  - id: returns/topic-166
+    name: returns.event-166.v1
+    ownedBy: returns/returns-service-8
+    cluster: logistics-kafka
+  - id: returns/topic-223
+    name: returns.event-223.v1
+    ownedBy: returns/returns-gateway-4
+    cluster: logistics-kafka
+channels: []
+datastores:
+  - id: returns/store-7
+    name: returns-db-7
+    technology: redis
+    ownedBy: returns/returns-manager-0
+  - id: returns/store-21
+    name: returns-db-21
+    technology: s3
+    ownedBy: returns/returns-service-5
+  - id: returns/store-42
+    name: returns-db-42
+    technology: postgres
+    ownedBy: returns/returns-worker-6
+connections:
+  - from: returns/returns-service-2
+    to: carrier/notify-api
+  - from: returns/returns-gateway-4
+    to: carrier/notify-api
+  - from: returns/returns-worker-6
+    to: carrier/feature-flags-api
+  - from: returns/returns-engine-7
+    to: carrier/feature-flags-api
+  - from: returns/returns-manager-11
+    to: carrier/feature-flags-api
+  - from: returns/returns-gateway-3
+    to: ticket/api-248
+  - from: returns/returns-manager-0
+    to: returns/api-420
+  - from: returns/returns-service-9
+    to: returns/api-418
+  - from: returns/returns-gateway-4
+    to: tracking/api-490
+  - from: returns/returns-manager-0
+    to: order/api-402
+  - from: returns/returns-engine-13
+    to: order/api-408
+  - from: returns/returns-gateway-3
+    to: returns/topic-60
+  - from: returns/returns-service-8
+    to: stock/api-535
+  - from: returns/returns-gateway-3
+    to: ledger/api-461
+  - from: returns/returns-gateway-3
+    to: invoice/api-448
+  - from: returns/returns-service-8
+    to: search/api-231
+  - from: returns/returns-manager-11
+    to: returns/api-417
+  - from: returns/returns-adapter-1
+    to: warehouse/api-314
+  - from: returns/returns-service-2
+    to: returns/api-420
+  - from: returns/returns-gateway-3
+    to: returns/api-417
+  - from: returns/returns-service-2
+    to: review/api-236
+  - from: returns/returns-service-2
+    to: refund/api-41
+  - from: returns/returns-adapter-1
+    to: promo/api-246
+  - from: refund/topic-97
+    to: returns/returns-manager-11
+  - from: returns/returns-gateway-4
+    to: refund/api-34
+  - from: returns/returns-service-12
+    to: returns/api-419
+  - from: returns/returns-engine-13
+    to: account/api-566
+  - from: returns/returns-service-2
+    to: promo/api-246
+  - from: returns/returns-manager-11
+    to: stock/api-555
+  - from: search/topic-176
+    to: returns/returns-sync-10
+  - from: review/topic-71
+    to: returns/returns-gateway-4
+  - from: returns/returns-manager-11
+    to: returns/topic-60
+  - from: returns/returns-sync-10
+    to: returns/api-418
+  - from: returns/returns-engine-13
+    to: returns/topic-60
+  - from: returns/topic-223
+    to: returns/returns-service-12
+  - from: returns/returns-manager-0
+    to: returns/topic-33
+  - from: returns/returns-worker-6
+    to: returns/api-416
+  - from: returns/returns-worker-6
+    to: returns/api-420
+  - from: returns/returns-gateway-3
+    to: returns/api-424
+  - from: returns/returns-worker-6
+    to: label/api-80
+  - from: returns/returns-engine-7
+    to: pricing/api-114
+  - from: returns/returns-adapter-1
+    to: returns/topic-33
+  - from: returns/returns-service-8
+    to: returns/topic-166
+  - from: returns/returns-worker-6
+    to: returns/api-422
+  - from: returns/returns-gateway-3
+    to: returns/topic-166
+  - from: returns/returns-manager-0
+    to: invoice/api-448
+  - from: returns/returns-gateway-3
+    to: label/api-73
+  - from: returns/returns-adapter-1
+    to: invoice/api-50
+  - from: invoice/topic-185
+    to: returns/returns-engine-13
+  - from: fraud/topic-91
+    to: returns/returns-engine-13
+  - from: returns/returns-worker-6
+    to: returns/topic-116
+  - from: returns/returns-engine-7
+    to: order/api-4
+  - from: returns/returns-gateway-4
+    to: returns/topic-124
+  - from: returns/returns-sync-10
+    to: order/api-412
+  - from: returns/returns-adapter-1
+    to: returns/api-418
+  - from: invoice/topic-177
+    to: returns/returns-engine-13
+  - from: returns/returns-worker-6
+    to: returns/api-421
+  - from: returns/returns-manager-11
+    to: promo/api-244
+  - from: returns/returns-manager-11
+    to: ledger/api-463
+  - from: returns/returns-service-2
+    to: returns/topic-36
+  - from: returns/returns-service-5
+    to: returns/api-415
+  - from: returns/topic-166
+    to: returns/returns-service-12
+  - from: returns/returns-service-8
+    to: returns/api-426
+  - from: returns/returns-adapter-1
+    to: order/api-403
+  - from: returns/returns-gateway-3
+    to: invoice/api-449
+  - from: returns/returns-gateway-4
+    to: refund/api-435
+  - from: returns/returns-adapter-1
+    to: returns/api-416
+  - from: order/topic-165
+    to: returns/returns-service-12
+  - from: returns/returns-engine-7
+    to: stock/api-137
+  - from: returns/returns-service-5
+    to: dispatch/api-288
+  - from: returns/returns-service-8
+    to: returns/api-423
+  - from: returns/returns-engine-7
+    to: profile/api-193
+  - from: returns/returns-manager-11
+    to: refund/api-430
+  - from: returns/returns-gateway-4
+    to: returns/topic-116
+  - from: returns/returns-gateway-4
+    to: returns/api-414
+  - from: returns/returns-adapter-1
+    to: returns/topic-98
+  - from: review/topic-234
+    to: returns/returns-adapter-1
+  - from: returns/returns-service-12
+    to: stock/api-134
+  - from: returns/returns-sync-10
+    to: order/api-405
+  - from: returns/returns-service-2
+    to: label/api-471
+  - from: stock/topic-215
+    to: returns/returns-manager-0
+  - from: returns/returns-gateway-4
+    to: refund/api-430
+  - from: returns/returns-service-8
+    to: returns/api-417
+  - from: returns/returns-service-9
+    to: returns/topic-38
+  - from: returns/returns-service-12
+    to: returns/api-416
+  - from: returns/returns-worker-6
+    to: promo/api-246
+  - from: returns/returns-service-5
+    to: refund/api-40
+  - from: returns/returns-engine-7
+    to: ledger/api-466
+  - from: returns/returns-service-12
+    to: invoice/api-448
+  - from: returns/returns-gateway-3
+    to: returns/topic-223
+  - from: returns/returns-gateway-4
+    to: returns/api-415
+  - from: returns/returns-service-12
+    to: order/api-408
+  - from: returns/returns-gateway-3
+    to: returns/api-421
+  - from: returns/returns-service-2
+    to: returns/api-416
+  - from: returns/returns-service-5
+    to: catalog/api-499
+  - from: returns/returns-worker-6
+    to: refund/api-46
+  - from: returns/returns-engine-7
+    to: invoice/api-449
+  - from: returns/returns-engine-13
+    to: stock/api-553
+  - from: returns/topic-36
+    to: returns/returns-service-12
+  - from: returns/returns-service-5
+    to: catalog/api-505
+  - from: returns/returns-service-9
+    to: order/order-engine-4
+    gap: legacy, no spec

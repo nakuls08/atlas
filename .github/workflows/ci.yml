@@ -1,0 +1,39 @@
+# Type-check, test, and build every example on each push and pull request.
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+
+      - run: npm ci
+
+      # Vitest transpiles without type-checking, so this runs first.
+      - name: Type-check
+        run: npm run type-check
+
+      - name: Test
+        run: npm test
+
+      - name: Validate the example registries
+        run: |
+          npx tsx src/cli/main.ts validate -r examples
+          npx tsx src/cli/main.ts validate -r examples/ecommerce
+
+      - name: Build the demo boards
+        run: npm run build:demo

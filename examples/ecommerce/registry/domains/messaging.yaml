@@ -1,0 +1,79 @@
+domain:
+  id: messaging
+  name: Messaging
+  department: engagement
+  owningTeam: team-messaging
+  reviewedAt: 2026-08-15
+  reviewedBy: lena
+services:
+  - id: messaging/email-service
+    name: email-service
+    owningTeam: team-messaging
+  - id: messaging/sms-service
+    name: sms-service
+    owningTeam: team-messaging
+  - id: messaging/push-service
+    name: push-service
+    owningTeam: team-messaging
+  - id: messaging/preference-center
+    name: preference-center
+    owningTeam: team-messaging
+apis:
+  - id: messaging/email-api
+    name: Email API
+    hostedBy: messaging/email-service
+    style: REST
+    audience: internal
+  - id: messaging/sms-api
+    name: SMS API
+    hostedBy: messaging/sms-service
+    style: REST
+    audience: internal
+  - id: messaging/push-api
+    name: Push API
+    hostedBy: messaging/push-service
+    style: REST
+    audience: internal
+  - id: messaging/preferences-api
+    name: Preferences API
+    hostedBy: messaging/preference-center
+    style: REST
+    audience: public
+datastores:
+  - id: messaging/preference-center-db
+    name: preference-center-db
+    technology: postgres
+    ownedBy: messaging/preference-center
+connections:
+  - from: messaging/email-service
+    to: ext/sendgrid
+  - from: messaging/email-service
+    to: messaging/preferences-api
+  - from: orders/order-placed
+    to: messaging/email-service
+  - from: shipping/shipment-dispatched
+    to: messaging/email-service
+  - from: returns/return-requested
+    to: messaging/email-service
+  - from: refunds/refund-issued
+    to: messaging/email-service
+  - from: accounts/customer-registered
+    to: messaging/email-service
+  - from: campaigns/campaign-launched
+    to: messaging/email-service
+  - from: messaging/sms-service
+    to: ext/twilio
+  - from: messaging/sms-service
+    to: messaging/preferences-api
+  - from: shipping/shipment-dispatched
+    to: messaging/sms-service
+  - from: orders/order-placed
+    to: messaging/sms-service
+  - from: messaging/push-service
+    to: ext/firebase
+  - from: shipping/shipment-delivered
+    to: messaging/push-service
+  - from: messaging/preference-center
+    to: edge/auth-api
+  - from: accounts/consent-changed
+    to: messaging/preference-center

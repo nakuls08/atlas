@@ -1,0 +1,34 @@
+domain:
+  id: refunds
+  name: Refunds
+  department: payments-risk
+  owningTeam: team-payments
+  reviewedAt: 2026-08-15
+  reviewedBy: priya
+services:
+  - id: refunds/refund-service
+    name: refund-service
+    owningTeam: team-payments
+apis:
+  - id: refunds/refund-api
+    name: Refund API
+    hostedBy: refunds/refund-service
+    style: REST
+    audience: internal
+topics:
+  - id: refunds/refund-issued
+    name: refund.issued.v1
+    ownedBy: refunds/refund-service
+    cluster: payments-risk-events
+datastores:
+  - id: refunds/refund-service-db
+    name: refund-service-db
+    technology: postgres
+    ownedBy: refunds/refund-service
+connections:
+  - from: refunds/refund-service
+    to: payments/payments-api
+  - from: refunds/refund-service
+    to: refunds/refund-issued
+  - from: returns/return-received
+    to: refunds/refund-service

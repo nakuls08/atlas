@@ -1,0 +1,30 @@
+domain: { id: shipping, name: Shipping, department: logistics, owningTeam: team-shipping,
+          reviewedAt: 2026-02-02, reviewedBy: priya }
+systems:
+  - { id: shipping/carrier-integration, name: Carrier integration }
+services:
+  - { id: shipping/label-service, name: label-service, owningTeam: team-shipping,
+      system: shipping/carrier-integration }
+  - { id: shipping/tracking-service, name: tracking-service, owningTeam: team-shipping,
+      system: shipping/carrier-integration }
+  - { id: shipping/dispatch-planner, name: dispatch-planner, owningTeam: team-shipping,
+      ownership: disputed, claimant: returns }
+apis:
+  - { id: shipping/label-api, name: Label API, hostedBy: shipping/label-service, style: gRPC, audience: internal }
+  - { id: shipping/tracking-api, name: Tracking API, hostedBy: shipping/tracking-service,
+      style: REST, audience: partner }
+topics:
+  - { id: shipping/shipment-tracked, name: shipment.tracked.v1,
+      ownedBy: shipping/tracking-service, cluster: logistics-main }
+channels:
+  - { id: shipping/dhl-manifest-sftp, name: DHL manifest drop, technology: SFTP,
+      ownedBy: shipping/label-service }
+connections:
+  - { from: shipping/label-service, to: ext/dhl }
+  - { from: shipping/label-service, to: shipping/dhl-manifest-sftp }
+  - { from: shipping/dhl-manifest-sftp, to: ext/dhl }
+  - { from: shipping/tracking-service, to: shipping/shipment-tracked }
+  - { from: shipping/shipment-tracked, to: returns/returns-intake }
+  - { from: shipping/dispatch-planner, to: shipping/label-api }
+  - { from: shipping/dispatch-planner, to: returns/returns-intake, gap: "legacy, no spec" }
+  - { from: shipping/dispatch-planner, to: identity/auth-api }

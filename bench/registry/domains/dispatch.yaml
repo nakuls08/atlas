@@ -1,0 +1,355 @@
+domain:
+  id: dispatch
+  name: Dispatch
+  department: data
+  owningTeam: team-dispatch
+  reviewedAt: 2026-07-01
+  reviewedBy: pe
+systems:
+  - id: dispatch/sys-0
+    name: dispatch system 0
+services:
+  - id: dispatch/dispatch-gateway-0
+    name: dispatch-gateway-0
+    owningTeam: team-dispatch
+    system: dispatch/sys-0
+  - id: dispatch/dispatch-manager-1
+    name: dispatch-manager-1
+    owningTeam: team-dispatch
+    system: dispatch/sys-0
+  - id: dispatch/dispatch-service-2
+    name: dispatch-service-2
+    owningTeam: team-dispatch
+  - id: dispatch/dispatch-sync-3
+    name: dispatch-sync-3
+    owningTeam: team-dispatch
+    system: dispatch/sys-0
+  - id: dispatch/dispatch-manager-4
+    name: dispatch-manager-4
+    owningTeam: team-dispatch
+  - id: dispatch/dispatch-service-5
+    name: dispatch-service-5
+    owningTeam: team-dispatch
+  - id: dispatch/dispatch-service-6
+    name: dispatch-service-6
+    owningTeam: team-dispatch
+    system: dispatch/sys-0
+  - id: dispatch/dispatch-gateway-7
+    name: dispatch-gateway-7
+    owningTeam: team-dispatch
+  - id: dispatch/dispatch-worker-8
+    name: dispatch-worker-8
+    owningTeam: team-dispatch
+  - id: dispatch/dispatch-gateway-9
+    name: dispatch-gateway-9
+    owningTeam: team-dispatch
+  - id: dispatch/dispatch-gateway-10
+    name: dispatch-gateway-10
+    owningTeam: team-dispatch
+    system: dispatch/sys-0
+  - id: dispatch/dispatch-manager-11
+    name: dispatch-manager-11
+    owningTeam: team-dispatch
+    system: dispatch/sys-0
+  - id: dispatch/dispatch-service-12
+    name: dispatch-service-12
+    owningTeam: team-dispatch
+    system: dispatch/sys-0
+  - id: dispatch/dispatch-engine-13
+    name: dispatch-engine-13
+    owningTeam: team-dispatch
+    system: dispatch/sys-0
+apis:
+  - id: dispatch/api-278
+    name: dispatch-gateway-0 API 278
+    hostedBy: dispatch/dispatch-gateway-0
+    style: GraphQL
+  - id: dispatch/api-279
+    name: dispatch-manager-1 API 279
+    hostedBy: dispatch/dispatch-manager-1
+    style: REST
+  - id: dispatch/api-280
+    name: dispatch-service-2 API 280
+    hostedBy: dispatch/dispatch-service-2
+    style: REST
+  - id: dispatch/api-281
+    name: dispatch-sync-3 API 281
+    hostedBy: dispatch/dispatch-sync-3
+    style: GraphQL
+  - id: dispatch/api-282
+    name: dispatch-manager-4 API 282
+    hostedBy: dispatch/dispatch-manager-4
+    style: GraphQL
+  - id: dispatch/api-283
+    name: dispatch-service-5 API 283
+    hostedBy: dispatch/dispatch-service-5
+    style: REST
+  - id: dispatch/api-284
+    name: dispatch-service-6 API 284
+    hostedBy: dispatch/dispatch-service-6
+    style: GraphQL
+  - id: dispatch/api-285
+    name: dispatch-gateway-7 API 285
+    hostedBy: dispatch/dispatch-gateway-7
+    style: REST
+  - id: dispatch/api-286
+    name: dispatch-worker-8 API 286
+    hostedBy: dispatch/dispatch-worker-8
+    style: GraphQL
+  - id: dispatch/api-287
+    name: dispatch-gateway-9 API 287
+    hostedBy: dispatch/dispatch-gateway-9
+    style: GraphQL
+  - id: dispatch/api-288
+    name: dispatch-gateway-10 API 288
+    hostedBy: dispatch/dispatch-gateway-10
+    style: REST
+  - id: dispatch/api-289
+    name: dispatch-manager-11 API 289
+    hostedBy: dispatch/dispatch-manager-11
+    style: gRPC
+  - id: dispatch/api-290
+    name: dispatch-service-12 API 290
+    hostedBy: dispatch/dispatch-service-12
+    style: gRPC
+  - id: dispatch/api-291
+    name: dispatch-engine-13 API 291
+    hostedBy: dispatch/dispatch-engine-13
+    style: REST
+topics:
+  - id: dispatch/topic-6
+    name: dispatch.event-6.v1
+    ownedBy: dispatch/dispatch-gateway-9
+    cluster: data-kafka
+  - id: dispatch/topic-12
+    name: dispatch.event-12.v1
+    ownedBy: dispatch/dispatch-gateway-7
+    cluster: data-kafka
+  - id: dispatch/topic-17
+    name: dispatch.event-17.v1
+    ownedBy: dispatch/dispatch-manager-11
+    cluster: data-kafka
+  - id: dispatch/topic-44
+    name: dispatch.event-44.v1
+    ownedBy: dispatch/dispatch-service-6
+    cluster: data-kafka
+  - id: dispatch/topic-52
+    name: dispatch.event-52.v1
+    ownedBy: dispatch/dispatch-manager-11
+    cluster: data-kafka
+  - id: dispatch/topic-81
+    name: dispatch.event-81.v1
+    ownedBy: dispatch/dispatch-manager-1
+    cluster: data-kafka
+  - id: dispatch/topic-120
+    name: dispatch.event-120.v1
+    ownedBy: dispatch/dispatch-service-6
+    cluster: data-kafka
+  - id: dispatch/topic-143
+    name: dispatch.event-143.v1
+    ownedBy: dispatch/dispatch-engine-13
+    cluster: data-kafka
+  - id: dispatch/topic-145
+    name: dispatch.event-145.v1
+    ownedBy: dispatch/dispatch-engine-13
+    cluster: data-kafka
+  - id: dispatch/topic-175
+    name: dispatch.event-175.v1
+    ownedBy: dispatch/dispatch-gateway-0
+    cluster: data-kafka
+  - id: dispatch/topic-195
+    name: dispatch.event-195.v1
+    ownedBy: dispatch/dispatch-service-5
+    cluster: data-kafka
+channels: []
+datastores: []
+connections:
+  - from: dispatch/dispatch-service-5
+    to: carrier/auth-api
+  - from: dispatch/dispatch-service-6
+    to: carrier/auth-api
+  - from: dispatch/dispatch-gateway-7
+    to: carrier/feature-flags-api
+  - from: dispatch/dispatch-engine-13
+    to: carrier/auth-api
+  - from: dispatch/dispatch-manager-4
+    to: routing/api-270
+  - from: dispatch/dispatch-gateway-0
+    to: dispatch/api-290
+  - from: dispatch/topic-120
+    to: dispatch/dispatch-manager-1
+  - from: dispatch/dispatch-sync-3
+    to: checkout/api-374
+  - from: dispatch/dispatch-worker-8
+    to: dispatch/api-281
+  - from: dispatch/dispatch-gateway-9
+    to: dispatch/api-290
+  - from: dispatch/dispatch-sync-3
+    to: warehouse/api-312
+  - from: dispatch/dispatch-manager-1
+    to: carrier/api-293
+  - from: dispatch/dispatch-gateway-0
+    to: pricing/api-116
+  - from: dispatch/dispatch-gateway-0
+    to: dispatch/api-289
+  - from: dispatch/dispatch-service-5
+    to: dispatch/topic-6
+  - from: dispatch/dispatch-service-5
+    to: search/api-225
+  - from: checkout/topic-154
+    to: dispatch/dispatch-manager-4
+  - from: dispatch/dispatch-service-2
+    to: dispatch/api-285
+  - from: dispatch/dispatch-gateway-9
+    to: dispatch/api-284
+  - from: dispatch/dispatch-gateway-10
+    to: ticket/api-248
+  - from: dispatch/dispatch-gateway-9
+    to: dispatch/topic-120
+  - from: dispatch/dispatch-gateway-7
+    to: dispatch/topic-143
+  - from: dispatch/dispatch-manager-11
+    to: carrier/api-294
+  - from: dispatch/dispatch-service-5
+    to: dispatch/api-287
+  - from: dispatch/dispatch-service-12
+    to: dispatch/topic-145
+  - from: dispatch/topic-81
+    to: dispatch/dispatch-service-6
+  - from: dispatch/dispatch-service-5
+    to: notify/api-393
+  - from: dispatch/dispatch-service-2
+    to: dispatch/api-280
+  - from: dispatch/dispatch-manager-4
+    to: tax/api-328
+  - from: dispatch/dispatch-manager-4
+    to: dispatch/api-282
+  - from: routing/topic-50
+    to: dispatch/dispatch-worker-8
+  - from: dispatch/dispatch-manager-4
+    to: dispatch/api-291
+  - from: ticket/topic-236
+    to: dispatch/dispatch-manager-1
+  - from: dispatch/dispatch-manager-4
+    to: dispatch/api-285
+  - from: dispatch/dispatch-sync-3
+    to: dispatch/api-291
+  - from: dispatch/dispatch-manager-4
+    to: dispatch/topic-52
+  - from: carrier/topic-186
+    to: dispatch/dispatch-engine-13
+  - from: dispatch/dispatch-gateway-7
+    to: dispatch/topic-195
+  - from: dispatch/dispatch-service-12
+    to: dispatch/api-281
+  - from: ticket/topic-102
+    to: dispatch/dispatch-service-12
+  - from: dispatch/dispatch-service-6
+    to: checkout/api-385
+  - from: dispatch/dispatch-service-12
+    to: dispatch/api-290
+  - from: dispatch/dispatch-service-2
+    to: routing/api-267
+  - from: dispatch/dispatch-sync-3
+    to: ticket/api-248
+  - from: dispatch/dispatch-gateway-0
+    to: ticket/api-249
+  - from: dispatch/dispatch-service-12
+    to: dispatch/api-279
+  - from: dispatch/dispatch-engine-13
+    to: dispatch/api-286
+  - from: dispatch/dispatch-manager-11
+    to: routing/api-269
+  - from: dispatch/dispatch-manager-4
+    to: chat/api-262
+  - from: dispatch/dispatch-gateway-0
+    to: dispatch/api-282
+  - from: dispatch/dispatch-engine-13
+    to: dispatch/api-283
+  - from: dispatch/dispatch-service-12
+    to: checkout/api-374
+  - from: dispatch/dispatch-service-12
+    to: tax/api-328
+  - from: dispatch/dispatch-worker-8
+    to: dispatch/api-278
+  - from: dispatch/dispatch-service-5
+    to: notify/api-390
+  - from: dispatch/dispatch-manager-1
+    to: dispatch/topic-120
+  - from: dispatch/dispatch-engine-13
+    to: order/api-5
+  - from: dispatch/dispatch-gateway-10
+    to: tax/api-335
+  - from: dispatch/dispatch-service-6
+    to: dispatch/topic-195
+  - from: dispatch/dispatch-worker-8
+    to: carrier/api-301
+  - from: dispatch/dispatch-service-6
+    to: dispatch/api-278
+  - from: returns/topic-36
+    to: dispatch/dispatch-manager-11
+  - from: dispatch/topic-195
+    to: dispatch/dispatch-engine-13
+  - from: dispatch/dispatch-service-2
+    to: catalog/api-497
+  - from: dispatch/dispatch-service-2
+    to: checkout/api-385
+  - from: dispatch/dispatch-worker-8
+    to: tax/api-328
+  - from: dispatch/dispatch-manager-4
+    to: dispatch/api-283
+  - from: dispatch/dispatch-gateway-10
+    to: carrier/api-296
+  - from: dispatch/dispatch-engine-13
+    to: checkout/api-376
+  - from: ticket/topic-199
+    to: dispatch/dispatch-manager-11
+  - from: tax/topic-62
+    to: dispatch/dispatch-worker-8
+  - from: dispatch/dispatch-sync-3
+    to: routing/api-273
+  - from: dispatch/dispatch-gateway-9
+    to: ledger/api-456
+  - from: dispatch/dispatch-gateway-9
+    to: dispatch/topic-44
+  - from: dispatch/dispatch-manager-11
+    to: checkout/api-382
+  - from: dispatch/dispatch-sync-3
+    to: dispatch/api-285
+  - from: dispatch/dispatch-gateway-10
+    to: routing/api-272
+  - from: dispatch/dispatch-service-12
+    to: dispatch/api-287
+  - from: dispatch/dispatch-manager-11
+    to: dispatch/topic-81
+  - from: dispatch/dispatch-service-6
+    to: dispatch/api-283
+  - from: dispatch/dispatch-service-12
+    to: chat/api-260
+  - from: dispatch/dispatch-service-12
+    to: stock/api-142
+  - from: dispatch/dispatch-gateway-9
+    to: ticket/api-249
+  - from: dispatch/dispatch-manager-1
+    to: ledger/api-57
+  - from: dispatch/dispatch-service-6
+    to: dispatch/api-289
+  - from: ticket/topic-27
+    to: dispatch/dispatch-service-12
+  - from: dispatch/dispatch-gateway-7
+    to: dispatch/topic-145
+  - from: dispatch/dispatch-manager-4
+    to: notify/api-386
+  - from: dispatch/dispatch-service-12
+    to: routing/api-270
+  - from: dispatch/dispatch-gateway-7
+    to: chat/api-257
+  - from: dispatch/dispatch-service-5
+    to: tax/api-337
+  - from: dispatch/dispatch-manager-11
+    to: dispatch/api-288
+  - from: dispatch/dispatch-manager-1
+    to: ticket/api-249
+  - from: dispatch/dispatch-gateway-7
+    to: checkout/checkout-worker-6
+    gap: legacy, no spec

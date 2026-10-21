@@ -1,0 +1,32 @@
+domain:
+  id: tax
+  name: Tax
+  department: finance
+  owningTeam: team-tax
+  reviewedAt: 2026-08-15
+  reviewedBy: omar
+services:
+  - id: tax/tax-calc
+    name: tax-calc
+    owningTeam: team-tax
+  - id: tax/tax-reporting
+    name: tax-reporting
+    owningTeam: team-tax
+apis:
+  - id: tax/tax-api
+    name: Tax API
+    hostedBy: tax/tax-calc
+    style: REST
+    audience: internal
+datastores:
+  - id: tax/tax-calc-db
+    name: tax-calc-db
+    technology: redis
+    ownedBy: tax/tax-calc
+connections:
+  - from: tax/tax-calc
+    to: ext/avalara
+  - from: tax/tax-reporting
+    to: ext/avalara
+  - from: billing/invoice-issued
+    to: tax/tax-reporting

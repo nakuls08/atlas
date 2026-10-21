@@ -1,0 +1,362 @@
+domain:
+  id: fraud
+  name: Fraud
+  department: marketing
+  owningTeam: team-fraud
+  reviewedAt: 2026-07-01
+  reviewedBy: pe
+systems:
+  - id: fraud/sys-0
+    name: fraud system 0
+  - id: fraud/sys-1
+    name: fraud system 1
+  - id: fraud/sys-2
+    name: fraud system 2
+services:
+  - id: fraud/fraud-worker-0
+    name: fraud-worker-0
+    owningTeam: team-fraud
+    system: fraud/sys-0
+  - id: fraud/fraud-engine-1
+    name: fraud-engine-1
+    owningTeam: team-fraud
+    system: fraud/sys-2
+  - id: fraud/fraud-worker-2
+    name: fraud-worker-2
+    owningTeam: team-fraud
+    system: fraud/sys-0
+  - id: fraud/fraud-service-3
+    name: fraud-service-3
+    owningTeam: team-fraud
+  - id: fraud/fraud-gateway-4
+    name: fraud-gateway-4
+    owningTeam: team-fraud
+  - id: fraud/fraud-adapter-5
+    name: fraud-adapter-5
+    owningTeam: team-fraud
+    system: fraud/sys-0
+  - id: fraud/fraud-gateway-6
+    name: fraud-gateway-6
+    owningTeam: team-fraud
+  - id: fraud/fraud-sync-7
+    name: fraud-sync-7
+    owningTeam: team-fraud
+  - id: fraud/fraud-gateway-8
+    name: fraud-gateway-8
+    owningTeam: team-fraud
+  - id: fraud/fraud-adapter-9
+    name: fraud-adapter-9
+    owningTeam: team-fraud
+    system: fraud/sys-2
+  - id: fraud/fraud-service-10
+    name: fraud-service-10
+    owningTeam: team-fraud
+    system: fraud/sys-2
+  - id: fraud/fraud-worker-11
+    name: fraud-worker-11
+    owningTeam: team-fraud
+apis:
+  - id: fraud/api-338
+    name: fraud-worker-0 API 338
+    hostedBy: fraud/fraud-worker-0
+    style: GraphQL
+  - id: fraud/api-339
+    name: fraud-engine-1 API 339
+    hostedBy: fraud/fraud-engine-1
+    style: REST
+  - id: fraud/api-340
+    name: fraud-worker-2 API 340
+    hostedBy: fraud/fraud-worker-2
+    style: gRPC
+  - id: fraud/api-341
+    name: fraud-service-3 API 341
+    hostedBy: fraud/fraud-service-3
+    style: gRPC
+  - id: fraud/api-342
+    name: fraud-gateway-4 API 342
+    hostedBy: fraud/fraud-gateway-4
+    style: REST
+  - id: fraud/api-343
+    name: fraud-adapter-5 API 343
+    hostedBy: fraud/fraud-adapter-5
+    style: GraphQL
+  - id: fraud/api-344
+    name: fraud-gateway-6 API 344
+    hostedBy: fraud/fraud-gateway-6
+    style: REST
+  - id: fraud/api-345
+    name: fraud-sync-7 API 345
+    hostedBy: fraud/fraud-sync-7
+    style: REST
+  - id: fraud/api-346
+    name: fraud-gateway-8 API 346
+    hostedBy: fraud/fraud-gateway-8
+    style: REST
+  - id: fraud/api-347
+    name: fraud-adapter-9 API 347
+    hostedBy: fraud/fraud-adapter-9
+    style: REST
+  - id: fraud/api-348
+    name: fraud-service-10 API 348
+    hostedBy: fraud/fraud-service-10
+    style: REST
+  - id: fraud/api-349
+    name: fraud-worker-11 API 349
+    hostedBy: fraud/fraud-worker-11
+    style: REST
+topics:
+  - id: fraud/topic-91
+    name: fraud.event-91.v1
+    ownedBy: fraud/fraud-sync-7
+    cluster: marketing-kafka
+  - id: fraud/topic-110
+    name: fraud.event-110.v1
+    ownedBy: fraud/fraud-service-3
+    cluster: marketing-kafka
+  - id: fraud/topic-161
+    name: fraud.event-161.v1
+    ownedBy: fraud/fraud-service-3
+    cluster: marketing-kafka
+  - id: fraud/topic-193
+    name: fraud.event-193.v1
+    ownedBy: fraud/fraud-gateway-6
+    cluster: marketing-kafka
+  - id: fraud/topic-235
+    name: fraud.event-235.v1
+    ownedBy: fraud/fraud-adapter-9
+    cluster: marketing-kafka
+  - id: fraud/topic-243
+    name: fraud.event-243.v1
+    ownedBy: fraud/fraud-engine-1
+    cluster: marketing-kafka
+channels: []
+datastores:
+  - id: fraud/store-33
+    name: fraud-db-33
+    technology: redis
+    ownedBy: fraud/fraud-adapter-5
+  - id: fraud/store-36
+    name: fraud-db-36
+    technology: s3
+    ownedBy: fraud/fraud-gateway-6
+connections:
+  - from: fraud/fraud-worker-0
+    to: carrier/notify-api
+  - from: fraud/fraud-adapter-5
+    to: carrier/feature-flags-api
+  - from: fraud/fraud-gateway-8
+    to: carrier/feature-flags-api
+  - from: fraud/fraud-adapter-5
+    to: loyalty/api-352
+  - from: fraud/fraud-gateway-8
+    to: fraud/api-344
+  - from: fraud/fraud-sync-7
+    to: fraud/api-347
+  - from: fraud/fraud-service-3
+    to: fraud/api-338
+  - from: notify/topic-150
+    to: fraud/fraud-sync-7
+  - from: fraud/topic-161
+    to: fraud/fraud-adapter-5
+  - from: fraud/fraud-service-3
+    to: loyalty/api-358
+  - from: fraud/fraud-service-10
+    to: fraud/topic-161
+  - from: fraud/fraud-service-10
+    to: fraud/api-340
+  - from: fraud/fraud-sync-7
+    to: fraud/api-341
+  - from: fraud/fraud-adapter-9
+    to: cart/api-369
+  - from: fraud/fraud-sync-7
+    to: stock/api-146
+  - from: fraud/fraud-gateway-6
+    to: notify/api-395
+  - from: fraud/fraud-service-3
+    to: fraud/topic-193
+  - from: fraud/fraud-service-10
+    to: cart/api-365
+  - from: fraud/fraud-sync-7
+    to: fraud/topic-91
+  - from: fraud/fraud-gateway-6
+    to: notify/api-386
+  - from: fraud/fraud-adapter-9
+    to: fraud/topic-110
+  - from: fraud/fraud-service-3
+    to: cart/api-366
+  - from: fraud/fraud-service-10
+    to: fraud/topic-91
+  - from: fraud/fraud-gateway-6
+    to: fraud/topic-235
+  - from: fraud/fraud-worker-2
+    to: fraud/api-344
+  - from: fraud/fraud-gateway-6
+    to: fraud/topic-161
+  - from: fraud/fraud-worker-0
+    to: fraud/api-339
+  - from: fraud/fraud-sync-7
+    to: stock/api-548
+  - from: fraud/fraud-gateway-4
+    to: fraud/api-341
+  - from: fraud/fraud-engine-1
+    to: catalog/api-495
+  - from: fraud/fraud-adapter-5
+    to: returns/api-422
+  - from: fraud/fraud-worker-11
+    to: fraud/api-349
+  - from: fraud/fraud-engine-1
+    to: fraud/topic-110
+  - from: fraud/fraud-gateway-4
+    to: notify/api-391
+  - from: fraud/fraud-gateway-4
+    to: fraud/topic-243
+  - from: fraud/fraud-adapter-5
+    to: fraud/topic-235
+  - from: fraud/fraud-service-10
+    to: fraud/api-348
+  - from: fraud/fraud-adapter-9
+    to: pricing/api-513
+  - from: fraud/fraud-worker-0
+    to: checkout/api-385
+  - from: fraud/fraud-worker-2
+    to: loyalty/api-351
+  - from: fraud/fraud-worker-0
+    to: fraud/api-345
+  - from: fraud/fraud-service-10
+    to: fraud/topic-243
+  - from: cart/topic-169
+    to: fraud/fraud-sync-7
+  - from: fraud/fraud-worker-11
+    to: fraud/topic-161
+  - from: fraud/fraud-gateway-4
+    to: fraud/api-338
+  - from: fraud/fraud-worker-0
+    to: fraud/topic-91
+  - from: fraud/fraud-worker-2
+    to: cart/api-371
+  - from: fraud/fraud-engine-1
+    to: cart/api-368
+  - from: fraud/fraud-worker-0
+    to: loyalty/api-353
+  - from: fraud/fraud-adapter-5
+    to: fraud/topic-110
+  - from: fraud/fraud-worker-0
+    to: fraud/api-344
+  - from: fraud/fraud-adapter-9
+    to: pricing/api-518
+  - from: fraud/fraud-gateway-4
+    to: stock/api-147
+  - from: notify/topic-127
+    to: fraud/fraud-worker-2
+  - from: fraud/fraud-sync-7
+    to: tracking/api-88
+  - from: fraud/fraud-service-10
+    to: payment/api-163
+  - from: fraud/fraud-gateway-6
+    to: fraud/api-344
+  - from: fraud/fraud-adapter-9
+    to: fraud/topic-193
+  - from: catalog/topic-244
+    to: fraud/fraud-gateway-8
+  - from: fraud/fraud-gateway-6
+    to: label/api-482
+  - from: fraud/topic-110
+    to: fraud/fraud-worker-2
+  - from: fraud/fraud-engine-1
+    to: fraud/topic-161
+  - from: fraud/fraud-adapter-9
+    to: fraud/api-346
+  - from: fraud/fraud-worker-0
+    to: tracking/api-87
+  - from: fraud/fraud-service-3
+    to: loyalty/api-357
+  - from: fraud/fraud-engine-1
+    to: tracking/api-483
+  - from: fraud/fraud-service-3
+    to: fraud/api-348
+  - from: fraud/fraud-worker-2
+    to: fraud/topic-91
+  - from: fraud/fraud-adapter-9
+    to: fraud/topic-91
+  - from: fraud/fraud-worker-2
+    to: fraud/api-338
+  - from: fraud/fraud-gateway-8
+    to: fraud/topic-235
+  - from: fraud/fraud-gateway-4
+    to: fraud/api-345
+  - from: fraud/fraud-adapter-5
+    to: notify/api-395
+  - from: fraud/fraud-worker-2
+    to: stock/api-543
+  - from: fraud/fraud-sync-7
+    to: fraud/api-338
+  - from: fraud/fraud-sync-7
+    to: notify/api-396
+  - from: fraud/topic-161
+    to: fraud/fraud-worker-2
+  - from: fraud/fraud-gateway-6
+    to: fraud/topic-110
+  - from: fraud/fraud-service-3
+    to: fraud/api-340
+  - from: fraud/fraud-gateway-6
+    to: fraud/api-342
+  - from: fraud/fraud-gateway-8
+    to: notify/api-397
+  - from: fraud/fraud-sync-7
+    to: cart/api-373
+  - from: fraud/fraud-worker-0
+    to: fraud/api-346
+  - from: fraud/fraud-worker-11
+    to: fraud/api-342
+  - from: fraud/fraud-gateway-4
+    to: stock/api-138
+  - from: fraud/fraud-gateway-6
+    to: session/api-199
+  - from: fraud/fraud-service-10
+    to: fraud/api-342
+  - from: fraud/fraud-sync-7
+    to: fraud/api-340
+  - from: fraud/fraud-worker-0
+    to: stock/api-550
+  - from: refund/topic-188
+    to: fraud/fraud-gateway-8
+  - from: fraud/fraud-adapter-9
+    to: fraud/topic-161
+  - from: fraud/fraud-service-3
+    to: fraud/api-339
+  - from: fraud/fraud-service-3
+    to: label/api-73
+  - from: fraud/fraud-gateway-6
+    to: cart/api-365
+  - from: fraud/fraud-gateway-6
+    to: fraud/api-345
+  - from: fraud/fraud-gateway-6
+    to: pricing/api-522
+  - from: fraud/fraud-gateway-4
+    to: fraud/topic-91
+  - from: fraud/fraud-adapter-9
+    to: fraud/api-340
+  - from: fraud/fraud-engine-1
+    to: checkout/api-380
+  - from: fraud/fraud-worker-2
+    to: cart/api-369
+  - from: fraud/fraud-engine-1
+    to: notify/api-395
+  - from: fraud/topic-235
+    to: fraud/fraud-gateway-6
+  - from: fraud/topic-161
+    to: fraud/fraud-adapter-9
+  - from: stock/topic-157
+    to: fraud/fraud-engine-1
+  - from: fraud/fraud-worker-0
+    to: label/api-79
+  - from: fraud/fraud-adapter-5
+    to: fraud/api-345
+  - from: fraud/fraud-engine-1
+    to: fraud/api-343
+  - from: fraud/fraud-gateway-4
+    to: pricing/api-113
+  - from: fraud/fraud-adapter-5
+    to: fraud/topic-161
+  - from: fraud/fraud-gateway-4
+    to: fraud/api-344

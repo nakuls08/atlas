@@ -1,0 +1,220 @@
+domain:
+  id: promo
+  name: Promo
+  department: identity
+  owningTeam: team-promo
+  reviewedAt: 2026-07-01
+  reviewedBy: pe
+systems:
+  - id: promo/sys-0
+    name: promo system 0
+  - id: promo/sys-1
+    name: promo system 1
+services:
+  - id: promo/promo-gateway-0
+    name: promo-gateway-0
+    owningTeam: team-promo
+    system: promo/sys-0
+  - id: promo/promo-gateway-1
+    name: promo-gateway-1
+    owningTeam: team-promo
+  - id: promo/promo-service-2
+    name: promo-service-2
+    owningTeam: team-promo
+    system: promo/sys-0
+  - id: promo/promo-adapter-3
+    name: promo-adapter-3
+    owningTeam: team-promo
+apis:
+  - id: promo/api-244
+    name: promo-gateway-0 API 244
+    hostedBy: promo/promo-gateway-0
+    style: gRPC
+  - id: promo/api-245
+    name: promo-gateway-1 API 245
+    hostedBy: promo/promo-gateway-1
+    style: GraphQL
+  - id: promo/api-246
+    name: promo-service-2 API 246
+    hostedBy: promo/promo-service-2
+    style: GraphQL
+  - id: promo/api-247
+    name: promo-adapter-3 API 247
+    hostedBy: promo/promo-adapter-3
+    style: REST
+topics:
+  - id: promo/topic-1
+    name: promo.event-1.v1
+    ownedBy: promo/promo-service-2
+    cluster: identity-kafka
+  - id: promo/topic-8
+    name: promo.event-8.v1
+    ownedBy: promo/promo-gateway-0
+    cluster: identity-kafka
+  - id: promo/topic-69
+    name: promo.event-69.v1
+    ownedBy: promo/promo-adapter-3
+    cluster: identity-kafka
+  - id: promo/topic-158
+    name: promo.event-158.v1
+    ownedBy: promo/promo-service-2
+    cluster: identity-kafka
+  - id: promo/topic-230
+    name: promo.event-230.v1
+    ownedBy: promo/promo-adapter-3
+    cluster: identity-kafka
+channels: []
+datastores:
+  - id: promo/store-2
+    name: promo-db-2
+    technology: postgres
+    ownedBy: promo/promo-adapter-3
+  - id: promo/store-24
+    name: promo-db-24
+    technology: redis
+    ownedBy: promo/promo-service-2
+connections:
+  - from: promo/promo-service-2
+    to: carrier/auth-api
+  - from: promo/promo-gateway-1
+    to: loyalty/api-362
+  - from: returns/topic-166
+    to: promo/promo-service-2
+  - from: promo/promo-gateway-1
+    to: loyalty/api-353
+  - from: promo/promo-service-2
+    to: promo/topic-158
+  - from: promo/promo-gateway-0
+    to: promo/api-244
+  - from: promo/promo-gateway-1
+    to: promo/api-244
+  - from: promo/promo-service-2
+    to: promo/api-246
+  - from: promo/promo-service-2
+    to: dispatch/api-282
+  - from: chat/topic-46
+    to: promo/promo-service-2
+  - from: promo/promo-gateway-0
+    to: promo/api-247
+  - from: promo/promo-service-2
+    to: search/api-224
+  - from: promo/promo-adapter-3
+    to: fraud/api-344
+  - from: promo/promo-adapter-3
+    to: promo/api-244
+  - from: promo/promo-gateway-1
+    to: promo/topic-8
+  - from: promo/promo-gateway-1
+    to: promo/topic-69
+  - from: promo/promo-gateway-1
+    to: checkout/api-378
+  - from: promo/promo-adapter-3
+    to: dispatch/api-289
+  - from: promo/promo-gateway-0
+    to: cart/api-367
+  - from: promo/promo-adapter-3
+    to: promo/api-246
+  - from: review/topic-162
+    to: promo/promo-gateway-1
+  - from: promo/promo-gateway-0
+    to: promo/topic-8
+  - from: promo/promo-service-2
+    to: ticket/api-249
+  - from: promo/promo-service-2
+    to: promo/topic-69
+  - from: promo/promo-adapter-3
+    to: promo/api-247
+  - from: promo/promo-service-2
+    to: review/api-242
+  - from: promo/promo-adapter-3
+    to: review/api-238
+  - from: promo/promo-service-2
+    to: promo/api-244
+  - from: promo/topic-8
+    to: promo/promo-adapter-3
+  - from: promo/promo-gateway-1
+    to: promo/api-246
+  - from: promo/promo-gateway-0
+    to: stock/api-149
+  - from: promo/promo-adapter-3
+    to: ticket/api-253
+  - from: promo/promo-gateway-0
+    to: loyalty/api-352
+  - from: promo/promo-gateway-1
+    to: review/api-241
+  - from: promo/promo-gateway-0
+    to: promo/topic-69
+  - from: promo/promo-adapter-3
+    to: routing/api-274
+  - from: promo/promo-adapter-3
+    to: review/api-241
+  - from: promo/promo-adapter-3
+    to: routing/api-267
+  - from: promo/promo-gateway-0
+    to: routing/api-273
+  - from: promo/promo-gateway-0
+    to: promo/api-245
+  - from: promo/promo-gateway-0
+    to: promo/api-246
+  - from: promo/promo-adapter-3
+    to: promo/topic-1
+  - from: review/topic-56
+    to: promo/promo-gateway-1
+  - from: promo/promo-gateway-1
+    to: review/api-234
+  - from: promo/promo-gateway-0
+    to: promo/topic-158
+  - from: promo/promo-service-2
+    to: search/api-219
+  - from: promo/promo-service-2
+    to: loyalty/api-350
+  - from: promo/promo-service-2
+    to: promo/topic-230
+  - from: promo/promo-gateway-0
+    to: search/api-227
+  - from: promo/promo-adapter-3
+    to: promo/topic-230
+  - from: promo/promo-service-2
+    to: payment/api-564
+  - from: promo/promo-adapter-3
+    to: search/api-225
+  - from: promo/promo-gateway-0
+    to: review/api-241
+  - from: promo/promo-gateway-1
+    to: ledger/api-56
+  - from: promo/promo-adapter-3
+    to: pricing/api-113
+  - from: promo/promo-gateway-0
+    to: promo/topic-230
+  - from: promo/topic-1
+    to: promo/promo-gateway-1
+  - from: promo/promo-adapter-3
+    to: promo/api-245
+  - from: promo/promo-gateway-0
+    to: cart/api-366
+  - from: promo/promo-service-2
+    to: promo/api-247
+  - from: promo/promo-gateway-1
+    to: promo/api-245
+  - from: promo/promo-gateway-1
+    to: dispatch/api-287
+  - from: promo/promo-gateway-0
+    to: search/api-223
+  - from: promo/promo-gateway-1
+    to: promo/topic-1
+  - from: promo/promo-adapter-3
+    to: routing/api-272
+  - from: promo/promo-gateway-1
+    to: promo/api-247
+  - from: promo/topic-8
+    to: promo/promo-gateway-1
+  - from: promo/promo-gateway-0
+    to: invoice/api-50
+  - from: promo/promo-service-2
+    to: dispatch/api-290
+  - from: promo/promo-adapter-3
+    to: promo/topic-8
+  - from: promo/promo-adapter-3
+    to: session/api-199
+  - from: review/topic-14
+    to: promo/promo-gateway-0

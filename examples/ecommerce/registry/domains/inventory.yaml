@@ -1,0 +1,70 @@
+domain:
+  id: inventory
+  name: Inventory
+  department: fulfilment
+  owningTeam: team-inventory
+  reviewedAt: 2026-08-15
+  reviewedBy: maria
+services:
+  - id: inventory/inventory-service
+    name: inventory-service
+    owningTeam: team-inventory
+  - id: inventory/availability
+    name: availability
+    owningTeam: team-inventory
+  - id: inventory/allocation-engine
+    name: allocation-engine
+    owningTeam: team-inventory
+apis:
+  - id: inventory/inventory-api
+    name: Inventory API
+    hostedBy: inventory/inventory-service
+    style: REST
+    audience: internal
+  - id: inventory/availability-api
+    name: Availability API
+    hostedBy: inventory/availability
+    style: gRPC
+    audience: internal
+  - id: inventory/allocation-api
+    name: Allocation API
+    hostedBy: inventory/allocation-engine
+    style: REST
+    audience: internal
+topics:
+  - id: inventory/inventory-changed
+    name: inventory.changed.v1
+    ownedBy: inventory/inventory-service
+    cluster: fulfilment-events
+  - id: inventory/inventory-reserved
+    name: inventory.reserved.v1
+    ownedBy: inventory/inventory-service
+    cluster: fulfilment-events
+datastores:
+  - id: inventory/inventory-service-db
+    name: inventory-service-db
+    technology: postgres
+    ownedBy: inventory/inventory-service
+  - id: inventory/availability-db
+    name: availability-db
+    technology: redis
+    ownedBy: inventory/availability
+connections:
+  - from: inventory/inventory-service
+    to: inventory/inventory-changed
+  - from: inventory/inventory-service
+    to: inventory/inventory-reserved
+  - from: orders/order-placed
+    to: inventory/inventory-service
+  - from: orders/order-cancelled
+    to: inventory/inventory-service
+  - from: returns/goods-received
+    to: inventory/inventory-service
+  - from: returns/return-received
+    to: inventory/inventory-service
+  - from: inventory/inventory-changed
+    to: inventory/availability
+  - from: inventory/allocation-engine
+    to: inventory/inventory-api
+  - from: inventory/allocation-engine
+    to: warehouse/locations-api

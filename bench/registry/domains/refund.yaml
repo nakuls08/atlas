@@ -1,0 +1,503 @@
+domain:
+  id: refund
+  name: Refund
+  department: logistics
+  owningTeam: team-refund
+  reviewedAt: 2025-11-01
+  reviewedBy: pe
+systems:
+  - id: refund/sys-0
+    name: refund system 0
+  - id: refund/sys-1
+    name: refund system 1
+  - id: refund/sys-2
+    name: refund system 2
+  - id: refund/sys-3
+    name: refund system 3
+services:
+  - id: refund/refund-adapter-0
+    name: refund-adapter-0
+    owningTeam: team-refund
+    system: refund/sys-3
+  - id: refund/refund-engine-1
+    name: refund-engine-1
+    owningTeam: team-refund
+    system: refund/sys-2
+  - id: refund/refund-gateway-2
+    name: refund-gateway-2
+    owningTeam: team-refund
+  - id: refund/refund-adapter-3
+    name: refund-adapter-3
+    owningTeam: team-refund
+    system: refund/sys-0
+  - id: refund/refund-sync-4
+    name: refund-sync-4
+    owningTeam: team-refund
+    system: refund/sys-0
+  - id: refund/refund-service-5
+    name: refund-service-5
+    owningTeam: team-refund
+  - id: refund/refund-gateway-6
+    name: refund-gateway-6
+    owningTeam: team-refund
+    system: refund/sys-1
+  - id: refund/refund-service-7
+    name: refund-service-7
+    owningTeam: team-refund
+  - id: refund/refund-service-8
+    name: refund-service-8
+    owningTeam: team-refund
+    system: refund/sys-0
+  - id: refund/refund-adapter-9
+    name: refund-adapter-9
+    owningTeam: team-refund
+    status: planned
+  - id: refund/refund-manager-10
+    name: refund-manager-10
+    owningTeam: team-refund
+    system: refund/sys-3
+  - id: refund/refund-manager-11
+    name: refund-manager-11
+    owningTeam: team-refund
+    system: refund/sys-3
+  - id: refund/refund-engine-12
+    name: refund-engine-12
+    owningTeam: team-refund
+    system: refund/sys-3
+  - id: refund/refund-engine-13
+    name: refund-engine-13
+    owningTeam: team-refund
+    system: refund/sys-0
+  - id: refund/refund-engine-14
+    name: refund-engine-14
+    owningTeam: team-refund
+  - id: refund/refund-adapter-15
+    name: refund-adapter-15
+    owningTeam: team-refund
+    system: refund/sys-2
+  - id: refund/refund-sync-16
+    name: refund-sync-16
+    owningTeam: team-refund
+    system: refund/sys-1
+  - id: refund/refund-manager-17
+    name: refund-manager-17
+    owningTeam: team-refund
+    system: refund/sys-2
+  - id: refund/refund-worker-18
+    name: refund-worker-18
+    owningTeam: team-refund
+apis:
+  - id: refund/api-31
+    name: refund-adapter-3 API 31
+    hostedBy: refund/refund-adapter-3
+    style: gRPC
+  - id: refund/api-32
+    name: refund-sync-4 API 32
+    hostedBy: refund/refund-sync-4
+    style: GraphQL
+  - id: refund/api-33
+    name: refund-service-5 API 33
+    hostedBy: refund/refund-service-5
+    style: REST
+  - id: refund/api-34
+    name: refund-gateway-6 API 34
+    hostedBy: refund/refund-gateway-6
+    style: gRPC
+  - id: refund/api-35
+    name: refund-service-7 API 35
+    hostedBy: refund/refund-service-7
+    style: REST
+  - id: refund/api-36
+    name: refund-service-8 API 36
+    hostedBy: refund/refund-service-8
+    style: REST
+  - id: refund/api-37
+    name: refund-adapter-9 API 37
+    hostedBy: refund/refund-adapter-9
+    style: REST
+  - id: refund/api-38
+    name: refund-manager-10 API 38
+    hostedBy: refund/refund-manager-10
+    style: gRPC
+  - id: refund/api-39
+    name: refund-manager-11 API 39
+    hostedBy: refund/refund-manager-11
+    style: gRPC
+  - id: refund/api-40
+    name: refund-engine-12 API 40
+    hostedBy: refund/refund-engine-12
+    style: gRPC
+  - id: refund/api-41
+    name: refund-engine-13 API 41
+    hostedBy: refund/refund-engine-13
+    style: REST
+  - id: refund/api-42
+    name: refund-engine-14 API 42
+    hostedBy: refund/refund-engine-14
+    style: gRPC
+  - id: refund/api-43
+    name: refund-adapter-15 API 43
+    hostedBy: refund/refund-adapter-15
+    style: REST
+  - id: refund/api-44
+    name: refund-sync-16 API 44
+    hostedBy: refund/refund-sync-16
+    style: REST
+  - id: refund/api-45
+    name: refund-manager-17 API 45
+    hostedBy: refund/refund-manager-17
+    style: REST
+  - id: refund/api-46
+    name: refund-worker-18 API 46
+    hostedBy: refund/refund-worker-18
+    style: REST
+  - id: refund/api-428
+    name: refund-adapter-0 API 428
+    hostedBy: refund/refund-adapter-0
+    style: REST
+  - id: refund/api-429
+    name: refund-engine-1 API 429
+    hostedBy: refund/refund-engine-1
+    style: REST
+  - id: refund/api-430
+    name: refund-gateway-2 API 430
+    hostedBy: refund/refund-gateway-2
+    style: REST
+  - id: refund/api-431
+    name: refund-adapter-3 API 431
+    hostedBy: refund/refund-adapter-3
+    style: REST
+  - id: refund/api-432
+    name: refund-sync-4 API 432
+    hostedBy: refund/refund-sync-4
+    style: gRPC
+  - id: refund/api-433
+    name: refund-service-5 API 433
+    hostedBy: refund/refund-service-5
+    style: REST
+  - id: refund/api-434
+    name: refund-gateway-6 API 434
+    hostedBy: refund/refund-gateway-6
+    style: GraphQL
+  - id: refund/api-435
+    name: refund-service-7 API 435
+    hostedBy: refund/refund-service-7
+    style: GraphQL
+  - id: refund/api-436
+    name: refund-service-8 API 436
+    hostedBy: refund/refund-service-8
+    style: GraphQL
+  - id: refund/api-437
+    name: refund-adapter-9 API 437
+    hostedBy: refund/refund-adapter-9
+    style: REST
+  - id: refund/api-438
+    name: refund-manager-10 API 438
+    hostedBy: refund/refund-manager-10
+    style: REST
+  - id: refund/api-439
+    name: refund-manager-11 API 439
+    hostedBy: refund/refund-manager-11
+    style: REST
+  - id: refund/api-440
+    name: refund-engine-12 API 440
+    hostedBy: refund/refund-engine-12
+    style: REST
+  - id: refund/api-441
+    name: refund-engine-13 API 441
+    hostedBy: refund/refund-engine-13
+    style: GraphQL
+  - id: refund/api-442
+    name: refund-engine-14 API 442
+    hostedBy: refund/refund-engine-14
+    style: gRPC
+  - id: refund/api-443
+    name: refund-adapter-15 API 443
+    hostedBy: refund/refund-adapter-15
+    style: gRPC
+  - id: refund/api-444
+    name: refund-sync-16 API 444
+    hostedBy: refund/refund-sync-16
+    style: gRPC
+  - id: refund/api-445
+    name: refund-manager-17 API 445
+    hostedBy: refund/refund-manager-17
+    style: REST
+  - id: refund/api-446
+    name: refund-worker-18 API 446
+    hostedBy: refund/refund-worker-18
+    style: REST
+topics:
+  - id: refund/topic-10
+    name: refund.event-10.v1
+    ownedBy: refund/refund-sync-16
+    cluster: logistics-kafka
+  - id: refund/topic-22
+    name: refund.event-22.v1
+    ownedBy: refund/refund-sync-16
+    cluster: logistics-kafka
+  - id: refund/topic-88
+    name: refund.event-88.v1
+    ownedBy: refund/refund-service-7
+    cluster: logistics-kafka
+  - id: refund/topic-97
+    name: refund.event-97.v1
+    ownedBy: refund/refund-service-5
+    cluster: logistics-kafka
+  - id: refund/topic-118
+    name: refund.event-118.v1
+    ownedBy: refund/refund-adapter-3
+    cluster: logistics-kafka
+  - id: refund/topic-188
+    name: refund.event-188.v1
+    ownedBy: refund/refund-adapter-9
+    cluster: logistics-kafka
+  - id: refund/topic-201
+    name: refund.event-201.v1
+    ownedBy: refund/refund-gateway-2
+    cluster: logistics-kafka
+  - id: refund/topic-216
+    name: refund.event-216.v1
+    ownedBy: refund/refund-worker-18
+    cluster: logistics-kafka
+  - id: refund/topic-221
+    name: refund.event-221.v1
+    ownedBy: refund/refund-manager-11
+    cluster: logistics-kafka
+channels:
+  - id: refund/channel-12
+    name: EDI feed 12
+    technology: SQS
+    ownedBy: refund/refund-gateway-6
+datastores:
+  - id: refund/store-17
+    name: refund-db-17
+    technology: postgres
+    ownedBy: refund/refund-manager-11
+  - id: refund/store-22
+    name: refund-db-22
+    technology: redis
+    ownedBy: refund/refund-adapter-0
+  - id: refund/store-34
+    name: refund-db-34
+    technology: dynamodb
+    ownedBy: refund/refund-manager-10
+connections:
+  - from: invoice/topic-173
+    to: refund/refund-engine-12
+  - from: invoice/topic-173
+    to: refund/refund-engine-13
+  - from: invoice/topic-173
+    to: refund/refund-engine-14
+  - from: invoice/topic-173
+    to: refund/refund-adapter-15
+  - from: invoice/topic-173
+    to: refund/refund-sync-16
+  - from: invoice/topic-173
+    to: refund/refund-manager-17
+  - from: invoice/topic-173
+    to: refund/refund-worker-18
+  - from: refund/refund-engine-1
+    to: carrier/feature-flags-api
+  - from: refund/refund-service-7
+    to: carrier/auth-api
+  - from: refund/refund-engine-14
+    to: carrier/notify-api
+  - from: refund/refund-adapter-15
+    to: carrier/auth-api
+  - from: refund/refund-adapter-15
+    to: refund/topic-118
+  - from: refund/refund-manager-10
+    to: refund/api-36
+  - from: refund/refund-adapter-15
+    to: catalog/api-498
+  - from: refund/refund-gateway-6
+    to: pricing/api-531
+  - from: refund/refund-adapter-0
+    to: refund/api-37
+  - from: refund/refund-worker-18
+    to: refund/topic-22
+  - from: refund/refund-manager-11
+    to: review/api-234
+  - from: refund/refund-sync-4
+    to: refund/topic-221
+  - from: refund/refund-adapter-9
+    to: catalog/api-98
+  - from: refund/topic-221
+    to: refund/refund-adapter-0
+  - from: refund/refund-manager-10
+    to: checkout/api-379
+  - from: refund/refund-engine-1
+    to: refund/api-442
+  - from: refund/refund-gateway-6
+    to: refund/topic-216
+  - from: refund/refund-gateway-6
+    to: refund/topic-188
+  - from: refund/refund-engine-12
+    to: refund/topic-118
+  - from: refund/refund-adapter-9
+    to: invoice/api-448
+  - from: refund/refund-service-8
+    to: refund/api-439
+  - from: review/topic-162
+    to: refund/refund-manager-17
+  - from: catalog/topic-189
+    to: refund/refund-sync-16
+  - from: refund/refund-manager-11
+    to: pricing/api-126
+  - from: refund/refund-adapter-3
+    to: refund/api-442
+  - from: refund/refund-engine-1
+    to: label/api-477
+  - from: refund/refund-engine-12
+    to: refund/topic-188
+  - from: refund/refund-manager-10
+    to: ledger/api-57
+  - from: refund/topic-221
+    to: refund/refund-worker-18
+  - from: refund/refund-worker-18
+    to: stock/api-143
+  - from: invoice/topic-177
+    to: refund/refund-gateway-2
+  - from: refund/refund-gateway-2
+    to: refund/api-440
+  - from: refund/refund-service-5
+    to: refund/api-431
+  - from: refund/refund-adapter-3
+    to: refund/topic-188
+  - from: refund/refund-worker-18
+    to: refund/topic-88
+  - from: refund/refund-sync-4
+    to: refund/api-432
+  - from: refund/refund-engine-13
+    to: refund/topic-10
+  - from: refund/refund-adapter-0
+    to: refund/api-34
+  - from: ledger/topic-111
+    to: refund/refund-gateway-6
+  - from: refund/refund-gateway-2
+    to: refund/api-437
+  - from: refund/refund-manager-10
+    to: refund/api-43
+  - from: refund/refund-adapter-0
+    to: refund/api-443
+  - from: refund/refund-service-8
+    to: refund/topic-118
+  - from: refund/refund-manager-11
+    to: ledger/api-466
+  - from: refund/refund-engine-1
+    to: refund/topic-88
+  - from: invoice/topic-185
+    to: refund/refund-engine-13
+  - from: refund/refund-worker-18
+    to: refund/api-432
+  - from: refund/refund-sync-4
+    to: refund/api-440
+  - from: refund/refund-worker-18
+    to: promo/api-246
+  - from: refund/refund-engine-13
+    to: invoice/api-48
+  - from: refund/refund-sync-16
+    to: pricing/api-522
+  - from: refund/refund-engine-13
+    to: ledger/api-65
+  - from: refund/refund-service-7
+    to: refund/topic-118
+  - from: refund/refund-gateway-2
+    to: order/api-5
+  - from: refund/refund-worker-18
+    to: pricing/api-122
+  - from: refund/refund-sync-4
+    to: ledger/api-458
+  - from: refund/refund-gateway-6
+    to: refund/api-431
+  - from: refund/refund-service-7
+    to: refund/topic-88
+  - from: refund/refund-engine-13
+    to: refund/api-438
+  - from: refund/refund-engine-12
+    to: review/api-236
+  - from: refund/refund-gateway-2
+    to: refund/topic-188
+  - from: refund/refund-manager-11
+    to: search/api-230
+  - from: refund/refund-engine-1
+    to: refund/topic-22
+  - from: refund/topic-216
+    to: refund/refund-manager-17
+  - from: refund/refund-manager-17
+    to: refund/api-436
+  - from: refund/refund-service-5
+    to: refund/topic-188
+  - from: refund/refund-service-5
+    to: stock/api-543
+  - from: refund/refund-adapter-0
+    to: promo/api-244
+  - from: returns/topic-116
+    to: refund/refund-service-7
+  - from: refund/refund-service-7
+    to: invoice/api-449
+  - from: refund/refund-engine-12
+    to: ledger/api-462
+  - from: refund/refund-service-8
+    to: refund/api-31
+  - from: refund/refund-service-8
+    to: search/api-231
+  - from: refund/refund-sync-16
+    to: consent/api-205
+  - from: refund/refund-adapter-9
+    to: refund/topic-216
+  - from: search/topic-176
+    to: refund/refund-manager-10
+  - from: refund/refund-manager-17
+    to: review/api-238
+  - from: refund/topic-221
+    to: refund/refund-engine-13
+  - from: promo/topic-1
+    to: refund/refund-adapter-9
+  - from: refund/refund-engine-13
+    to: ledger/api-66
+  - from: refund/refund-engine-1
+    to: refund/api-42
+  - from: refund/refund-worker-18
+    to: refund/api-428
+  - from: refund/refund-adapter-9
+    to: refund/api-440
+  - from: refund/refund-sync-16
+    to: promo/api-247
+  - from: refund/refund-manager-10
+    to: loyalty/api-359
+  - from: search/topic-176
+    to: refund/refund-adapter-3
+  - from: refund/refund-sync-16
+    to: stock/api-152
+  - from: refund/refund-engine-13
+    to: search/api-228
+  - from: refund/refund-engine-13
+    to: invoice/api-451
+  - from: refund/refund-worker-18
+    to: refund/api-439
+  - from: refund/topic-221
+    to: refund/refund-adapter-9
+  - from: refund/refund-adapter-9
+    to: refund/topic-201
+  - from: label/topic-131
+    to: refund/refund-service-5
+  - from: refund/refund-service-5
+    to: refund/api-40
+  - from: refund/topic-88
+    to: refund/refund-gateway-2
+  - from: refund/refund-engine-13
+    to: refund/api-33
+  - from: refund/refund-service-5
+    to: refund/topic-22
+  - from: refund/refund-adapter-9
+    to: refund/topic-22
+  - from: refund/refund-service-5
+    to: refund/api-430
+  - from: refund/refund-service-8
+    to: search/api-220
+  - from: refund/refund-adapter-0
+    to: refund/api-439
+  - from: invoice/topic-185
+    to: refund/refund-service-7

@@ -1,0 +1,110 @@
+domain:
+  id: storefront
+  name: Storefront
+  department: digital
+  owningTeam: team-web
+  reviewedAt: 2026-08-15
+  reviewedBy: amara
+services:
+  - id: storefront/web-storefront
+    name: web-storefront
+    owningTeam: team-web
+    runtime: next.js
+  - id: storefront/storefront-bff
+    name: storefront-bff
+    owningTeam: team-web
+    runtime: node
+  - id: storefront/mobile-bff
+    name: mobile-bff
+    owningTeam: team-web
+    runtime: kotlin
+  - id: storefront/seo-renderer
+    name: seo-renderer
+    owningTeam: team-web
+apis:
+  - id: storefront/storefront-web
+    name: Storefront Web
+    hostedBy: storefront/web-storefront
+    style: REST
+    audience: public
+  - id: storefront/storefront-graphql
+    name: Storefront GraphQL
+    hostedBy: storefront/storefront-bff
+    style: GraphQL
+    audience: public
+  - id: storefront/mobile-api
+    name: Mobile API
+    hostedBy: storefront/mobile-bff
+    style: REST
+    audience: public
+  - id: storefront/prerender-api
+    name: Prerender API
+    hostedBy: storefront/seo-renderer
+    style: REST
+    audience: internal
+datastores:
+  - id: storefront/seo-renderer-db
+    name: seo-renderer-db
+    technology: redis
+    ownedBy: storefront/seo-renderer
+connections:
+  - from: storefront/web-storefront
+    to: storefront/storefront-graphql
+  - from: storefront/web-storefront
+    to: content/content-api
+  - from: storefront/web-storefront
+    to: runtime/flags-api
+  - from: storefront/web-storefront
+    to: events/collect-api
+  - from: storefront/web-storefront
+    to: edge/auth-api
+  - from: storefront/storefront-bff
+    to: catalog/catalog-read-api
+  - from: storefront/storefront-bff
+    to: search/search-api
+  - from: storefront/storefront-bff
+    to: pricing/price-api
+  - from: storefront/storefront-bff
+    to: cart/cart-api
+  - from: storefront/storefront-bff
+    to: personalization/recommendations-api
+  - from: storefront/storefront-bff
+    to: accounts/profile-api
+  - from: storefront/storefront-bff
+    to: reviews/reviews-api
+  - from: storefront/storefront-bff
+    to: promotions/promotion-eval-api
+  - from: storefront/storefront-bff
+    to: inventory/availability-api
+  - from: storefront/storefront-bff
+    to: shipping/delivery-promise-api
+  - from: storefront/storefront-bff
+    to: loyalty/loyalty-api
+  - from: storefront/storefront-bff
+    to: checkout/checkout-api
+  - from: storefront/storefront-bff
+    to: edge/auth-api
+  - from: storefront/mobile-bff
+    to: catalog/catalog-read-api
+  - from: storefront/mobile-bff
+    to: search/search-api
+  - from: storefront/mobile-bff
+    to: cart/cart-api
+  - from: storefront/mobile-bff
+    to: checkout/checkout-api
+  - from: storefront/mobile-bff
+    to: orders/order-api-v1
+  - from: storefront/mobile-bff
+    to: orders/order-history-api
+  - from: storefront/mobile-bff
+    to: accounts/profile-api
+  - from: storefront/mobile-bff
+    to: loyalty/loyalty-api
+  - from: storefront/mobile-bff
+    to: messaging/push-api
+  - from: storefront/mobile-bff
+    to: runtime/flags-api
+  - from: storefront/mobile-bff
+    to: edge/auth-api
+  - from: storefront/seo-renderer
+    to: storefront/storefront-web

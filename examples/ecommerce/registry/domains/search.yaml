@@ -1,0 +1,76 @@
+domain:
+  id: search
+  name: Search
+  department: digital
+  owningTeam: team-search
+  reviewedAt: 2026-08-15
+  reviewedBy: amara
+services:
+  - id: search/search-service
+    name: search-service
+    owningTeam: team-search
+  - id: search/search-indexer
+    name: search-indexer
+    owningTeam: team-search
+  - id: search/query-understanding
+    name: query-understanding
+    owningTeam: team-search
+  - id: search/autocomplete
+    name: autocomplete
+    owningTeam: team-search
+  - id: search/merchandising-rules
+    name: merchandising-rules
+    owningTeam: team-search
+apis:
+  - id: search/search-api
+    name: Search API
+    hostedBy: search/search-service
+    style: REST
+    audience: internal
+  - id: search/query-nlu-api
+    name: Query NLU API
+    hostedBy: search/query-understanding
+    style: gRPC
+    audience: internal
+  - id: search/autocomplete-api
+    name: Autocomplete API
+    hostedBy: search/autocomplete
+    style: REST
+    audience: internal
+  - id: search/merchandising-api
+    name: Merchandising API
+    hostedBy: search/merchandising-rules
+    style: REST
+    audience: internal
+datastores:
+  - id: search/search-indexer-db
+    name: search-indexer-db
+    technology: elasticsearch
+    ownedBy: search/search-indexer
+  - id: search/autocomplete-db
+    name: autocomplete-db
+    technology: redis
+    ownedBy: search/autocomplete
+  - id: search/merchandising-rules-db
+    name: merchandising-rules-db
+    technology: postgres
+    ownedBy: search/merchandising-rules
+connections:
+  - from: search/search-service
+    to: search/query-nlu-api
+  - from: search/search-service
+    to: search/autocomplete-api
+  - from: search/search-service
+    to: search/merchandising-api
+  - from: search/search-service
+    to: search/search-indexer-db
+  - from: catalog/product-updated
+    to: search/search-indexer
+  - from: pricing/price-changed
+    to: search/search-indexer
+  - from: inventory/inventory-changed
+    to: search/search-indexer
+  - from: reviews/review-published
+    to: search/search-indexer
+  - from: search/query-understanding
+    to: ml/model-serving-api

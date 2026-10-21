@@ -1,0 +1,8 @@
+domain: { id: identity, name: Identity, department: platform, owningTeam: team-identity,
+          reviewedAt: 2026-09-01, reviewedBy: lee }
+services:
+  - { id: identity/auth-service, name: auth-service, owningTeam: team-identity, role: platform }
+apis:
+  - { id: identity/auth-api, name: Auth API, hostedBy: identity/auth-service, style: REST, audience: internal }
+datastores:
+  - { id: identity/user-store, name: user-store, technology: postgres, ownedBy: identity/auth-service }

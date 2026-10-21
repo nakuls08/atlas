@@ -1,0 +1,431 @@
+domain:
+  id: warehouse
+  name: Warehouse
+  department: platform
+  owningTeam: team-warehouse
+  reviewedAt: 2026-07-01
+  reviewedBy: pe
+systems:
+  - id: warehouse/sys-0
+    name: warehouse system 0
+  - id: warehouse/sys-1
+    name: warehouse system 1
+  - id: warehouse/sys-2
+    name: warehouse system 2
+  - id: warehouse/sys-3
+    name: warehouse system 3
+  - id: warehouse/sys-4
+    name: warehouse system 4
+services:
+  - id: warehouse/warehouse-sync-0
+    name: warehouse-sync-0
+    owningTeam: team-warehouse
+    system: warehouse/sys-2
+  - id: warehouse/warehouse-worker-1
+    name: warehouse-worker-1
+    owningTeam: team-warehouse
+    system: warehouse/sys-2
+  - id: warehouse/warehouse-service-2
+    name: warehouse-service-2
+    owningTeam: team-warehouse
+  - id: warehouse/warehouse-manager-3
+    name: warehouse-manager-3
+    owningTeam: team-warehouse
+    system: warehouse/sys-2
+  - id: warehouse/warehouse-gateway-4
+    name: warehouse-gateway-4
+    owningTeam: team-warehouse
+    system: warehouse/sys-2
+  - id: warehouse/warehouse-engine-5
+    name: warehouse-engine-5
+    owningTeam: team-warehouse
+  - id: warehouse/warehouse-manager-6
+    name: warehouse-manager-6
+    owningTeam: team-warehouse
+    system: warehouse/sys-4
+  - id: warehouse/warehouse-adapter-7
+    name: warehouse-adapter-7
+    owningTeam: team-warehouse
+    system: warehouse/sys-4
+    status: planned
+  - id: warehouse/warehouse-manager-8
+    name: warehouse-manager-8
+    owningTeam: team-warehouse
+  - id: warehouse/warehouse-service-9
+    name: warehouse-service-9
+    owningTeam: team-warehouse
+    system: warehouse/sys-4
+  - id: warehouse/warehouse-sync-10
+    name: warehouse-sync-10
+    owningTeam: team-warehouse
+  - id: warehouse/warehouse-worker-11
+    name: warehouse-worker-11
+    owningTeam: team-warehouse
+    system: warehouse/sys-2
+  - id: warehouse/warehouse-adapter-12
+    name: warehouse-adapter-12
+    owningTeam: team-warehouse
+  - id: warehouse/warehouse-adapter-13
+    name: warehouse-adapter-13
+    owningTeam: team-warehouse
+    system: warehouse/sys-0
+  - id: warehouse/warehouse-worker-14
+    name: warehouse-worker-14
+    owningTeam: team-warehouse
+  - id: warehouse/warehouse-service-15
+    name: warehouse-service-15
+    owningTeam: team-warehouse
+  - id: warehouse/warehouse-sync-16
+    name: warehouse-sync-16
+    owningTeam: team-warehouse
+  - id: warehouse/warehouse-service-17
+    name: warehouse-service-17
+    owningTeam: team-warehouse
+    system: warehouse/sys-0
+apis:
+  - id: warehouse/api-310
+    name: warehouse-sync-0 API 310
+    hostedBy: warehouse/warehouse-sync-0
+    style: GraphQL
+  - id: warehouse/api-311
+    name: warehouse-worker-1 API 311
+    hostedBy: warehouse/warehouse-worker-1
+    style: GraphQL
+  - id: warehouse/api-312
+    name: warehouse-service-2 API 312
+    hostedBy: warehouse/warehouse-service-2
+    style: REST
+  - id: warehouse/api-313
+    name: warehouse-manager-3 API 313
+    hostedBy: warehouse/warehouse-manager-3
+    style: GraphQL
+  - id: warehouse/api-314
+    name: warehouse-gateway-4 API 314
+    hostedBy: warehouse/warehouse-gateway-4
+    style: REST
+  - id: warehouse/api-315
+    name: warehouse-engine-5 API 315
+    hostedBy: warehouse/warehouse-engine-5
+    style: REST
+  - id: warehouse/api-316
+    name: warehouse-manager-6 API 316
+    hostedBy: warehouse/warehouse-manager-6
+    style: REST
+  - id: warehouse/api-317
+    name: warehouse-adapter-7 API 317
+    hostedBy: warehouse/warehouse-adapter-7
+    style: GraphQL
+  - id: warehouse/api-318
+    name: warehouse-manager-8 API 318
+    hostedBy: warehouse/warehouse-manager-8
+    style: REST
+  - id: warehouse/api-319
+    name: warehouse-service-9 API 319
+    hostedBy: warehouse/warehouse-service-9
+    style: REST
+  - id: warehouse/api-320
+    name: warehouse-sync-10 API 320
+    hostedBy: warehouse/warehouse-sync-10
+    style: REST
+  - id: warehouse/api-321
+    name: warehouse-worker-11 API 321
+    hostedBy: warehouse/warehouse-worker-11
+    style: GraphQL
+  - id: warehouse/api-322
+    name: warehouse-adapter-12 API 322
+    hostedBy: warehouse/warehouse-adapter-12
+    style: REST
+  - id: warehouse/api-323
+    name: warehouse-adapter-13 API 323
+    hostedBy: warehouse/warehouse-adapter-13
+    style: gRPC
+  - id: warehouse/api-324
+    name: warehouse-worker-14 API 324
+    hostedBy: warehouse/warehouse-worker-14
+    style: REST
+  - id: warehouse/api-325
+    name: warehouse-service-15 API 325
+    hostedBy: warehouse/warehouse-service-15
+    style: GraphQL
+  - id: warehouse/api-326
+    name: warehouse-sync-16 API 326
+    hostedBy: warehouse/warehouse-sync-16
+    style: REST
+  - id: warehouse/api-327
+    name: warehouse-service-17 API 327
+    hostedBy: warehouse/warehouse-service-17
+    style: GraphQL
+topics:
+  - id: warehouse/topic-23
+    name: warehouse.event-23.v1
+    ownedBy: warehouse/warehouse-adapter-12
+    cluster: platform-kafka
+  - id: warehouse/topic-42
+    name: warehouse.event-42.v1
+    ownedBy: warehouse/warehouse-service-15
+    cluster: platform-kafka
+  - id: warehouse/topic-138
+    name: warehouse.event-138.v1
+    ownedBy: warehouse/warehouse-sync-0
+    cluster: platform-kafka
+  - id: warehouse/topic-139
+    name: warehouse.event-139.v1
+    ownedBy: warehouse/warehouse-manager-6
+    cluster: platform-kafka
+  - id: warehouse/topic-152
+    name: warehouse.event-152.v1
+    ownedBy: warehouse/warehouse-service-15
+    cluster: platform-kafka
+  - id: warehouse/topic-211
+    name: warehouse.event-211.v1
+    ownedBy: warehouse/warehouse-service-9
+    cluster: platform-kafka
+  - id: warehouse/topic-217
+    name: warehouse.event-217.v1
+    ownedBy: warehouse/warehouse-adapter-12
+    cluster: platform-kafka
+  - id: warehouse/topic-246
+    name: warehouse.event-246.v1
+    ownedBy: warehouse/warehouse-sync-16
+    cluster: platform-kafka
+channels: []
+datastores:
+  - id: warehouse/store-4
+    name: warehouse-db-4
+    technology: redis
+    ownedBy: warehouse/warehouse-service-17
+  - id: warehouse/store-31
+    name: warehouse-db-31
+    technology: dynamodb
+    ownedBy: warehouse/warehouse-service-15
+  - id: warehouse/store-45
+    name: warehouse-db-45
+    technology: s3
+    ownedBy: warehouse/warehouse-worker-14
+  - id: warehouse/store-59
+    name: warehouse-db-59
+    technology: s3
+    ownedBy: warehouse/warehouse-adapter-7
+connections:
+  - from: warehouse/warehouse-sync-0
+    to: carrier/auth-api
+  - from: warehouse/warehouse-worker-1
+    to: carrier/auth-api
+  - from: warehouse/warehouse-engine-5
+    to: carrier/auth-api
+  - from: warehouse/warehouse-manager-6
+    to: carrier/auth-api
+  - from: warehouse/warehouse-manager-8
+    to: carrier/auth-api
+  - from: warehouse/warehouse-service-9
+    to: carrier/auth-api
+  - from: warehouse/warehouse-adapter-12
+    to: carrier/feature-flags-api
+  - from: warehouse/warehouse-worker-14
+    to: carrier/feature-flags-api
+  - from: warehouse/warehouse-sync-16
+    to: carrier/feature-flags-api
+  - from: warehouse/topic-211
+    to: warehouse/warehouse-service-2
+  - from: warehouse/warehouse-sync-10
+    to: warehouse/api-321
+  - from: warehouse/warehouse-worker-14
+    to: order/api-412
+  - from: warehouse/topic-246
+    to: warehouse/warehouse-gateway-4
+  - from: warehouse/warehouse-sync-10
+    to: warehouse/topic-217
+  - from: warehouse/warehouse-adapter-13
+    to: tax/api-328
+  - from: warehouse/warehouse-manager-8
+    to: order/api-411
+  - from: warehouse/warehouse-adapter-7
+    to: warehouse/topic-217
+  - from: warehouse/warehouse-adapter-12
+    to: carrier/api-305
+  - from: warehouse/warehouse-worker-14
+    to: warehouse/api-323
+  - from: warehouse/warehouse-sync-10
+    to: warehouse/api-322
+  - from: warehouse/warehouse-manager-3
+    to: warehouse/topic-23
+  - from: warehouse/warehouse-manager-8
+    to: warehouse/topic-246
+  - from: warehouse/warehouse-worker-11
+    to: fraud/api-344
+  - from: warehouse/warehouse-adapter-7
+    to: warehouse/api-326
+  - from: warehouse/warehouse-manager-6
+    to: stock/api-540
+  - from: warehouse/warehouse-service-2
+    to: warehouse/api-318
+  - from: warehouse/warehouse-sync-16
+    to: invoice/api-451
+  - from: warehouse/warehouse-manager-6
+    to: warehouse/topic-217
+  - from: warehouse/warehouse-manager-8
+    to: warehouse/topic-152
+  - from: warehouse/warehouse-worker-11
+    to: invoice/api-450
+  - from: warehouse/warehouse-engine-5
+    to: warehouse/topic-217
+  - from: warehouse/warehouse-service-17
+    to: warehouse/topic-42
+  - from: warehouse/warehouse-sync-0
+    to: warehouse/api-313
+  - from: warehouse/warehouse-adapter-7
+    to: warehouse/api-324
+  - from: carrier/topic-61
+    to: warehouse/warehouse-worker-14
+  - from: warehouse/warehouse-adapter-13
+    to: warehouse/topic-138
+  - from: warehouse/topic-138
+    to: warehouse/warehouse-service-17
+  - from: warehouse/warehouse-manager-8
+    to: order/api-15
+  - from: warehouse/warehouse-worker-1
+    to: warehouse/topic-42
+  - from: warehouse/warehouse-sync-10
+    to: warehouse/topic-211
+  - from: warehouse/warehouse-sync-10
+    to: invoice/api-50
+  - from: warehouse/warehouse-worker-11
+    to: warehouse/topic-139
+  - from: warehouse/warehouse-adapter-7
+    to: refund/api-33
+  - from: warehouse/warehouse-manager-6
+    to: warehouse/api-311
+  - from: warehouse/warehouse-adapter-13
+    to: warehouse/topic-139
+  - from: fraud/topic-243
+    to: warehouse/warehouse-manager-8
+  - from: warehouse/warehouse-service-17
+    to: refund/api-444
+  - from: warehouse/warehouse-engine-5
+    to: warehouse/api-322
+  - from: warehouse/warehouse-adapter-13
+    to: warehouse/topic-42
+  - from: warehouse/warehouse-worker-14
+    to: cart/api-364
+  - from: warehouse/topic-211
+    to: warehouse/warehouse-worker-11
+  - from: tax/topic-62
+    to: warehouse/warehouse-adapter-7
+  - from: warehouse/warehouse-adapter-7
+    to: order/api-405
+  - from: warehouse/warehouse-service-2
+    to: order/api-413
+  - from: warehouse/warehouse-manager-8
+    to: warehouse/api-324
+  - from: warehouse/warehouse-worker-1
+    to: notify/api-395
+  - from: warehouse/warehouse-engine-5
+    to: warehouse/topic-139
+  - from: warehouse/warehouse-worker-11
+    to: warehouse/topic-246
+  - from: warehouse/warehouse-adapter-12
+    to: warehouse/api-321
+  - from: tax/topic-68
+    to: warehouse/warehouse-manager-3
+  - from: warehouse/warehouse-service-15
+    to: warehouse/api-314
+  - from: warehouse/topic-23
+    to: warehouse/warehouse-manager-6
+  - from: warehouse/warehouse-adapter-13
+    to: loyalty/api-354
+  - from: warehouse/warehouse-sync-0
+    to: warehouse/topic-152
+  - from: warehouse/warehouse-service-15
+    to: warehouse/topic-152
+  - from: warehouse/warehouse-manager-3
+    to: tax/api-334
+  - from: warehouse/warehouse-sync-16
+    to: warehouse/topic-217
+  - from: warehouse/warehouse-engine-5
+    to: invoice/api-50
+  - from: warehouse/warehouse-worker-14
+    to: warehouse/api-321
+  - from: warehouse/warehouse-worker-1
+    to: warehouse/api-317
+  - from: tax/topic-26
+    to: warehouse/warehouse-adapter-13
+  - from: warehouse/warehouse-adapter-12
+    to: returns/api-423
+  - from: warehouse/warehouse-service-17
+    to: warehouse/api-323
+  - from: warehouse/warehouse-manager-6
+    to: warehouse/api-326
+  - from: warehouse/warehouse-gateway-4
+    to: warehouse/topic-246
+  - from: warehouse/topic-246
+    to: warehouse/warehouse-service-2
+  - from: warehouse/warehouse-worker-11
+    to: tax/api-329
+  - from: warehouse/warehouse-adapter-13
+    to: warehouse/api-326
+  - from: warehouse/warehouse-sync-0
+    to: warehouse/api-312
+  - from: warehouse/warehouse-service-15
+    to: warehouse/topic-139
+  - from: warehouse/warehouse-manager-3
+    to: warehouse/api-322
+  - from: warehouse/warehouse-manager-6
+    to: warehouse/topic-139
+  - from: warehouse/warehouse-manager-8
+    to: refund/api-32
+  - from: warehouse/warehouse-worker-11
+    to: carrier/api-294
+  - from: warehouse/warehouse-sync-16
+    to: warehouse/api-319
+  - from: warehouse/warehouse-manager-8
+    to: warehouse/api-316
+  - from: warehouse/warehouse-manager-8
+    to: warehouse/topic-138
+  - from: refund/topic-216
+    to: warehouse/warehouse-worker-11
+  - from: warehouse/warehouse-manager-8
+    to: carrier/api-306
+  - from: warehouse/topic-42
+    to: warehouse/warehouse-adapter-13
+  - from: warehouse/warehouse-manager-6
+    to: warehouse/api-320
+  - from: warehouse/warehouse-service-15
+    to: warehouse/api-315
+  - from: warehouse/warehouse-gateway-4
+    to: warehouse/api-322
+  - from: warehouse/warehouse-service-2
+    to: warehouse/topic-138
+  - from: warehouse/warehouse-adapter-7
+    to: warehouse/topic-211
+  - from: warehouse/warehouse-service-9
+    to: warehouse/api-319
+  - from: warehouse/warehouse-worker-14
+    to: warehouse/topic-152
+  - from: warehouse/warehouse-manager-6
+    to: warehouse/api-323
+  - from: warehouse/warehouse-worker-1
+    to: tax/api-333
+  - from: warehouse/warehouse-sync-16
+    to: carrier/api-292
+  - from: warehouse/warehouse-adapter-13
+    to: warehouse/api-322
+  - from: warehouse/warehouse-manager-3
+    to: warehouse/topic-246
+  - from: warehouse/warehouse-worker-11
+    to: warehouse/topic-217
+  - from: warehouse/warehouse-worker-1
+    to: warehouse/api-318
+  - from: warehouse/warehouse-engine-5
+    to: warehouse/topic-42
+  - from: warehouse/warehouse-sync-0
+    to: dispatch/api-286
+  - from: warehouse/warehouse-manager-3
+    to: warehouse/api-310
+  - from: warehouse/warehouse-service-9
+    to: warehouse/topic-23
+  - from: warehouse/topic-42
+    to: warehouse/warehouse-manager-6
+  - from: warehouse/warehouse-adapter-12
+    to: warehouse/topic-217
+  - from: warehouse/warehouse-engine-5
+    to: warehouse/api-320

@@ -1,0 +1,60 @@
+domain:
+  id: service-desk
+  name: Service desk
+  department: support
+  owningTeam: team-support
+  reviewedAt: 2026-08-15
+  reviewedBy: noah
+services:
+  - id: service-desk/agent-console-bff
+    name: agent-console-bff
+    owningTeam: team-support
+  - id: service-desk/ticketing
+    name: ticketing
+    owningTeam: team-support
+  - id: service-desk/chat-assistant
+    name: chat-assistant
+    owningTeam: team-support
+apis:
+  - id: service-desk/agent-console-api
+    name: Agent Console API
+    hostedBy: service-desk/agent-console-bff
+    style: REST
+    audience: internal
+  - id: service-desk/ticketing-api
+    name: Ticketing API
+    hostedBy: service-desk/ticketing
+    style: REST
+    audience: internal
+  - id: service-desk/chat-api
+    name: Chat API
+    hostedBy: service-desk/chat-assistant
+    style: REST
+    audience: public
+connections:
+  - from: service-desk/agent-console-bff
+    to: orders/order-history-api
+  - from: service-desk/agent-console-bff
+    to: accounts/profile-api
+  - from: service-desk/agent-console-bff
+    to: returns/returns-api
+  - from: service-desk/agent-console-bff
+    to: refunds/refund-api
+  - from: service-desk/agent-console-bff
+    to: loyalty/loyalty-api
+  - from: service-desk/agent-console-bff
+    to: legacy/legacy-customer-api
+  - from: service-desk/agent-console-bff
+    to: service-desk/ticketing-api
+  - from: service-desk/ticketing
+    to: ext/zendesk
+  - from: service-desk/chat-assistant
+    to: ml/model-serving-api
+  - from: service-desk/chat-assistant
+    to: orders/order-history-api
+  - from: service-desk/chat-assistant
+    to: ext/openai
+  - from: service-desk/chat-assistant
+    to: service-desk/ticketing-api
+  - from: service-desk/chat-assistant
+    to: edge/auth-api

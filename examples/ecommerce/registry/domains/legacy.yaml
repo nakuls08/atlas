@@ -1,0 +1,108 @@
+domain:
+  id: legacy
+  name: Legacy commerce
+  department: commerce
+  owningTeam: team-legacy
+  reviewedAt: 2025-12-01
+  reviewedBy: jonas
+services:
+  - id: legacy/commerce-monolith
+    name: commerce-monolith
+    owningTeam: team-legacy
+    runtime: java 8
+apis:
+  - id: legacy/legacy-orders-api
+    name: Legacy Orders API
+    hostedBy: legacy/commerce-monolith
+    style: REST
+    audience: internal
+    tags:
+      - orders
+  - id: legacy/legacy-order-search
+    name: Legacy Order Search
+    hostedBy: legacy/commerce-monolith
+    style: REST
+    audience: internal
+    tags:
+      - orders
+  - id: legacy/legacy-order-admin
+    name: Legacy Order Admin
+    hostedBy: legacy/commerce-monolith
+    style: REST
+    audience: internal
+    tags:
+      - orders
+    status: deprecated
+  - id: legacy/legacy-customer-api
+    name: Legacy Customer API
+    hostedBy: legacy/commerce-monolith
+    style: REST
+    audience: internal
+    tags:
+      - customers
+  - id: legacy/legacy-customer-search
+    name: Legacy Customer Search
+    hostedBy: legacy/commerce-monolith
+    style: REST
+    audience: internal
+    tags:
+      - customers
+  - id: legacy/legacy-addresses
+    name: Legacy Addresses
+    hostedBy: legacy/commerce-monolith
+    style: REST
+    audience: internal
+    tags:
+      - customers
+    status: deprecated
+  - id: legacy/legacy-catalog-api
+    name: Legacy Catalog API
+    hostedBy: legacy/commerce-monolith
+    style: REST
+    audience: internal
+    tags:
+      - catalog
+  - id: legacy/legacy-catalog-feed
+    name: Legacy Catalog Feed
+    hostedBy: legacy/commerce-monolith
+    style: REST
+    audience: internal
+    tags:
+      - catalog
+  - id: legacy/legacy-categories
+    name: Legacy Categories
+    hostedBy: legacy/commerce-monolith
+    style: REST
+    audience: internal
+    tags:
+      - catalog
+    status: deprecated
+  - id: legacy/legacy-reports
+    name: Legacy Reports
+    hostedBy: legacy/commerce-monolith
+    style: REST
+    audience: internal
+    tags:
+      - admin
+  - id: legacy/legacy-admin-api
+    name: Legacy Admin API
+    hostedBy: legacy/commerce-monolith
+    style: REST
+    audience: internal
+    tags:
+      - admin
+  - id: legacy/legacy-batch-jobs
+    name: Legacy Batch Jobs
+    hostedBy: legacy/commerce-monolith
+    style: REST
+    audience: internal
+    tags:
+      - admin
+datastores:
+  - id: legacy/commerce-monolith-db
+    name: commerce-monolith-db
+    technology: oracle
+    ownedBy: legacy/commerce-monolith
+connections:
+  - from: legacy/commerce-monolith
+    to: ext/sap-erp

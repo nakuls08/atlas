@@ -1,0 +1,53 @@
+domain:
+  id: events
+  name: Event collection
+  department: data
+  owningTeam: team-data-platform
+  reviewedAt: 2026-08-15
+  reviewedBy: kenji
+services:
+  - id: events/event-collector
+    name: event-collector
+    owningTeam: team-data-platform
+  - id: events/clickstream-enricher
+    name: clickstream-enricher
+    owningTeam: team-data-platform
+  - id: events/cdc-connector
+    name: cdc-connector
+    owningTeam: team-data-platform
+apis:
+  - id: events/collect-api
+    name: Collect API
+    hostedBy: events/event-collector
+    style: REST
+    audience: public
+topics:
+  - id: events/page-viewed
+    name: page.viewed.v1
+    ownedBy: events/event-collector
+    cluster: data-events
+  - id: events/product-viewed
+    name: product.viewed.v1
+    ownedBy: events/event-collector
+    cluster: data-events
+  - id: events/session-enriched
+    name: session.enriched.v1
+    ownedBy: events/clickstream-enricher
+    cluster: data-events
+connections:
+  - from: events/event-collector
+    to: edge/auth-api
+  - from: events/event-collector
+    to: events/page-viewed
+  - from: events/event-collector
+    to: events/product-viewed
+  - from: events/clickstream-enricher
+    to: events/session-enriched
+  - from: events/page-viewed
+    to: events/clickstream-enricher
+  - from: events/product-viewed
+    to: events/clickstream-enricher
+  - from: events/cdc-connector
+    to: ext/snowflake
+  - from: orders/order-updated
+    to: events/cdc-connector

@@ -1,0 +1,464 @@
+domain:
+  id: catalog
+  name: Catalog
+  department: finance
+  owningTeam: team-catalog
+  reviewedAt: 2025-11-01
+  reviewedBy: pe
+systems:
+  - id: catalog/sys-0
+    name: catalog system 0
+  - id: catalog/sys-1
+    name: catalog system 1
+  - id: catalog/sys-2
+    name: catalog system 2
+services:
+  - id: catalog/catalog-gateway-0
+    name: catalog-gateway-0
+    owningTeam: team-catalog
+  - id: catalog/catalog-sync-1
+    name: catalog-sync-1
+    owningTeam: team-catalog
+    system: catalog/sys-2
+  - id: catalog/catalog-engine-2
+    name: catalog-engine-2
+    owningTeam: team-catalog
+  - id: catalog/catalog-manager-3
+    name: catalog-manager-3
+    owningTeam: team-catalog
+    system: catalog/sys-1
+  - id: catalog/catalog-manager-4
+    name: catalog-manager-4
+    owningTeam: team-catalog
+  - id: catalog/catalog-service-5
+    name: catalog-service-5
+    owningTeam: team-catalog
+    system: catalog/sys-2
+  - id: catalog/catalog-worker-6
+    name: catalog-worker-6
+    owningTeam: team-catalog
+    system: catalog/sys-2
+  - id: catalog/catalog-manager-7
+    name: catalog-manager-7
+    owningTeam: team-catalog
+    system: catalog/sys-1
+  - id: catalog/catalog-gateway-8
+    name: catalog-gateway-8
+    owningTeam: team-catalog
+  - id: catalog/catalog-engine-9
+    name: catalog-engine-9
+    owningTeam: team-catalog
+    system: catalog/sys-0
+  - id: catalog/catalog-gateway-10
+    name: catalog-gateway-10
+    owningTeam: team-catalog
+    system: catalog/sys-0
+  - id: catalog/catalog-sync-11
+    name: catalog-sync-11
+    owningTeam: team-catalog
+    system: catalog/sys-0
+  - id: catalog/catalog-manager-12
+    name: catalog-manager-12
+    owningTeam: team-catalog
+    system: catalog/sys-2
+    status: planned
+  - id: catalog/catalog-engine-13
+    name: catalog-engine-13
+    owningTeam: team-catalog
+  - id: catalog/catalog-sync-14
+    name: catalog-sync-14
+    owningTeam: team-catalog
+    system: catalog/sys-2
+  - id: catalog/catalog-gateway-15
+    name: catalog-gateway-15
+    owningTeam: team-catalog
+  - id: catalog/catalog-engine-16
+    name: catalog-engine-16
+    owningTeam: team-catalog
+    system: catalog/sys-2
+apis:
+  - id: catalog/api-95
+    name: catalog-gateway-0 API 95
+    hostedBy: catalog/catalog-gateway-0
+    style: REST
+  - id: catalog/api-96
+    name: catalog-sync-1 API 96
+    hostedBy: catalog/catalog-sync-1
+    style: REST
+  - id: catalog/api-97
+    name: catalog-engine-2 API 97
+    hostedBy: catalog/catalog-engine-2
+    style: REST
+  - id: catalog/api-98
+    name: catalog-manager-3 API 98
+    hostedBy: catalog/catalog-manager-3
+    style: gRPC
+  - id: catalog/api-99
+    name: catalog-manager-4 API 99
+    hostedBy: catalog/catalog-manager-4
+    style: GraphQL
+  - id: catalog/api-100
+    name: catalog-service-5 API 100
+    hostedBy: catalog/catalog-service-5
+    style: GraphQL
+  - id: catalog/api-101
+    name: catalog-worker-6 API 101
+    hostedBy: catalog/catalog-worker-6
+    style: gRPC
+  - id: catalog/api-102
+    name: catalog-manager-7 API 102
+    hostedBy: catalog/catalog-manager-7
+    style: GraphQL
+  - id: catalog/api-103
+    name: catalog-gateway-8 API 103
+    hostedBy: catalog/catalog-gateway-8
+    style: REST
+  - id: catalog/api-104
+    name: catalog-engine-9 API 104
+    hostedBy: catalog/catalog-engine-9
+    style: REST
+  - id: catalog/api-105
+    name: catalog-gateway-10 API 105
+    hostedBy: catalog/catalog-gateway-10
+    style: GraphQL
+  - id: catalog/api-106
+    name: catalog-sync-11 API 106
+    hostedBy: catalog/catalog-sync-11
+    style: GraphQL
+  - id: catalog/api-107
+    name: catalog-manager-12 API 107
+    hostedBy: catalog/catalog-manager-12
+    style: REST
+  - id: catalog/api-108
+    name: catalog-engine-13 API 108
+    hostedBy: catalog/catalog-engine-13
+    style: GraphQL
+  - id: catalog/api-109
+    name: catalog-sync-14 API 109
+    hostedBy: catalog/catalog-sync-14
+    style: GraphQL
+  - id: catalog/api-110
+    name: catalog-gateway-15 API 110
+    hostedBy: catalog/catalog-gateway-15
+    style: GraphQL
+  - id: catalog/api-111
+    name: catalog-engine-16 API 111
+    hostedBy: catalog/catalog-engine-16
+    style: REST
+  - id: catalog/api-495
+    name: catalog-gateway-0 API 495
+    hostedBy: catalog/catalog-gateway-0
+    style: GraphQL
+  - id: catalog/api-496
+    name: catalog-sync-1 API 496
+    hostedBy: catalog/catalog-sync-1
+    style: REST
+  - id: catalog/api-497
+    name: catalog-engine-2 API 497
+    hostedBy: catalog/catalog-engine-2
+    style: REST
+  - id: catalog/api-498
+    name: catalog-manager-3 API 498
+    hostedBy: catalog/catalog-manager-3
+    style: REST
+  - id: catalog/api-499
+    name: catalog-manager-4 API 499
+    hostedBy: catalog/catalog-manager-4
+    style: GraphQL
+  - id: catalog/api-500
+    name: catalog-service-5 API 500
+    hostedBy: catalog/catalog-service-5
+    style: GraphQL
+  - id: catalog/api-501
+    name: catalog-worker-6 API 501
+    hostedBy: catalog/catalog-worker-6
+    style: GraphQL
+  - id: catalog/api-502
+    name: catalog-manager-7 API 502
+    hostedBy: catalog/catalog-manager-7
+    style: REST
+  - id: catalog/api-503
+    name: catalog-gateway-8 API 503
+    hostedBy: catalog/catalog-gateway-8
+    style: gRPC
+  - id: catalog/api-504
+    name: catalog-engine-9 API 504
+    hostedBy: catalog/catalog-engine-9
+    style: gRPC
+  - id: catalog/api-505
+    name: catalog-gateway-10 API 505
+    hostedBy: catalog/catalog-gateway-10
+    style: gRPC
+  - id: catalog/api-506
+    name: catalog-sync-11 API 506
+    hostedBy: catalog/catalog-sync-11
+    style: GraphQL
+  - id: catalog/api-507
+    name: catalog-manager-12 API 507
+    hostedBy: catalog/catalog-manager-12
+    style: GraphQL
+  - id: catalog/api-508
+    name: catalog-engine-13 API 508
+    hostedBy: catalog/catalog-engine-13
+    style: gRPC
+  - id: catalog/api-509
+    name: catalog-sync-14 API 509
+    hostedBy: catalog/catalog-sync-14
+    style: GraphQL
+  - id: catalog/api-510
+    name: catalog-gateway-15 API 510
+    hostedBy: catalog/catalog-gateway-15
+    style: GraphQL
+  - id: catalog/api-511
+    name: catalog-engine-16 API 511
+    hostedBy: catalog/catalog-engine-16
+    style: REST
+topics:
+  - id: catalog/topic-9
+    name: catalog.event-9.v1
+    ownedBy: catalog/catalog-sync-1
+    cluster: finance-kafka
+  - id: catalog/topic-20
+    name: catalog.event-20.v1
+    ownedBy: catalog/catalog-gateway-8
+    cluster: finance-kafka
+  - id: catalog/topic-32
+    name: catalog.event-32.v1
+    ownedBy: catalog/catalog-gateway-15
+    cluster: finance-kafka
+  - id: catalog/topic-49
+    name: catalog.event-49.v1
+    ownedBy: catalog/catalog-manager-12
+    cluster: finance-kafka
+  - id: catalog/topic-80
+    name: catalog.event-80.v1
+    ownedBy: catalog/catalog-gateway-8
+    cluster: finance-kafka
+  - id: catalog/topic-137
+    name: catalog.event-137.v1
+    ownedBy: catalog/catalog-service-5
+    cluster: finance-kafka
+  - id: catalog/topic-147
+    name: catalog.event-147.v1
+    ownedBy: catalog/catalog-sync-1
+    cluster: finance-kafka
+  - id: catalog/topic-163
+    name: catalog.event-163.v1
+    ownedBy: catalog/catalog-sync-14
+    cluster: finance-kafka
+  - id: catalog/topic-189
+    name: catalog.event-189.v1
+    ownedBy: catalog/catalog-manager-12
+    cluster: finance-kafka
+  - id: catalog/topic-190
+    name: catalog.event-190.v1
+    ownedBy: catalog/catalog-manager-12
+    cluster: finance-kafka
+  - id: catalog/topic-244
+    name: catalog.event-244.v1
+    ownedBy: catalog/catalog-manager-12
+    cluster: finance-kafka
+channels:
+  - id: catalog/channel-17
+    name: webhook 17
+    technology: SFTP
+    ownedBy: catalog/catalog-service-5
+datastores:
+  - id: catalog/store-23
+    name: catalog-db-23
+    technology: s3
+    ownedBy: catalog/catalog-manager-12
+  - id: catalog/store-53
+    name: catalog-db-53
+    technology: redis
+    ownedBy: catalog/catalog-service-5
+connections:
+  - from: catalog/catalog-engine-2
+    to: carrier/feature-flags-api
+  - from: catalog/catalog-worker-6
+    to: carrier/notify-api
+  - from: catalog/catalog-engine-9
+    to: carrier/notify-api
+  - from: catalog/catalog-gateway-10
+    to: carrier/auth-api
+  - from: catalog/catalog-sync-11
+    to: carrier/auth-api
+  - from: catalog/catalog-sync-14
+    to: carrier/auth-api
+  - from: catalog/catalog-sync-1
+    to: catalog/api-507
+  - from: catalog/catalog-gateway-8
+    to: catalog/api-111
+  - from: catalog/catalog-gateway-15
+    to: catalog/api-495
+  - from: catalog/catalog-engine-13
+    to: catalog/api-103
+  - from: catalog/catalog-manager-7
+    to: tracking/api-489
+  - from: catalog/catalog-service-5
+    to: catalog/api-501
+  - from: catalog/catalog-engine-2
+    to: catalog/api-97
+  - from: catalog/catalog-worker-6
+    to: ticket/api-252
+  - from: catalog/topic-49
+    to: catalog/catalog-engine-16
+  - from: catalog/catalog-manager-4
+    to: ledger/api-461
+  - from: catalog/catalog-manager-3
+    to: label/api-477
+  - from: catalog/catalog-sync-1
+    to: catalog/api-108
+  - from: pricing/topic-117
+    to: catalog/catalog-manager-4
+  - from: catalog/catalog-manager-3
+    to: session/api-199
+  - from: catalog/catalog-gateway-0
+    to: catalog/topic-244
+  - from: catalog/catalog-worker-6
+    to: catalog/api-509
+  - from: catalog/catalog-engine-16
+    to: stock/api-546
+  - from: catalog/topic-244
+    to: catalog/catalog-engine-16
+  - from: catalog/catalog-service-5
+    to: catalog/api-508
+  - from: catalog/catalog-gateway-15
+    to: payment/api-565
+  - from: catalog/catalog-sync-11
+    to: catalog/topic-32
+  - from: catalog/catalog-manager-4
+    to: catalog/api-496
+  - from: catalog/catalog-service-5
+    to: catalog/api-105
+  - from: catalog/catalog-manager-3
+    to: session/api-596
+  - from: catalog/catalog-manager-3
+    to: catalog/topic-244
+  - from: catalog/catalog-engine-9
+    to: label/api-479
+  - from: catalog/catalog-worker-6
+    to: catalog/api-108
+  - from: catalog/catalog-manager-4
+    to: account/api-578
+  - from: catalog/catalog-gateway-15
+    to: catalog/api-507
+  - from: catalog/catalog-engine-2
+    to: label/api-70
+  - from: catalog/catalog-worker-6
+    to: tracking/api-83
+  - from: catalog/catalog-sync-1
+    to: catalog/api-502
+  - from: catalog/catalog-manager-4
+    to: payment/api-556
+  - from: catalog/catalog-service-5
+    to: stock/api-138
+  - from: catalog/catalog-gateway-0
+    to: catalog/topic-9
+  - from: catalog/catalog-gateway-8
+    to: profile/api-582
+  - from: dispatch/topic-52
+    to: catalog/catalog-gateway-0
+  - from: catalog/catalog-gateway-0
+    to: dispatch/api-289
+  - from: catalog/catalog-manager-4
+    to: routing/api-276
+  - from: catalog/catalog-gateway-0
+    to: pricing/api-528
+  - from: catalog/catalog-engine-16
+    to: invoice/api-451
+  - from: catalog/catalog-worker-6
+    to: catalog/topic-80
+  - from: catalog/catalog-service-5
+    to: tracking/api-485
+  - from: catalog/catalog-gateway-10
+    to: catalog/topic-147
+  - from: catalog/catalog-manager-7
+    to: loyalty/api-350
+  - from: catalog/catalog-engine-9
+    to: catalog/api-503
+  - from: ticket/topic-245
+    to: catalog/catalog-gateway-10
+  - from: catalog/catalog-engine-9
+    to: catalog/topic-190
+  - from: catalog/catalog-manager-12
+    to: catalog/api-103
+  - from: ticket/topic-236
+    to: catalog/catalog-gateway-0
+  - from: ticket/topic-240
+    to: catalog/catalog-gateway-15
+  - from: catalog/catalog-engine-16
+    to: session/api-197
+  - from: catalog/catalog-manager-12
+    to: returns/api-418
+  - from: catalog/catalog-gateway-0
+    to: label/api-474
+  - from: catalog/topic-190
+    to: catalog/catalog-engine-9
+  - from: catalog/catalog-sync-1
+    to: catalog/topic-163
+  - from: routing/topic-78
+    to: catalog/catalog-gateway-15
+  - from: catalog/catalog-worker-6
+    to: catalog/api-507
+  - from: profile/topic-122
+    to: catalog/catalog-manager-3
+  - from: catalog/catalog-engine-9
+    to: dispatch/api-291
+  - from: catalog/catalog-manager-3
+    to: payment/api-557
+  - from: catalog/catalog-engine-2
+    to: session/api-203
+  - from: catalog/catalog-gateway-0
+    to: payment/api-165
+  - from: catalog/catalog-sync-1
+    to: catalog/api-99
+  - from: catalog/catalog-worker-6
+    to: dispatch/api-280
+  - from: catalog/catalog-gateway-15
+    to: catalog/topic-190
+  - from: catalog/catalog-engine-13
+    to: catalog/api-95
+  - from: catalog/catalog-manager-3
+    to: dispatch/api-283
+  - from: catalog/catalog-engine-13
+    to: account/api-569
+  - from: catalog/catalog-engine-16
+    to: catalog/api-508
+  - from: catalog/catalog-gateway-8
+    to: catalog/api-511
+  - from: catalog/catalog-manager-7
+    to: consent/api-19
+  - from: catalog/catalog-sync-11
+    to: catalog/api-103
+  - from: catalog/catalog-engine-2
+    to: payment/api-565
+  - from: catalog/catalog-engine-2
+    to: tracking/api-487
+  - from: catalog/catalog-gateway-8
+    to: account/api-175
+  - from: catalog/topic-147
+    to: catalog/catalog-manager-3
+  - from: catalog/catalog-engine-9
+    to: catalog/topic-137
+  - from: catalog/catalog-engine-2
+    to: session/api-599
+  - from: catalog/catalog-manager-12
+    to: catalog/api-498
+  - from: catalog/catalog-service-5
+    to: catalog/topic-244
+  - from: catalog/catalog-manager-4
+    to: catalog/api-499
+  - from: catalog/catalog-engine-16
+    to: catalog/api-100
+  - from: catalog/catalog-manager-3
+    to: dispatch/api-285
+  - from: catalog/catalog-engine-9
+    to: refund/api-43
+  - from: catalog/catalog-engine-13
+    to: session/api-200
+  - from: catalog/catalog-manager-7
+    to: routing/api-272
+  - from: catalog/catalog-manager-3
+    to: stock/stock-manager-11
+    gap: legacy, no spec

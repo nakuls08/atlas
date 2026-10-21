@@ -1,0 +1,101 @@
+domain:
+  id: sellers
+  name: Sellers
+  department: marketplace
+  owningTeam: team-marketplace
+  reviewedAt: 2026-08-15
+  reviewedBy: ines
+services:
+  - id: sellers/seller-portal-bff
+    name: seller-portal-bff
+    owningTeam: team-marketplace
+  - id: sellers/seller-onboarding
+    name: seller-onboarding
+    owningTeam: team-marketplace
+  - id: sellers/listings
+    name: listings
+    owningTeam: team-marketplace
+  - id: sellers/seller-orders
+    name: seller-orders
+    owningTeam: team-marketplace
+  - id: sellers/social-commerce
+    name: social-commerce
+    owningTeam: team-marketplace
+    status: planned
+apis:
+  - id: sellers/seller-portal-api
+    name: Seller Portal API
+    hostedBy: sellers/seller-portal-bff
+    style: REST
+    audience: partner
+  - id: sellers/onboarding-api
+    name: Onboarding API
+    hostedBy: sellers/seller-onboarding
+    style: REST
+    audience: internal
+  - id: sellers/listings-api
+    name: Listings API
+    hostedBy: sellers/listings
+    style: REST
+    audience: internal
+  - id: sellers/seller-orders-api
+    name: Seller Orders API
+    hostedBy: sellers/seller-orders
+    style: REST
+    audience: internal
+  - id: sellers/social-shop-api
+    name: Social Shop API
+    hostedBy: sellers/social-commerce
+    style: REST
+    audience: partner
+topics:
+  - id: sellers/listing-published
+    name: listing.published.v1
+    ownedBy: sellers/listings
+    cluster: marketplace-events
+datastores:
+  - id: sellers/seller-onboarding-db
+    name: seller-onboarding-db
+    technology: postgres
+    ownedBy: sellers/seller-onboarding
+  - id: sellers/listings-db
+    name: listings-db
+    technology: postgres
+    ownedBy: sellers/listings
+  - id: sellers/seller-orders-db
+    name: seller-orders-db
+    technology: postgres
+    ownedBy: sellers/seller-orders
+connections:
+  - from: sellers/seller-portal-bff
+    to: sellers/onboarding-api
+  - from: sellers/seller-portal-bff
+    to: sellers/listings-api
+  - from: sellers/seller-portal-bff
+    to: sellers/seller-orders-api
+  - from: sellers/seller-portal-bff
+    to: payouts/payout-api
+  - from: sellers/seller-portal-bff
+    to: analytics/metrics-api
+  - from: sellers/seller-portal-bff
+    to: edge/auth-api
+  - from: sellers/seller-onboarding
+    to: ext/onfido
+  - from: sellers/seller-onboarding
+    to: payouts/payout-api
+  - from: sellers/listings
+    to: catalog/taxonomy-api
+  - from: sellers/listings
+    to: catalog/attributes-api
+  - from: sellers/listings
+    to: sellers/listing-published
+  - from: orders/order-placed
+    to: sellers/seller-orders
+  - from: shipping/shipment-dispatched
+    to: sellers/seller-orders
+  - from: sellers/social-commerce
+    to: catalog/catalog-read-api
+  - from: sellers/social-commerce
+    to: ext/meta-ads
+  - from: sellers/social-commerce
+    to: edge/auth-api

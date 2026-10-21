@@ -1,0 +1,63 @@
+domain:
+  id: cart
+  name: Cart
+  department: commerce
+  owningTeam: team-cart
+  reviewedAt: 2026-08-15
+  reviewedBy: jonas
+services:
+  - id: cart/cart
+    name: cart
+    owningTeam: team-cart
+  - id: cart/saved-items
+    name: saved-items
+    owningTeam: team-cart
+  - id: cart/cart-abandonment
+    name: cart-abandonment
+    owningTeam: team-cart
+apis:
+  - id: cart/cart-api
+    name: Cart API
+    hostedBy: cart/cart
+    style: REST
+    audience: internal
+  - id: cart/wishlist-api
+    name: Wishlist API
+    hostedBy: cart/saved-items
+    style: REST
+    audience: internal
+topics:
+  - id: cart/cart-updated
+    name: cart.updated.v1
+    ownedBy: cart/cart
+    cluster: commerce-events
+datastores:
+  - id: cart/cart-db
+    name: cart-db
+    technology: redis
+    ownedBy: cart/cart
+  - id: cart/saved-items-db
+    name: saved-items-db
+    technology: dynamodb
+    ownedBy: cart/saved-items
+connections:
+  - from: cart/cart
+    to: pricing/price-api
+  - from: cart/cart
+    to: promotions/promotion-eval-api
+  - from: cart/cart
+    to: inventory/availability-api
+  - from: cart/cart
+    to: tax/tax-api
+  - from: cart/cart
+    to: checkout/shipping-quote-api
+  - from: cart/cart
+    to: runtime/flags-api
+  - from: cart/cart
+    to: cart/cart-updated
+  - from: cart/cart-abandonment
+    to: messaging/email-api
+  - from: cart/cart-updated
+    to: cart/cart-abandonment
+  - from: orders/order-placed
+    to: cart/cart-abandonment

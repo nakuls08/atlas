@@ -1,0 +1,25 @@
+domain: { id: returns, name: Returns, department: logistics, owningTeam: team-returns,
+          reviewedAt: 2026-09-18, reviewedBy: priya }
+services:
+  - { id: returns/returns-intake, name: returns-intake, owningTeam: team-returns, runtime: kotlin,
+      tags: [returns, core] }
+  - { id: returns/returns-portal-bff, name: returns-portal-bff, owningTeam: team-returns, runtime: node,
+      tags: [web] }
+  - { id: returns/returns-analytics, name: returns-analytics, owningTeam: team-returns, status: planned }
+apis:
+  - { id: returns/returns-api, name: Returns API, hostedBy: returns/returns-intake,
+      style: REST, audience: partner, version: v2, tags: [returns] }
+topics:
+  - { id: returns/returns-created, name: returns.created.v1,
+      ownedBy: returns/returns-intake, cluster: logistics-main }
+datastores:
+  - { id: returns/returns-db, name: returns-db, technology: postgres, ownedBy: returns/returns-intake }
+connections:
+  - { from: returns/returns-intake, to: returns/returns-created }
+  - { from: returns/returns-intake, to: billing/refund-api }
+  - { from: returns/returns-intake, to: shipping/label-api }
+  - { from: returns/returns-intake, to: identity/auth-api }
+  - { from: returns/returns-portal-bff, to: returns/returns-api }
+  - { from: returns/returns-portal-bff, to: identity/auth-api }
+  - { from: returns/returns-created, to: returns/returns-analytics }
+  - { from: returns/returns-created, to: notifications/notify-service }

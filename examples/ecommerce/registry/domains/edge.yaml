@@ -1,0 +1,35 @@
+domain:
+  id: edge
+  name: Edge & identity
+  department: platform
+  owningTeam: team-platform-edge
+  reviewedAt: 2026-08-15
+  reviewedBy: lee
+services:
+  - id: edge/api-gateway
+    name: api-gateway
+    owningTeam: team-platform-edge
+    role: platform
+  - id: edge/auth
+    name: auth
+    owningTeam: team-platform-edge
+    role: platform
+apis:
+  - id: edge/edge-gateway
+    name: Edge Gateway
+    hostedBy: edge/api-gateway
+    style: REST
+    audience: public
+  - id: edge/auth-api
+    name: Auth API
+    hostedBy: edge/auth
+    style: REST
+    audience: internal
+datastores:
+  - id: edge/auth-db
+    name: auth-db
+    technology: postgres
+    ownedBy: edge/auth
+connections:
+  - from: edge/auth
+    to: ext/auth0

@@ -1,0 +1,334 @@
+domain:
+  id: session
+  name: Session
+  department: commerce
+  owningTeam: team-session
+  reviewedAt: 2026-07-01
+  reviewedBy: pe
+systems:
+  - id: session/sys-0
+    name: session system 0
+  - id: session/sys-1
+    name: session system 1
+services:
+  - id: session/session-worker-0
+    name: session-worker-0
+    owningTeam: team-session
+  - id: session/session-gateway-1
+    name: session-gateway-1
+    owningTeam: team-session
+    system: session/sys-0
+  - id: session/session-sync-2
+    name: session-sync-2
+    owningTeam: team-session
+    system: session/sys-0
+  - id: session/session-service-3
+    name: session-service-3
+    owningTeam: team-session
+    system: session/sys-1
+  - id: session/session-engine-4
+    name: session-engine-4
+    owningTeam: team-session
+    system: session/sys-0
+  - id: session/session-manager-5
+    name: session-manager-5
+    owningTeam: team-session
+    system: session/sys-1
+  - id: session/session-worker-6
+    name: session-worker-6
+    owningTeam: team-session
+    system: session/sys-0
+  - id: session/session-manager-7
+    name: session-manager-7
+    owningTeam: team-session
+    system: session/sys-1
+  - id: session/session-worker-8
+    name: session-worker-8
+    owningTeam: team-session
+apis:
+  - id: session/api-196
+    name: session-worker-0 API 196
+    hostedBy: session/session-worker-0
+    style: REST
+  - id: session/api-197
+    name: session-gateway-1 API 197
+    hostedBy: session/session-gateway-1
+    style: GraphQL
+  - id: session/api-198
+    name: session-sync-2 API 198
+    hostedBy: session/session-sync-2
+    style: GraphQL
+  - id: session/api-199
+    name: session-service-3 API 199
+    hostedBy: session/session-service-3
+    style: gRPC
+  - id: session/api-200
+    name: session-engine-4 API 200
+    hostedBy: session/session-engine-4
+    style: gRPC
+  - id: session/api-201
+    name: session-manager-5 API 201
+    hostedBy: session/session-manager-5
+    style: gRPC
+  - id: session/api-202
+    name: session-worker-6 API 202
+    hostedBy: session/session-worker-6
+    style: REST
+  - id: session/api-203
+    name: session-manager-7 API 203
+    hostedBy: session/session-manager-7
+    style: GraphQL
+  - id: session/api-204
+    name: session-worker-8 API 204
+    hostedBy: session/session-worker-8
+    style: REST
+  - id: session/api-596
+    name: session-worker-0 API 596
+    hostedBy: session/session-worker-0
+    style: REST
+  - id: session/api-597
+    name: session-gateway-1 API 597
+    hostedBy: session/session-gateway-1
+    style: gRPC
+  - id: session/api-598
+    name: session-sync-2 API 598
+    hostedBy: session/session-sync-2
+    style: REST
+  - id: session/api-599
+    name: session-service-3 API 599
+    hostedBy: session/session-service-3
+    style: gRPC
+topics:
+  - id: session/topic-53
+    name: session.event-53.v1
+    ownedBy: session/session-gateway-1
+    cluster: commerce-kafka
+  - id: session/topic-135
+    name: session.event-135.v1
+    ownedBy: session/session-engine-4
+    cluster: commerce-kafka
+  - id: session/topic-146
+    name: session.event-146.v1
+    ownedBy: session/session-worker-8
+    cluster: commerce-kafka
+  - id: session/topic-247
+    name: session.event-247.v1
+    ownedBy: session/session-engine-4
+    cluster: commerce-kafka
+channels:
+  - id: session/channel-4
+    name: SQS queue 4
+    technology: EDI
+    ownedBy: session/session-worker-8
+  - id: session/channel-7
+    name: SFTP drop 7
+    technology: SQS
+    ownedBy: session/session-gateway-1
+  - id: session/channel-15
+    name: EDI feed 15
+    technology: EDI
+    ownedBy: session/session-engine-4
+datastores:
+  - id: session/store-32
+    name: session-db-32
+    technology: s3
+    ownedBy: session/session-worker-8
+  - id: session/store-44
+    name: session-db-44
+    technology: redis
+    ownedBy: session/session-manager-7
+connections:
+  - from: session/session-gateway-1
+    to: carrier/feature-flags-api
+  - from: session/session-manager-5
+    to: carrier/feature-flags-api
+  - from: session/session-worker-6
+    to: carrier/notify-api
+  - from: session/session-worker-8
+    to: carrier/auth-api
+  - from: session/topic-135
+    to: session/session-manager-5
+  - from: session/session-worker-0
+    to: session/api-199
+  - from: session/session-sync-2
+    to: account/api-573
+  - from: session/session-worker-8
+    to: session/api-598
+  - from: session/session-worker-8
+    to: session/api-203
+  - from: session/session-manager-5
+    to: promo/api-245
+  - from: session/session-worker-0
+    to: session/api-196
+  - from: session/session-gateway-1
+    to: account/api-172
+  - from: session/session-worker-0
+    to: search/api-229
+  - from: session/session-engine-4
+    to: tax/api-329
+  - from: session/session-gateway-1
+    to: review/api-236
+  - from: session/session-manager-5
+    to: chat/api-259
+  - from: session/session-worker-0
+    to: search/api-228
+  - from: session/session-sync-2
+    to: search/api-227
+  - from: session/session-worker-8
+    to: session/topic-53
+  - from: session/session-engine-4
+    to: carrier/api-293
+  - from: session/session-engine-4
+    to: session/api-198
+  - from: session/topic-146
+    to: session/session-worker-6
+  - from: session/session-gateway-1
+    to: session/topic-146
+  - from: session/session-manager-5
+    to: session/topic-53
+  - from: session/session-worker-8
+    to: consent/api-24
+  - from: fraud/topic-161
+    to: session/session-service-3
+  - from: session/session-worker-6
+    to: warehouse/api-316
+  - from: session/session-engine-4
+    to: session/api-202
+  - from: session/session-sync-2
+    to: tax/api-337
+  - from: session/session-worker-6
+    to: session/api-200
+  - from: consent/topic-225
+    to: session/session-worker-0
+  - from: warehouse/topic-246
+    to: session/session-engine-4
+  - from: session/session-manager-5
+    to: session/api-200
+  - from: session/session-manager-7
+    to: session/api-198
+  - from: session/session-manager-7
+    to: payment/api-161
+  - from: session/session-service-3
+    to: chat/api-257
+  - from: session/session-engine-4
+    to: session/topic-135
+  - from: session/session-gateway-1
+    to: session/topic-247
+  - from: session/session-manager-7
+    to: session/topic-146
+  - from: session/session-worker-6
+    to: session/topic-53
+  - from: session/session-gateway-1
+    to: session/api-196
+  - from: session/session-engine-4
+    to: promo/api-244
+  - from: session/session-gateway-1
+    to: session/topic-53
+  - from: session/session-gateway-1
+    to: session/api-197
+  - from: session/session-manager-5
+    to: session/topic-135
+  - from: session/session-sync-2
+    to: session/topic-135
+  - from: session/session-sync-2
+    to: warehouse/api-319
+  - from: session/topic-146
+    to: session/session-worker-0
+  - from: account/topic-74
+    to: session/session-service-3
+  - from: session/session-gateway-1
+    to: session/api-201
+  - from: profile/topic-82
+    to: session/session-manager-5
+  - from: session/session-manager-7
+    to: review/api-234
+  - from: session/session-worker-8
+    to: session/topic-135
+  - from: session/session-engine-4
+    to: session/api-201
+  - from: session/session-manager-5
+    to: account/api-577
+  - from: session/session-service-3
+    to: warehouse/api-319
+  - from: session/session-gateway-1
+    to: profile/api-194
+  - from: session/session-worker-8
+    to: session/api-201
+  - from: session/topic-135
+    to: session/session-worker-8
+  - from: session/session-manager-5
+    to: session/api-201
+  - from: session/session-sync-2
+    to: consent/api-23
+  - from: session/session-sync-2
+    to: session/api-597
+  - from: session/session-sync-2
+    to: warehouse/api-313
+  - from: session/session-worker-0
+    to: tax/api-336
+  - from: tax/topic-37
+    to: session/session-engine-4
+  - from: promo/topic-1
+    to: session/session-manager-5
+  - from: session/topic-146
+    to: session/session-gateway-1
+  - from: session/session-service-3
+    to: warehouse/api-318
+  - from: session/session-worker-0
+    to: session/api-198
+  - from: session/session-service-3
+    to: session/api-596
+  - from: session/session-worker-0
+    to: profile/api-591
+  - from: session/session-worker-0
+    to: session/topic-135
+  - from: session/session-engine-4
+    to: session/api-197
+  - from: session/session-manager-5
+    to: session/api-203
+  - from: session/session-worker-0
+    to: carrier/api-301
+  - from: session/session-worker-0
+    to: account/api-168
+  - from: session/session-sync-2
+    to: session/api-599
+  - from: review/topic-66
+    to: session/session-manager-7
+  - from: session/session-sync-2
+    to: session/api-200
+  - from: session/session-worker-0
+    to: warehouse/api-318
+  - from: session/session-sync-2
+    to: session/topic-146
+  - from: session/session-engine-4
+    to: warehouse/api-310
+  - from: session/session-worker-6
+    to: consent/api-206
+  - from: session/session-service-3
+    to: session/topic-135
+  - from: session/session-gateway-1
+    to: search/api-229
+  - from: session/session-worker-6
+    to: carrier/auth-api
+  - from: session/session-gateway-1
+    to: search/api-226
+  - from: session/topic-247
+    to: session/session-worker-6
+  - from: session/session-service-3
+    to: session/topic-146
+  - from: session/session-service-3
+    to: session/api-599
+  - from: session/session-worker-0
+    to: session/topic-146
+  - from: session/session-engine-4
+    to: session/api-199
+  - from: session/topic-135
+    to: session/session-worker-0
+  - from: session/session-manager-7
+    to: warehouse/api-310
+  - from: session/session-worker-8
+    to: payment/api-558
+  - from: session/session-worker-8
+    to: session/api-197
+  - from: session/session-worker-8
+    to: tax/api-330

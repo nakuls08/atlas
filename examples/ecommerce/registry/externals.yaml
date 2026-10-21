@@ -1,0 +1,134 @@
+externals:
+  - id: ext/adyen
+    name: Adyen
+    kind: SaaS
+    ownerTeam: team-payments
+  - id: ext/auth0
+    name: Auth0
+    kind: SaaS
+    ownerTeam: team-platform-edge
+  - id: ext/avalara
+    name: Avalara
+    kind: SaaS
+    ownerTeam: team-tax
+  - id: ext/awin
+    name: Awin
+    kind: partner
+    ownerTeam: team-growth
+  - id: ext/bank
+    name: House bank
+    kind: partner
+    ownerTeam: team-ledger
+  - id: ext/cloudinary
+    name: Cloudinary
+    kind: SaaS
+    ownerTeam: team-content
+  - id: ext/datadog
+    name: Datadog
+    kind: SaaS
+    ownerTeam: team-sre
+  - id: ext/dhl
+    name: DHL
+    kind: partner
+    ownerTeam: team-shipping
+  - id: ext/fedex
+    name: FedEx
+    kind: partner
+    ownerTeam: team-shipping
+  - id: ext/firebase
+    name: Firebase Cloud Messaging
+    kind: SaaS
+    ownerTeam: team-messaging
+  - id: ext/fx-rates
+    name: ECB FX feed
+    kind: other org
+    ownerTeam: team-pricing
+  - id: ext/google-merchant
+    name: Google Merchant Center
+    kind: SaaS
+    ownerTeam: team-growth
+  - id: ext/klarna
+    name: Klarna
+    kind: partner
+    ownerTeam: team-payments
+  - id: ext/launchdarkly
+    name: LaunchDarkly
+    kind: SaaS
+    ownerTeam: team-platform
+  - id: ext/loqate
+    name: Loqate
+    kind: SaaS
+    ownerTeam: team-checkout
+  - id: ext/manhattan
+    name: Manhattan WMS
+    kind: SaaS
+    ownerTeam: team-wms
+  - id: ext/meta-ads
+    name: Meta Ads
+    kind: SaaS
+    ownerTeam: team-growth
+  - id: ext/onfido
+    name: Onfido
+    kind: SaaS
+    ownerTeam: team-marketplace
+  - id: ext/openai
+    name: OpenAI
+    kind: SaaS
+    ownerTeam: team-ml
+  - id: ext/paypal
+    name: PayPal
+    kind: partner
+    ownerTeam: team-payments
+  - id: ext/sap-erp
+    name: SAP ERP (corporate)
+    kind: other org
+    ownerTeam: team-ledger
+  - id: ext/sendgrid
+    name: SendGrid
+    kind: SaaS
+    ownerTeam: team-messaging
+  - id: ext/sift
+    name: Sift
+    kind: SaaS
+    ownerTeam: team-risk
+  - id: ext/snowflake
+    name: Snowflake
+    kind: SaaS
+    ownerTeam: team-analytics
+  - id: ext/stripe
+    name: Stripe
+    kind: SaaS
+    ownerTeam: team-payments
+  - id: ext/supplier-network
+    name: Supplier network
+    kind: partner
+    ownerTeam: team-procurement
+  - id: ext/twilio
+    name: Twilio
+    kind: SaaS
+    ownerTeam: team-messaging
+  - id: ext/ups
+    name: UPS
+    kind: partner
+    ownerTeam: team-shipping
+  - id: ext/zendesk
+    name: Zendesk
+    kind: SaaS
+    ownerTeam: team-support
+connections:
+  - from: ext/supplier-network
+    to: catalog/supplier-catalogue-drop
+  - from: ext/adyen
+    to: payments/psp-webhooks
+  - from: ext/stripe
+    to: payments/psp-webhooks
+  - from: ext/paypal
+    to: payments/psp-webhooks
+  - from: ext/bank
+    to: ledger/bank-statements
+  - from: ext/dhl
+    to: shipping/carrier-webhooks
+  - from: ext/ups
+    to: shipping/carrier-webhooks
+  - from: ext/fedex
+    to: shipping/carrier-webhooks

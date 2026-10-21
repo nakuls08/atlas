@@ -1,0 +1,51 @@
+domain:
+  id: analytics
+  name: Analytics
+  department: data
+  owningTeam: team-analytics
+  reviewedAt: 2026-08-15
+  reviewedBy: kenji
+services:
+  - id: analytics/lakehouse-loader
+    name: lakehouse-loader
+    owningTeam: team-analytics
+  - id: analytics/metrics-service
+    name: metrics-service
+    owningTeam: team-analytics
+  - id: analytics/bi-exports
+    name: bi-exports
+    owningTeam: team-analytics
+apis:
+  - id: analytics/metrics-api
+    name: Metrics API
+    hostedBy: analytics/metrics-service
+    style: GraphQL
+    audience: internal
+channels:
+  - id: analytics/finance-bi-extract
+    name: Finance BI extract
+    technology: SFTP
+    ownedBy: analytics/bi-exports
+connections:
+  - from: analytics/lakehouse-loader
+    to: ext/snowflake
+  - from: orders/order-placed
+    to: analytics/lakehouse-loader
+  - from: payments/payment-captured
+    to: analytics/lakehouse-loader
+  - from: shipping/shipment-dispatched
+    to: analytics/lakehouse-loader
+  - from: events/session-enriched
+    to: analytics/lakehouse-loader
+  - from: inventory/inventory-changed
+    to: analytics/lakehouse-loader
+  - from: refunds/refund-issued
+    to: analytics/lakehouse-loader
+  - from: analytics/metrics-service
+    to: ext/snowflake
+  - from: analytics/bi-exports
+    to: analytics/metrics-api
+  - from: analytics/bi-exports
+    to: analytics/finance-bi-extract
+  - from: analytics/finance-bi-extract
+    to: ext/sap-erp

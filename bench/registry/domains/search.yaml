@@ -1,0 +1,357 @@
+domain:
+  id: search
+  name: Search
+  department: identity
+  owningTeam: team-search
+  reviewedAt: 2026-07-01
+  reviewedBy: pe
+systems:
+  - id: search/sys-0
+    name: search system 0
+  - id: search/sys-1
+    name: search system 1
+services:
+  - id: search/search-worker-0
+    name: search-worker-0
+    owningTeam: team-search
+  - id: search/search-engine-1
+    name: search-engine-1
+    owningTeam: team-search
+    system: search/sys-0
+  - id: search/search-sync-2
+    name: search-sync-2
+    owningTeam: team-search
+    system: search/sys-1
+  - id: search/search-sync-3
+    name: search-sync-3
+    owningTeam: team-search
+  - id: search/search-gateway-4
+    name: search-gateway-4
+    owningTeam: team-search
+    system: search/sys-0
+    status: planned
+  - id: search/search-service-5
+    name: search-service-5
+    owningTeam: team-search
+    system: search/sys-0
+  - id: search/search-sync-6
+    name: search-sync-6
+    owningTeam: team-search
+    system: search/sys-1
+  - id: search/search-engine-7
+    name: search-engine-7
+    owningTeam: team-search
+    system: search/sys-0
+  - id: search/search-sync-8
+    name: search-sync-8
+    owningTeam: team-search
+    system: search/sys-0
+    ownership: disputed
+    claimant: warehouse
+  - id: search/search-sync-9
+    name: search-sync-9
+    owningTeam: team-search
+    system: search/sys-0
+  - id: search/search-gateway-10
+    name: search-gateway-10
+    owningTeam: team-search
+    system: search/sys-1
+  - id: search/search-service-11
+    name: search-service-11
+    owningTeam: team-search
+    system: search/sys-0
+  - id: search/search-engine-12
+    name: search-engine-12
+    owningTeam: team-search
+apis:
+  - id: search/api-219
+    name: search-worker-0 API 219
+    hostedBy: search/search-worker-0
+    style: GraphQL
+  - id: search/api-220
+    name: search-engine-1 API 220
+    hostedBy: search/search-engine-1
+    style: GraphQL
+  - id: search/api-221
+    name: search-sync-2 API 221
+    hostedBy: search/search-sync-2
+    style: GraphQL
+  - id: search/api-222
+    name: search-sync-3 API 222
+    hostedBy: search/search-sync-3
+    style: REST
+  - id: search/api-223
+    name: search-gateway-4 API 223
+    hostedBy: search/search-gateway-4
+    style: gRPC
+  - id: search/api-224
+    name: search-service-5 API 224
+    hostedBy: search/search-service-5
+    style: REST
+  - id: search/api-225
+    name: search-sync-6 API 225
+    hostedBy: search/search-sync-6
+    style: GraphQL
+  - id: search/api-226
+    name: search-engine-7 API 226
+    hostedBy: search/search-engine-7
+    style: gRPC
+  - id: search/api-227
+    name: search-sync-8 API 227
+    hostedBy: search/search-sync-8
+    style: REST
+  - id: search/api-228
+    name: search-sync-9 API 228
+    hostedBy: search/search-sync-9
+    style: GraphQL
+  - id: search/api-229
+    name: search-gateway-10 API 229
+    hostedBy: search/search-gateway-10
+    style: REST
+  - id: search/api-230
+    name: search-service-11 API 230
+    hostedBy: search/search-service-11
+    style: REST
+  - id: search/api-231
+    name: search-engine-12 API 231
+    hostedBy: search/search-engine-12
+    style: GraphQL
+topics:
+  - id: search/topic-3
+    name: search.event-3.v1
+    ownedBy: search/search-sync-3
+    cluster: identity-kafka
+  - id: search/topic-39
+    name: search.event-39.v1
+    ownedBy: search/search-engine-1
+    cluster: identity-kafka
+  - id: search/topic-45
+    name: search.event-45.v1
+    ownedBy: search/search-gateway-10
+    cluster: identity-kafka
+  - id: search/topic-155
+    name: search.event-155.v1
+    ownedBy: search/search-sync-6
+    cluster: identity-kafka
+  - id: search/topic-176
+    name: search.event-176.v1
+    ownedBy: search/search-gateway-4
+    cluster: identity-kafka
+  - id: search/topic-224
+    name: search.event-224.v1
+    ownedBy: search/search-gateway-4
+    cluster: identity-kafka
+channels: []
+datastores: []
+connections:
+  - from: search/search-sync-8
+    to: carrier/feature-flags-api
+  - from: search/search-gateway-10
+    to: carrier/auth-api
+  - from: search/search-engine-12
+    to: carrier/feature-flags-api
+  - from: search/search-engine-1
+    to: search/topic-39
+  - from: search/search-sync-6
+    to: search/topic-224
+  - from: search/search-engine-1
+    to: cart/api-371
+  - from: search/topic-176
+    to: search/search-engine-12
+  - from: search/search-sync-9
+    to: search/topic-3
+  - from: search/search-worker-0
+    to: loyalty/api-350
+  - from: search/search-sync-2
+    to: search/api-223
+  - from: search/search-engine-12
+    to: search/topic-176
+  - from: search/search-service-5
+    to: review/api-237
+  - from: search/search-service-11
+    to: search/api-220
+  - from: search/search-sync-3
+    to: fraud/api-347
+  - from: search/search-gateway-4
+    to: search/api-220
+  - from: search/search-sync-8
+    to: chat/api-260
+  - from: search/search-sync-3
+    to: cart/api-370
+  - from: search/search-sync-9
+    to: search/api-230
+  - from: search/search-sync-3
+    to: search/api-225
+  - from: search/search-sync-2
+    to: search/api-222
+  - from: search/search-sync-2
+    to: stock/api-146
+  - from: search/search-engine-1
+    to: search/topic-3
+  - from: loyalty/topic-233
+    to: search/search-gateway-4
+  - from: search/search-service-5
+    to: routing/api-269
+  - from: search/search-sync-2
+    to: search/api-230
+  - from: search/search-engine-1
+    to: search/api-226
+  - from: search/search-gateway-10
+    to: search/topic-3
+  - from: search/search-worker-0
+    to: fraud/api-341
+  - from: search/search-sync-6
+    to: promo/api-246
+  - from: search/search-service-5
+    to: ticket/api-252
+  - from: search/search-sync-6
+    to: promo/api-245
+  - from: promo/topic-1
+    to: search/search-service-5
+  - from: search/search-service-5
+    to: label/api-69
+  - from: search/search-engine-7
+    to: search/api-229
+  - from: search/search-engine-1
+    to: search/api-220
+  - from: search/search-sync-8
+    to: routing/api-271
+  - from: search/search-gateway-4
+    to: search/api-223
+  - from: search/search-service-11
+    to: dispatch/api-280
+  - from: search/search-service-5
+    to: chat/api-266
+  - from: search/search-sync-8
+    to: search/api-228
+  - from: search/topic-45
+    to: search/search-engine-12
+  - from: search/search-sync-3
+    to: search/api-220
+  - from: search/search-gateway-10
+    to: cart/api-369
+  - from: search/search-sync-3
+    to: search/topic-39
+  - from: search/search-sync-3
+    to: search/api-221
+  - from: search/search-worker-0
+    to: search/api-221
+  - from: search/search-gateway-4
+    to: dispatch/api-290
+  - from: search/search-engine-7
+    to: fraud/api-349
+  - from: search/search-gateway-10
+    to: search/api-224
+  - from: search/search-gateway-4
+    to: review/api-235
+  - from: search/search-engine-7
+    to: review/api-240
+  - from: search/search-sync-8
+    to: search/topic-45
+  - from: search/search-sync-3
+    to: catalog/api-96
+  - from: search/search-engine-12
+    to: search/api-220
+  - from: search/search-worker-0
+    to: search/topic-224
+  - from: search/search-gateway-10
+    to: stock/api-144
+  - from: search/search-sync-3
+    to: ticket/api-253
+  - from: search/search-engine-1
+    to: search/topic-155
+  - from: search/search-sync-9
+    to: promo/api-244
+  - from: search/search-gateway-4
+    to: dispatch/api-281
+  - from: search/search-gateway-10
+    to: search/api-226
+  - from: search/search-sync-8
+    to: routing/api-274
+  - from: search/search-gateway-4
+    to: search/api-226
+  - from: search/search-service-5
+    to: promo/api-247
+  - from: search/search-service-5
+    to: search/api-219
+  - from: search/search-sync-8
+    to: dispatch/api-290
+  - from: search/search-service-11
+    to: search/topic-3
+  - from: search/search-service-11
+    to: search/api-219
+  - from: search/topic-176
+    to: search/search-sync-9
+  - from: search/search-service-5
+    to: cart/api-367
+  - from: search/search-sync-6
+    to: review/api-237
+  - from: search/search-service-5
+    to: ticket/api-251
+  - from: search/search-worker-0
+    to: routing/api-270
+  - from: search/search-engine-1
+    to: search/api-223
+  - from: search/search-gateway-4
+    to: chat/api-258
+  - from: search/search-sync-6
+    to: ledger/api-460
+  - from: search/search-engine-12
+    to: loyalty/api-354
+  - from: search/search-service-11
+    to: search/api-228
+  - from: search/search-engine-7
+    to: search/topic-224
+  - from: search/search-sync-9
+    to: search/api-222
+  - from: search/search-sync-9
+    to: chat/api-265
+  - from: search/search-sync-3
+    to: search/api-223
+  - from: search/search-service-11
+    to: search/topic-39
+  - from: search/search-engine-12
+    to: search/topic-155
+  - from: search/search-worker-0
+    to: search/api-231
+  - from: search/search-sync-3
+    to: search/api-219
+  - from: ticket/topic-199
+    to: search/search-engine-12
+  - from: search/search-engine-12
+    to: loyalty/api-360
+  - from: search/search-engine-1
+    to: fraud/api-338
+  - from: search/search-worker-0
+    to: refund/api-432
+  - from: search/search-gateway-10
+    to: search/api-221
+  - from: search/search-sync-2
+    to: cart/api-367
+  - from: search/search-engine-1
+    to: search/api-221
+  - from: search/search-service-5
+    to: search/topic-45
+  - from: search/search-engine-7
+    to: promo/api-244
+  - from: search/search-service-5
+    to: search/api-223
+  - from: search/topic-155
+    to: search/search-service-11
+  - from: search/search-sync-2
+    to: search/topic-3
+  - from: search/search-sync-3
+    to: promo/api-244
+  - from: search/search-service-5
+    to: search/api-225
+  - from: chat/topic-129
+    to: search/search-sync-2
+  - from: search/search-gateway-4
+    to: loyalty/api-361
+  - from: carrier/topic-151
+    to: search/search-engine-1
+  - from: search/search-engine-7
+    to: search/api-231
+  - from: search/search-service-11
+    to: label/label-service-6
+    gap: legacy, no spec

@@ -1,0 +1,432 @@
+domain:
+  id: label
+  name: Label
+  department: finance
+  owningTeam: team-label
+  reviewedAt: 2026-07-01
+  reviewedBy: pe
+systems:
+  - id: label/sys-0
+    name: label system 0
+  - id: label/sys-1
+    name: label system 1
+  - id: label/sys-2
+    name: label system 2
+services:
+  - id: label/label-sync-0
+    name: label-sync-0
+    owningTeam: team-label
+    system: label/sys-1
+  - id: label/label-service-1
+    name: label-service-1
+    owningTeam: team-label
+    system: label/sys-1
+  - id: label/label-service-2
+    name: label-service-2
+    owningTeam: team-label
+    system: label/sys-0
+  - id: label/label-gateway-3
+    name: label-gateway-3
+    owningTeam: team-label
+  - id: label/label-adapter-4
+    name: label-adapter-4
+    owningTeam: team-label
+  - id: label/label-adapter-5
+    name: label-adapter-5
+    owningTeam: team-label
+  - id: label/label-service-6
+    name: label-service-6
+    owningTeam: team-label
+  - id: label/label-adapter-7
+    name: label-adapter-7
+    owningTeam: team-label
+  - id: label/label-engine-8
+    name: label-engine-8
+    owningTeam: team-label
+    system: label/sys-2
+  - id: label/label-engine-9
+    name: label-engine-9
+    owningTeam: team-label
+    system: label/sys-2
+  - id: label/label-adapter-10
+    name: label-adapter-10
+    owningTeam: team-label
+    system: label/sys-2
+  - id: label/label-sync-11
+    name: label-sync-11
+    owningTeam: team-label
+  - id: label/label-sync-12
+    name: label-sync-12
+    owningTeam: team-label
+    system: label/sys-0
+  - id: label/label-worker-13
+    name: label-worker-13
+    owningTeam: team-label
+    system: label/sys-1
+  - id: label/label-gateway-14
+    name: label-gateway-14
+    owningTeam: team-label
+    system: label/sys-1
+apis:
+  - id: label/api-68
+    name: label-sync-0 API 68
+    hostedBy: label/label-sync-0
+    style: REST
+  - id: label/api-69
+    name: label-service-1 API 69
+    hostedBy: label/label-service-1
+    style: REST
+  - id: label/api-70
+    name: label-service-2 API 70
+    hostedBy: label/label-service-2
+    style: REST
+  - id: label/api-71
+    name: label-gateway-3 API 71
+    hostedBy: label/label-gateway-3
+    style: REST
+  - id: label/api-72
+    name: label-adapter-4 API 72
+    hostedBy: label/label-adapter-4
+    style: gRPC
+  - id: label/api-73
+    name: label-adapter-5 API 73
+    hostedBy: label/label-adapter-5
+    style: REST
+  - id: label/api-74
+    name: label-service-6 API 74
+    hostedBy: label/label-service-6
+    style: REST
+  - id: label/api-75
+    name: label-adapter-7 API 75
+    hostedBy: label/label-adapter-7
+    style: gRPC
+  - id: label/api-76
+    name: label-engine-8 API 76
+    hostedBy: label/label-engine-8
+    style: gRPC
+  - id: label/api-77
+    name: label-engine-9 API 77
+    hostedBy: label/label-engine-9
+    style: gRPC
+  - id: label/api-78
+    name: label-adapter-10 API 78
+    hostedBy: label/label-adapter-10
+    style: GraphQL
+  - id: label/api-79
+    name: label-sync-11 API 79
+    hostedBy: label/label-sync-11
+    style: GraphQL
+  - id: label/api-80
+    name: label-sync-12 API 80
+    hostedBy: label/label-sync-12
+    style: REST
+  - id: label/api-81
+    name: label-worker-13 API 81
+    hostedBy: label/label-worker-13
+    style: REST
+  - id: label/api-82
+    name: label-gateway-14 API 82
+    hostedBy: label/label-gateway-14
+    style: GraphQL
+  - id: label/api-468
+    name: label-sync-0 API 468
+    hostedBy: label/label-sync-0
+    style: gRPC
+  - id: label/api-469
+    name: label-service-1 API 469
+    hostedBy: label/label-service-1
+    style: REST
+  - id: label/api-470
+    name: label-service-2 API 470
+    hostedBy: label/label-service-2
+    style: REST
+  - id: label/api-471
+    name: label-gateway-3 API 471
+    hostedBy: label/label-gateway-3
+    style: REST
+  - id: label/api-472
+    name: label-adapter-4 API 472
+    hostedBy: label/label-adapter-4
+    style: gRPC
+  - id: label/api-473
+    name: label-adapter-5 API 473
+    hostedBy: label/label-adapter-5
+    style: REST
+  - id: label/api-474
+    name: label-service-6 API 474
+    hostedBy: label/label-service-6
+    style: GraphQL
+  - id: label/api-475
+    name: label-adapter-7 API 475
+    hostedBy: label/label-adapter-7
+    style: REST
+  - id: label/api-476
+    name: label-engine-8 API 476
+    hostedBy: label/label-engine-8
+    style: GraphQL
+  - id: label/api-477
+    name: label-engine-9 API 477
+    hostedBy: label/label-engine-9
+    style: REST
+  - id: label/api-478
+    name: label-adapter-10 API 478
+    hostedBy: label/label-adapter-10
+    style: REST
+  - id: label/api-479
+    name: label-sync-11 API 479
+    hostedBy: label/label-sync-11
+    style: GraphQL
+  - id: label/api-480
+    name: label-sync-12 API 480
+    hostedBy: label/label-sync-12
+    style: GraphQL
+  - id: label/api-481
+    name: label-worker-13 API 481
+    hostedBy: label/label-worker-13
+    style: REST
+  - id: label/api-482
+    name: label-gateway-14 API 482
+    hostedBy: label/label-gateway-14
+    style: REST
+topics:
+  - id: label/topic-2
+    name: label.event-2.v1
+    ownedBy: label/label-sync-12
+    cluster: finance-kafka
+  - id: label/topic-21
+    name: label.event-21.v1
+    ownedBy: label/label-adapter-10
+    cluster: finance-kafka
+  - id: label/topic-76
+    name: label.event-76.v1
+    ownedBy: label/label-sync-0
+    cluster: finance-kafka
+  - id: label/topic-131
+    name: label.event-131.v1
+    ownedBy: label/label-worker-13
+    cluster: finance-kafka
+  - id: label/topic-191
+    name: label.event-191.v1
+    ownedBy: label/label-worker-13
+    cluster: finance-kafka
+  - id: label/topic-226
+    name: label.event-226.v1
+    ownedBy: label/label-service-2
+    cluster: finance-kafka
+channels:
+  - id: label/channel-8
+    name: SFTP drop 8
+    technology: EDI
+    ownedBy: label/label-service-2
+  - id: label/channel-10
+    name: EDI feed 10
+    technology: SQS
+    ownedBy: label/label-sync-12
+datastores:
+  - id: label/store-18
+    name: label-db-18
+    technology: s3
+    ownedBy: label/label-service-6
+connections:
+  - from: invoice/topic-173
+    to: label/label-sync-0
+  - from: invoice/topic-173
+    to: label/label-service-1
+  - from: label/label-service-1
+    to: carrier/notify-api
+  - from: label/label-adapter-4
+    to: carrier/notify-api
+  - from: label/label-engine-9
+    to: carrier/feature-flags-api
+  - from: label/label-worker-13
+    to: carrier/auth-api
+  - from: label/label-gateway-14
+    to: carrier/notify-api
+  - from: label/label-adapter-4
+    to: label/topic-131
+  - from: label/label-service-1
+    to: label/api-473
+  - from: label/label-gateway-14
+    to: ticket/api-256
+  - from: catalog/topic-244
+    to: label/label-adapter-7
+  - from: label/label-engine-8
+    to: carrier/api-294
+  - from: label/label-service-1
+    to: ticket/api-251
+  - from: label/label-service-2
+    to: label/api-481
+  - from: label/label-sync-11
+    to: label/api-73
+  - from: label/label-service-2
+    to: profile/api-586
+  - from: label/label-adapter-10
+    to: payment/api-162
+  - from: label/topic-191
+    to: label/label-gateway-14
+  - from: label/label-engine-8
+    to: label/topic-226
+  - from: routing/topic-222
+    to: label/label-worker-13
+  - from: label/label-adapter-7
+    to: label/api-76
+  - from: label/label-service-1
+    to: label/api-482
+  - from: label/label-service-6
+    to: chat/api-259
+  - from: label/label-gateway-14
+    to: stock/api-546
+  - from: label/label-service-6
+    to: label/api-81
+  - from: label/label-service-2
+    to: pricing/api-129
+  - from: label/label-service-1
+    to: label/api-468
+  - from: payment/topic-16
+    to: label/label-service-2
+  - from: label/label-adapter-4
+    to: session/api-200
+  - from: label/label-adapter-10
+    to: label/topic-2
+  - from: label/label-adapter-7
+    to: dispatch/api-289
+  - from: label/label-service-2
+    to: label/api-69
+  - from: label/label-worker-13
+    to: catalog/api-504
+  - from: label/label-sync-12
+    to: routing/api-272
+  - from: label/label-engine-8
+    to: label/api-477
+  - from: label/label-engine-9
+    to: tracking/api-84
+  - from: label/label-gateway-3
+    to: label/topic-131
+  - from: label/label-adapter-4
+    to: label/api-476
+  - from: label/label-sync-11
+    to: label/api-72
+  - from: stock/topic-215
+    to: label/label-engine-9
+  - from: label/label-worker-13
+    to: label/api-75
+  - from: label/label-adapter-4
+    to: stock/api-554
+  - from: catalog/topic-20
+    to: label/label-service-2
+  - from: label/label-service-6
+    to: label/api-74
+  - from: label/label-engine-8
+    to: label/api-69
+  - from: label/label-gateway-3
+    to: label/topic-191
+  - from: label/label-worker-13
+    to: label/topic-2
+  - from: label/label-adapter-5
+    to: catalog/api-97
+  - from: label/label-worker-13
+    to: label/topic-226
+  - from: label/label-adapter-10
+    to: account/api-568
+  - from: label/label-adapter-4
+    to: label/api-71
+  - from: label/label-engine-8
+    to: ticket/api-249
+  - from: label/label-sync-12
+    to: label/api-71
+  - from: label/label-gateway-3
+    to: label/topic-226
+  - from: label/label-gateway-14
+    to: label/topic-76
+  - from: label/label-sync-12
+    to: session/api-200
+  - from: label/label-sync-12
+    to: label/api-476
+  - from: label/label-sync-12
+    to: tracking/api-486
+  - from: label/label-adapter-7
+    to: session/api-196
+  - from: label/topic-191
+    to: label/label-engine-9
+  - from: label/label-sync-0
+    to: catalog/api-506
+  - from: label/label-gateway-14
+    to: dispatch/api-284
+  - from: label/label-sync-0
+    to: label/topic-2
+  - from: label/label-gateway-3
+    to: label/api-73
+  - from: label/label-service-1
+    to: label/api-71
+  - from: label/label-service-6
+    to: stock/api-155
+  - from: label/label-service-2
+    to: ticket/api-250
+  - from: label/label-service-1
+    to: label/api-477
+  - from: label/label-service-1
+    to: label/api-82
+  - from: label/label-worker-13
+    to: label/api-72
+  - from: label/label-adapter-10
+    to: label/api-70
+  - from: label/label-service-2
+    to: label/api-469
+  - from: label/label-adapter-5
+    to: label/api-75
+  - from: label/label-service-2
+    to: label/topic-2
+  - from: routing/topic-222
+    to: label/label-service-1
+  - from: label/label-adapter-10
+    to: label/topic-191
+  - from: label/label-sync-12
+    to: label/api-73
+  - from: label/label-adapter-10
+    to: payment/api-156
+  - from: label/label-gateway-14
+    to: ticket/api-251
+  - from: label/label-adapter-5
+    to: label/topic-76
+  - from: label/label-engine-8
+    to: label/api-74
+  - from: label/label-adapter-7
+    to: stock/api-149
+  - from: label/label-service-2
+    to: label/topic-131
+  - from: label/label-service-6
+    to: label/topic-2
+  - from: label/topic-226
+    to: label/label-service-1
+  - from: label/label-sync-0
+    to: label/api-72
+  - from: label/topic-131
+    to: label/label-adapter-4
+  - from: label/label-gateway-14
+    to: label/topic-21
+  - from: label/label-service-2
+    to: session/api-196
+  - from: label/label-sync-11
+    to: label/api-81
+  - from: label/label-engine-8
+    to: label/api-72
+  - from: label/label-adapter-7
+    to: profile/api-187
+  - from: label/label-engine-9
+    to: stock/api-150
+  - from: label/label-adapter-4
+    to: label/api-70
+  - from: label/topic-226
+    to: label/label-gateway-3
+  - from: tracking/topic-204
+    to: label/label-gateway-14
+  - from: label/label-gateway-14
+    to: label/api-471
+  - from: label/label-service-6
+    to: label/api-77
+  - from: label/label-adapter-7
+    to: invoice/api-448
+  - from: label/label-adapter-7
+    to: label/topic-131
+  - from: label/label-engine-8
+    to: label/api-71

@@ -1,0 +1,334 @@
+domain:
+  id: routing
+  name: Routing
+  department: data
+  owningTeam: team-routing
+  reviewedAt: 2025-11-01
+  reviewedBy: pe
+systems:
+  - id: routing/sys-0
+    name: routing system 0
+  - id: routing/sys-1
+    name: routing system 1
+  - id: routing/sys-2
+    name: routing system 2
+services:
+  - id: routing/routing-sync-0
+    name: routing-sync-0
+    owningTeam: team-routing
+    system: routing/sys-2
+  - id: routing/routing-manager-1
+    name: routing-manager-1
+    owningTeam: team-routing
+  - id: routing/routing-worker-2
+    name: routing-worker-2
+    owningTeam: team-routing
+    system: routing/sys-1
+  - id: routing/routing-service-3
+    name: routing-service-3
+    owningTeam: team-routing
+    system: routing/sys-2
+  - id: routing/routing-manager-4
+    name: routing-manager-4
+    owningTeam: team-routing
+    system: routing/sys-0
+  - id: routing/routing-gateway-5
+    name: routing-gateway-5
+    owningTeam: team-routing
+    system: routing/sys-2
+  - id: routing/routing-service-6
+    name: routing-service-6
+    owningTeam: team-routing
+    system: routing/sys-1
+  - id: routing/routing-sync-7
+    name: routing-sync-7
+    owningTeam: team-routing
+    system: routing/sys-1
+  - id: routing/routing-sync-8
+    name: routing-sync-8
+    owningTeam: team-routing
+  - id: routing/routing-engine-9
+    name: routing-engine-9
+    owningTeam: team-routing
+  - id: routing/routing-sync-10
+    name: routing-sync-10
+    owningTeam: team-routing
+apis:
+  - id: routing/api-267
+    name: routing-sync-0 API 267
+    hostedBy: routing/routing-sync-0
+    style: gRPC
+  - id: routing/api-268
+    name: routing-manager-1 API 268
+    hostedBy: routing/routing-manager-1
+    style: REST
+  - id: routing/api-269
+    name: routing-worker-2 API 269
+    hostedBy: routing/routing-worker-2
+    style: REST
+  - id: routing/api-270
+    name: routing-service-3 API 270
+    hostedBy: routing/routing-service-3
+    style: REST
+  - id: routing/api-271
+    name: routing-manager-4 API 271
+    hostedBy: routing/routing-manager-4
+    style: GraphQL
+  - id: routing/api-272
+    name: routing-gateway-5 API 272
+    hostedBy: routing/routing-gateway-5
+    style: REST
+  - id: routing/api-273
+    name: routing-service-6 API 273
+    hostedBy: routing/routing-service-6
+    style: gRPC
+  - id: routing/api-274
+    name: routing-sync-7 API 274
+    hostedBy: routing/routing-sync-7
+    style: GraphQL
+  - id: routing/api-275
+    name: routing-sync-8 API 275
+    hostedBy: routing/routing-sync-8
+    style: GraphQL
+  - id: routing/api-276
+    name: routing-engine-9 API 276
+    hostedBy: routing/routing-engine-9
+    style: GraphQL
+  - id: routing/api-277
+    name: routing-sync-10 API 277
+    hostedBy: routing/routing-sync-10
+    style: REST
+topics:
+  - id: routing/topic-50
+    name: routing.event-50.v1
+    ownedBy: routing/routing-manager-1
+    cluster: data-kafka
+  - id: routing/topic-70
+    name: routing.event-70.v1
+    ownedBy: routing/routing-service-3
+    cluster: data-kafka
+  - id: routing/topic-78
+    name: routing.event-78.v1
+    ownedBy: routing/routing-manager-1
+    cluster: data-kafka
+  - id: routing/topic-94
+    name: routing.event-94.v1
+    ownedBy: routing/routing-sync-8
+    cluster: data-kafka
+  - id: routing/topic-108
+    name: routing.event-108.v1
+    ownedBy: routing/routing-sync-10
+    cluster: data-kafka
+  - id: routing/topic-119
+    name: routing.event-119.v1
+    ownedBy: routing/routing-manager-4
+    cluster: data-kafka
+  - id: routing/topic-222
+    name: routing.event-222.v1
+    ownedBy: routing/routing-engine-9
+    cluster: data-kafka
+channels: []
+datastores:
+  - id: routing/store-43
+    name: routing-db-43
+    technology: redis
+    ownedBy: routing/routing-worker-2
+connections:
+  - from: routing/routing-gateway-5
+    to: carrier/notify-api
+  - from: routing/routing-sync-7
+    to: carrier/auth-api
+  - from: routing/routing-sync-10
+    to: carrier/feature-flags-api
+  - from: routing/routing-engine-9
+    to: checkout/api-377
+  - from: routing/routing-sync-10
+    to: routing/api-272
+  - from: routing/routing-manager-4
+    to: stock/api-534
+  - from: routing/routing-service-3
+    to: tax/api-334
+  - from: routing/routing-manager-4
+    to: routing/api-271
+  - from: routing/routing-engine-9
+    to: routing/api-277
+  - from: routing/routing-sync-0
+    to: notify/api-398
+  - from: routing/routing-gateway-5
+    to: routing/api-273
+  - from: tax/topic-40
+    to: routing/routing-manager-4
+  - from: routing/routing-sync-7
+    to: routing/topic-50
+  - from: routing/routing-manager-1
+    to: session/api-197
+  - from: routing/routing-worker-2
+    to: routing/api-267
+  - from: routing/routing-sync-7
+    to: routing/topic-222
+  - from: routing/routing-service-3
+    to: dispatch/api-279
+  - from: routing/routing-manager-1
+    to: routing/api-272
+  - from: ticket/topic-199
+    to: routing/routing-gateway-5
+  - from: routing/routing-worker-2
+    to: tax/api-335
+  - from: routing/routing-gateway-5
+    to: chat/api-261
+  - from: routing/routing-sync-8
+    to: routing/topic-108
+  - from: routing/routing-sync-8
+    to: notify/api-393
+  - from: routing/routing-manager-4
+    to: routing/topic-50
+  - from: routing/routing-engine-9
+    to: routing/topic-119
+  - from: routing/routing-gateway-5
+    to: tax/api-331
+  - from: routing/routing-manager-1
+    to: routing/api-267
+  - from: routing/routing-engine-9
+    to: routing/api-276
+  - from: routing/topic-222
+    to: routing/routing-service-6
+  - from: routing/routing-manager-4
+    to: stock/api-542
+  - from: routing/routing-sync-8
+    to: routing/api-275
+  - from: routing/routing-sync-8
+    to: routing/topic-50
+  - from: routing/routing-sync-0
+    to: routing/topic-119
+  - from: routing/routing-gateway-5
+    to: chat/api-257
+  - from: routing/routing-sync-10
+    to: chat/api-265
+  - from: routing/routing-gateway-5
+    to: routing/api-270
+  - from: routing/routing-gateway-5
+    to: checkout/api-374
+  - from: routing/routing-service-6
+    to: routing/api-270
+  - from: routing/routing-gateway-5
+    to: notify/api-391
+  - from: routing/routing-service-3
+    to: routing/api-268
+  - from: routing/routing-gateway-5
+    to: checkout/api-382
+  - from: routing/routing-manager-4
+    to: invoice/api-449
+  - from: routing/routing-manager-4
+    to: routing/api-275
+  - from: routing/routing-service-6
+    to: fraud/api-348
+  - from: routing/routing-sync-10
+    to: checkout/api-376
+  - from: routing/topic-50
+    to: routing/routing-sync-8
+  - from: routing/topic-94
+    to: routing/routing-worker-2
+  - from: routing/routing-sync-8
+    to: carrier/api-293
+  - from: routing/routing-gateway-5
+    to: routing/api-274
+  - from: routing/routing-manager-1
+    to: checkout/api-375
+  - from: ticket/topic-236
+    to: routing/routing-engine-9
+  - from: routing/routing-manager-4
+    to: routing/api-274
+  - from: routing/topic-78
+    to: routing/routing-manager-1
+  - from: routing/topic-119
+    to: routing/routing-manager-1
+  - from: routing/routing-sync-7
+    to: routing/topic-108
+  - from: routing/routing-manager-4
+    to: routing/api-277
+  - from: routing/routing-worker-2
+    to: routing/topic-119
+  - from: routing/routing-sync-8
+    to: routing/api-272
+  - from: routing/routing-sync-0
+    to: routing/api-271
+  - from: routing/routing-worker-2
+    to: routing/topic-70
+  - from: routing/routing-sync-8
+    to: routing/api-270
+  - from: routing/routing-manager-1
+    to: routing/api-277
+  - from: warehouse/topic-217
+    to: routing/routing-sync-7
+  - from: payment/topic-55
+    to: routing/routing-service-6
+  - from: routing/routing-service-3
+    to: routing/topic-119
+  - from: routing/routing-service-3
+    to: routing/api-271
+  - from: routing/routing-sync-7
+    to: routing/topic-70
+  - from: routing/routing-worker-2
+    to: routing/topic-222
+  - from: routing/routing-sync-0
+    to: checkout/api-383
+  - from: routing/routing-sync-10
+    to: routing/api-269
+  - from: routing/routing-gateway-5
+    to: chat/api-262
+  - from: ticket/topic-102
+    to: routing/routing-worker-2
+  - from: routing/routing-sync-10
+    to: notify/api-390
+  - from: routing/routing-gateway-5
+    to: warehouse/api-313
+  - from: routing/topic-70
+    to: routing/routing-worker-2
+  - from: routing/topic-78
+    to: routing/routing-service-6
+  - from: routing/routing-manager-4
+    to: routing/topic-108
+  - from: routing/routing-sync-10
+    to: routing/topic-78
+  - from: routing/routing-service-6
+    to: routing/api-268
+  - from: routing/routing-worker-2
+    to: routing/api-274
+  - from: chat/topic-134
+    to: routing/routing-manager-1
+  - from: routing/routing-sync-7
+    to: routing/topic-94
+  - from: routing/routing-service-6
+    to: routing/topic-50
+  - from: routing/routing-manager-1
+    to: notify/api-388
+  - from: routing/routing-gateway-5
+    to: dispatch/api-284
+  - from: routing/routing-sync-10
+    to: routing/api-274
+  - from: routing/routing-sync-7
+    to: routing/api-275
+  - from: routing/routing-worker-2
+    to: routing/api-275
+  - from: routing/topic-50
+    to: routing/routing-worker-2
+  - from: routing/routing-sync-8
+    to: warehouse/api-315
+  - from: routing/routing-service-3
+    to: notify/api-397
+  - from: tax/topic-68
+    to: routing/routing-sync-8
+  - from: routing/routing-sync-0
+    to: invoice/api-47
+  - from: routing/routing-manager-1
+    to: routing/topic-70
+  - from: routing/routing-manager-4
+    to: chat/api-258
+  - from: routing/routing-worker-2
+    to: notify/api-394
+  - from: routing/routing-service-3
+    to: routing/topic-50
+  - from: routing/routing-sync-7
+    to: routing/api-274
+  - from: routing/routing-sync-0
+    to: routing/api-272

@@ -1,0 +1,37 @@
+departments:
+  - id: digital
+    name: Digital Experience
+    head: amara
+  - id: commerce
+    name: Commerce
+    head: jonas
+  - id: payments-risk
+    name: Payments & Risk
+    head: priya
+  - id: finance
+    name: Finance
+    head: omar
+  - id: fulfilment
+    name: Fulfilment & Logistics
+    head: maria
+  - id: customer
+    name: Customer
+    head: sofia
+  - id: engagement
+    name: Marketing & Engagement
+    head: lena
+  - id: data
+    name: Data & Analytics
+    head: kenji
+  - id: supply
+    name: Supply Chain
+    head: diego
+  - id: marketplace
+    name: Marketplace
+    head: ines
+  - id: support
+    name: Customer Support
+    head: noah
+  - id: platform
+    name: Platform
+    head: lee

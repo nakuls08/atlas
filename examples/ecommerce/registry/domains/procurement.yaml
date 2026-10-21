@@ -1,0 +1,59 @@
+domain:
+  id: procurement
+  name: Procurement
+  department: supply
+  owningTeam: team-procurement
+  reviewedAt: 2026-08-15
+  reviewedBy: diego
+services:
+  - id: procurement/purchase-orders
+    name: purchase-orders
+    owningTeam: team-procurement
+  - id: procurement/supplier-service
+    name: supplier-service
+    owningTeam: team-procurement
+  - id: procurement/receiving
+    name: receiving
+    owningTeam: team-procurement
+apis:
+  - id: procurement/purchase-order-api
+    name: Purchase Order API
+    hostedBy: procurement/purchase-orders
+    style: REST
+    audience: internal
+  - id: procurement/supplier-api
+    name: Supplier API
+    hostedBy: procurement/supplier-service
+    style: REST
+    audience: partner
+topics:
+  - id: procurement/po-created
+    name: po.created.v1
+    ownedBy: procurement/purchase-orders
+    cluster: supply-events
+datastores:
+  - id: procurement/purchase-orders-db
+    name: purchase-orders-db
+    technology: postgres
+    ownedBy: procurement/purchase-orders
+  - id: procurement/supplier-service-db
+    name: supplier-service-db
+    technology: postgres
+    ownedBy: procurement/supplier-service
+connections:
+  - from: procurement/purchase-orders
+    to: procurement/supplier-api
+  - from: procurement/purchase-orders
+    to: procurement/po-created
+  - from: ml/forecast-published
+    to: procurement/purchase-orders
+  - from: procurement/supplier-service
+    to: ext/supplier-network
+  - from: procurement/supplier-service
+    to: edge/auth-api
+  - from: procurement/receiving
+    to: warehouse/wms-api
+  - from: procurement/receiving
+    to: returns/goods-received
+  - from: procurement/po-created
+    to: procurement/receiving

@@ -1,0 +1,3 @@
+clusters:
+  - { id: logistics-main, name: logistics-main, environment: prod }
+  - { id: finance-main, name: finance-main, environment: prod }

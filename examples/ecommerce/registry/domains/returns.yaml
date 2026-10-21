@@ -1,0 +1,71 @@
+domain:
+  id: returns
+  name: Returns
+  department: fulfilment
+  owningTeam: team-returns
+  reviewedAt: 2026-08-15
+  reviewedBy: maria
+services:
+  - id: returns/returns-service
+    name: returns-service
+    owningTeam: team-returns
+  - id: returns/returns-portal-bff
+    name: returns-portal-bff
+    owningTeam: team-returns
+  - id: returns/returns-inspection
+    name: returns-inspection
+    owningTeam: team-returns
+apis:
+  - id: returns/returns-api
+    name: Returns API
+    hostedBy: returns/returns-service
+    style: REST
+    audience: public
+  - id: returns/returns-portal-api
+    name: Returns Portal API
+    hostedBy: returns/returns-portal-bff
+    style: REST
+    audience: public
+topics:
+  - id: returns/return-requested
+    name: return.requested.v1
+    ownedBy: returns/returns-service
+    cluster: fulfilment-events
+  - id: returns/return-received
+    name: return.received.v1
+    ownedBy: returns/returns-service
+    cluster: fulfilment-events
+  - id: returns/goods-received
+    name: goods.received.v1
+    ownedBy: returns/returns-inspection
+    cluster: fulfilment-events
+datastores:
+  - id: returns/returns-service-db
+    name: returns-service-db
+    technology: postgres
+    ownedBy: returns/returns-service
+connections:
+  - from: returns/returns-service
+    to: shipping/label-api
+  - from: returns/returns-service
+    to: orders/order-api-v2
+  - from: returns/returns-service
+    to: legacy/legacy-orders-api
+  - from: returns/returns-service
+    to: edge/auth-api
+  - from: returns/returns-service
+    to: returns/return-requested
+  - from: returns/returns-service
+    to: returns/return-received
+  - from: returns/returns-portal-bff
+    to: returns/returns-api
+  - from: returns/returns-portal-bff
+    to: orders/order-history-api
+  - from: returns/returns-portal-bff
+    to: edge/auth-api
+  - from: returns/returns-inspection
+    to: refunds/refund-api
+  - from: returns/returns-inspection
+    to: returns/goods-received
+  - from: returns/return-received
+    to: returns/returns-inspection
