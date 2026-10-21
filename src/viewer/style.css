@@ -265,6 +265,10 @@ svg.board:active { cursor: grabbing; }
 .ready .edge .line, .ready .edge .count { transition: opacity 200ms ease; }
 .edge.entering, .edge.leaving { opacity: 0; }
 .edge.leaving { pointer-events: none; }
+/* Cards can be dragged: closed ones anywhere, open ones by their name band. */
+.node:not(.open), .node.open .band { cursor: grab; }
+.dragging, .dragging .node { cursor: grabbing; }
+.edge.drag-off { opacity: 0.1; }
 .focusing .edge.dim { opacity: 0.06; }
 .edge.fdim { opacity: 0.05; }
 .fan circle { fill: #fff; stroke: var(--e-async); stroke-width: 1.5; vector-effect: non-scaling-stroke; }

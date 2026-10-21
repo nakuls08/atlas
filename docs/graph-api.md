@@ -12,7 +12,7 @@ Besides YAML registries, Atlas can draw an organisation from a graph of teams, s
 A typical session is one snapshot request and a handful of details batches. Everything else happens in the browser:
 
 - **Hierarchy.** "By team" (team → service → API → operations and schemas) and "By domain" (domain → API → operations and schemas) are both built from the same snapshot, so switching between them costs nothing.
-- **Layout.** ELK runs in a Web Worker. API cards are sized from their operation and schema counts in the snapshot, so the board doesn't move when the details arrive.
+- **Layout.** ELK runs in a Web Worker. API cards are equal tiles like everything else; their operations and schemas load into that box, drawn smaller if there are many, so the board doesn't move when the details arrive.
 - **Connections.** Grants are the leaf edges. Atlas lifts and merges them to whatever is visible, so the server doesn't need to compute any rollups.
 - **Trace and impact** at API level run on the snapshot's grants.
 

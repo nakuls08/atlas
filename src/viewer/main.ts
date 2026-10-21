@@ -9,8 +9,9 @@ import { routeAll, roundedPath, type Pt, type Rect, type RouteRequest } from '..
 import { LEVEL_NAMES } from '../registry/rules';
 import type { ConnectionKind } from '../registry/types';
 import { el, svgEl } from './dom';
-import { buildCard, buildDefs, CHIP_TYPES, closedChipFs, deptHue, legendShape, MAX_PX, type CardText } from './shapes';
+import { buildCard, buildDefs, closedFs, deptHue, legendShape, MAX_PX, type CardText } from './shapes';
 import { initPresentation, type Highlight } from './present';
+import { apiCellScale } from '../spec0/apiGrid';
 
 const MIN_TEXT_PX = 9;
 const STALE_DAYS = 180;
@@ -68,6 +69,7 @@ levelNames.forEach((name, i) => levelSelect.append(el('option', { value: String(
 const filterBtn = el('button', { textContent: 'Filters' });
 const legendBtn = el('button', { textContent: 'Legend' });
 const fitBtn = el('button', { textContent: 'Fit', title: 'Fit to screen (F)' });
+const resetBtn = el('button', { textContent: 'Reset layout', title: 'Put every card you moved back where it started', hidden: true });
 const styleSwitch = el('div', { className: 'seg', role: 'group', title: 'Drawing style' });
 const STYLES = ['studio', 'sketch'] as const;
 type Style = (typeof STYLES)[number];
@@ -100,6 +102,7 @@ app.append(
     filterBtn,
     legendBtn,
     fitBtn,
+    resetBtn,
     ...(hooks.toolbarExtras ?? []),
     el('span', { className: 'spacer' }),
     styleSwitch,
@@ -138,7 +141,7 @@ footer.append(
 );
 if (model.meta.version === 'draft') footer.append(el('span', { className: 'warn' }, 'Draft — not published'));
 footer.append(...(hooks.footerExtras ?? []));
-footer.append(el('span', { className: 'spacer' }), el('span', { className: 'hint' }, 'Drag to pan · scroll or pinch to zoom · double-click to highlight connections · / to search'));
+footer.append(el('span', { className: 'spacer' }), el('span', { className: 'hint' }, 'Drag to pan or move a card · scroll to zoom · double-click for connections · / to search'));
 app.append(stage, footer);
 
 // ── cards ───────────────────────────────────────────────────────────────────
@@ -164,13 +167,14 @@ function staleInfo(n: BoardNode): { text: string; stale: boolean } | null {
   return { text: `reviewed ${at}${by ? ` by ${by}` : ''}`, stale: days > STALE_DAYS };
 }
 
-/** Closed service-like siblings share one name size: the smallest any of them needs. */
+/** Closed sibling containers share one name size: the smallest any of them needs. */
 const sharedClosedFs = new Map<string, number>();
-for (const p of model.nodes) {
-  const sibs = p.children.map((c) => nodes.get(c)!).filter((c) => (c.children.length || c.lazy) && CHIP_TYPES.has(c.type));
-  if (sibs.length < 2) continue;
-  const fs = Math.min(...sibs.map(closedChipFs));
-  for (const c of sibs) sharedClosedFs.set(c.id, fs);
+const roots0 = model.nodes.filter((n) => !n.parent);
+for (const sibs of [roots0, ...model.nodes.map((p) => p.children.map((c) => nodes.get(c)!))]) {
+  const boxes = sibs.filter((c) => c.children.length || c.lazy);
+  if (boxes.length < 2) continue;
+  const fs = Math.min(...boxes.map(closedFs));
+  for (const c of boxes) sharedClosedFs.set(c.id, fs);
 }
 
 function addCard(id: string) {
@@ -193,6 +197,28 @@ function addCard(id: string) {
   cards.set(id, { node: n, g, container, closed, open, base });
   for (const c of n.children) addCard(c);
 }
+// ── moved cards ─────────────────────────────────────────────────────────────
+/**
+ * Cards people have dragged, as offsets from where the layout put them. They live in this
+ * viewer's local storage, per board, and never change the registry.
+ */
+const MOVES_KEY = `atlas-moves:${location.pathname}:${model.spec0?.hierarchy ?? ''}:${model.meta.version ?? ''}`;
+const moves = new Map<string, [number, number]>();
+try {
+  for (const [id, d] of Object.entries(JSON.parse(localStorage.getItem(MOVES_KEY) ?? '{}') as Record<string, [number, number]>)) {
+    if (nodes.has(id)) moves.set(id, d);
+  }
+} catch {
+  /* storage unavailable or unreadable: the layout as built */
+}
+function shiftSubtree(id: string, dx: number, dy: number) {
+  const n = nodes.get(id)!;
+  n.x += dx;
+  n.y += dy;
+  n.children.forEach((c) => shiftSubtree(c, dx, dy));
+}
+for (const [id, [dx, dy]] of moves) shiftSubtree(id, dx, dy);
+
 roots.forEach(addCard);
 
 /**
@@ -236,7 +262,11 @@ let highlight: Highlight | null = null;
  * would open: everything that qualifies during a gesture goes out in one batched request.
  * Their children are placed inside the space the card already reserved.
  */
-const LAZY_OPEN_K = MIN_TEXT_PX / 11;
+/** Zoom at which a lazy API's operation names (11 units, shrunk to fit the card) become readable. */
+const lazyOpenK = (n: BoardNode) => {
+  const sc = n.s ?? 1;
+  return MIN_TEXT_PX / (11 * sc * apiCellScale({ w: n.w / sc, h: n.h / sc }, n.lazy ?? { operations: 0, schemas: 0 }));
+};
 const detailQueue = new Set<string>();
 const detailsLoading = new Set<string>();
 let detailTimer = 0;
@@ -248,7 +278,7 @@ function wantDetails() {
     const n = nodes.get(id)!;
     if (!n.lazy || detailsLoading.has(id) || detailQueue.has(id)) continue;
     // Prefetch a little before the card would open.
-    if (n.w * k >= expandAt * 0.8 && k >= LAZY_OPEN_K * 0.8 && intersects(n, near)) detailQueue.add(id);
+    if (n.w * k >= expandAt * 0.8 && k >= lazyOpenK(n) * 0.8 && intersects(n, near)) detailQueue.add(id);
   }
   if (detailQueue.size && !detailTimer) detailTimer = window.setTimeout(flushDetails, 140);
 }
@@ -385,14 +415,13 @@ function placeMapLabels() {
   const t = currentTransform();
   const shown = new Set<string>();
   const v = viewport();
-  const headerReadable = screenPx(14, MAX_PX.header / 14) >= MIN_TEXT_PX;
   for (const id of state.visible) {
     const n = nodes.get(id)!;
     if (n.type !== 'department' && n.type !== 'domain' && n.type !== 'band' && n.type !== 'team') continue;
     const card = cards.get(id)!;
     const open = state.expanded.has(id);
     // Only where the card's own name can't be read: an open card's band, or a closed card's title.
-    const ownReadable = open ? headerReadable : screenPx(card.closed.nameFs, card.closed.nameCap) >= MIN_TEXT_PX + 1;
+    const ownReadable = open ? screenPx(card.open.nameFs, card.open.nameCap) >= MIN_TEXT_PX : screenPx(card.closed.nameFs, card.closed.nameCap) >= MIN_TEXT_PX + 1;
     if (ownReadable) continue;
     const x = t.x + n.x * t.k;
     const y = t.y + n.y * t.k;
@@ -428,7 +457,6 @@ const screenPx = (fs: number, cap: number) => fs * Math.min(k, cap);
 function applyCardClasses() {
   // Cards well outside the viewport are taken out of rendering entirely.
   const view = viewBox(0.3);
-  const tagsReadable = screenPx(10, MAX_PX.tag / 10) >= 8;
   for (const c of cards.values()) {
     const n = c.node;
     let cls = c.base;
@@ -437,11 +465,12 @@ function applyCardClasses() {
     else {
       const open = state.expanded.has(n.id);
       const sw = n.w * k;
+      const sc = n.s ?? 1;
       const t = open ? c.open : c.closed;
       if (c.container && open) {
         cls += ' open';
         if (screenPx(t.nameFs, t.nameCap) >= MIN_TEXT_PX) cls += ' show-hdr';
-        if (sw >= 1.5 * expandAt && screenPx(11, MAX_PX.meta / 11) >= MIN_TEXT_PX) cls += ' show-meta';
+        if (sw >= 1.5 * expandAt && screenPx(11 * sc, MAX_PX.meta / 11 / sc) >= MIN_TEXT_PX) cls += ' show-meta';
       } else {
         if (c.container) cls += ' show-closed';
         if (screenPx(t.nameFs, t.nameCap) >= MIN_TEXT_PX + (c.container ? 1 : 0)) cls += ' show-name';
@@ -451,7 +480,7 @@ function applyCardClasses() {
         if (c.container && subOk) cls += ' show-sub';
         if (!c.container && subOk && sw >= 1.5 * expandAt) cls += ' show-sub';
       }
-      if (tagsReadable && sw >= 140) cls += ' show-marks';
+      if (screenPx(10 * sc, MAX_PX.tag / 10 / sc) >= 8 && sw >= 140) cls += ' show-marks';
       if (pins.has(n.id)) cls += ' pinned';
       if (n.id === selected) cls += ' selected';
       if (focusSet && !focusSet.has(n.id)) cls += ' dim';
@@ -566,9 +595,13 @@ function drawEdges() {
   const cache = new Map<string | null, string[]>();
   // Only edges that can reach the screen are routed and drawn; panning past the margin redraws.
   const drawn = lifted.filter((l) => near(l.from) || near(l.to));
+  // Routing works in screen-sized units: cards deep inside others are drawn small, so clearances
+  // and spacing between lines are kept in pixels, at the zoom rounded to half a power of two.
+  const unit = Math.pow(2, Math.round(Math.log2(1 / k) * 2) / 2);
+  const norm = (r: Rect): Rect => ({ x: r.x / unit, y: r.y / unit, w: r.w / unit, h: r.h / unit });
   const requests: RouteRequest[] = drawn.map((l) => {
     const o = obstaclesFor(l.from, l.to, cache);
-    return { key: l.key, from: l.from, to: l.to, a: rectOf(l.from), b: rectOf(l.to), obstacles: o.rects, obstacleKey: o.key };
+    return { key: `${unit}|${l.key}`, from: l.from, to: l.to, a: norm(rectOf(l.from)), b: norm(rectOf(l.to)), obstacles: o.rects.map(norm), obstacleKey: o.key };
   });
   const tReq = performance.now();
   if (routeCache.size > 20000) routeCache.clear();
@@ -614,8 +647,8 @@ function drawEdges() {
     build(g);
   };
   for (const l of drawn) {
-    const pts = routes.get(l.key)!;
-    const d = roundedPath(pts, 10);
+    const pts = routes.get(`${unit}|${l.key}`)!.map(([x, y]): Pt => [x * unit, y * unit]);
+    const d = roundedPath(pts, 10 * unit, unit / 10);
     const width = Math.min(5, 1.4 + 0.9 * Math.log2(l.count)).toFixed(2);
     const cls = `edge ${kindClass(l.kinds)}${l.gapOnly ? ' gap' : ''}`;
     put(
@@ -636,7 +669,7 @@ function drawEdges() {
     if (!intersects(n, view)) continue;
     const x0 = n.x + n.w;
     const y = n.y + n.h / 2;
-    const d = `M${x0},${y} H${x0 + 30}`;
+    const d = `M${x0},${y} H${x0 + 30 * unit}`;
     put(
       `fan:${f.topic}`,
       'edge fan k-async',
@@ -644,7 +677,7 @@ function drawEdges() {
       (g) => {
         g.append(svgEl('path', { class: 'hit', d }), svgEl('path', { class: 'line', d, 'stroke-width': 2.5 }));
         const badge = svgEl<SVGGElement>('g', {});
-        badge.setAttribute('style', `transform: translate(${x0 + 44}px, ${y}px) scale(var(--inv, 1))`);
+        badge.setAttribute('style', `transform: translate(${x0 + 44 * unit}px, ${y}px) scale(var(--inv, 1))`);
         badge.append(svgEl('circle', { r: 14 }));
         const t = svgEl('text', {});
         t.textContent = String(f.targets.length);
@@ -747,6 +780,7 @@ const zoomBehavior: ZoomBehavior<SVGSVGElement, unknown> = d3zoom<SVGSVGElement,
     if (e.type === 'wheel') return (e as WheelEvent).ctrlKey || (e as WheelEvent).metaKey;
     if (e.type === 'dblclick') return false;
     if (present?.capturesDrag() && (e.type === 'mousedown' || e.type === 'touchstart')) return false;
+    if ((e.type === 'mousedown' || e.type === 'touchstart') && dragTarget(e)) return false;
     return !(e as MouseEvent).ctrlKey && !(e as MouseEvent).button;
   })
   .on('end', () => {
@@ -877,7 +911,7 @@ function zoomToNode(id: string, instant = false) {
   const container = n.children.length > 0 || !!n.lazy;
   // A container is shown open: zoom at least to where its children become readable,
   // even if part of it then runs past the edges.
-  const openAt = container ? Math.max(lodNodes.get(id)?.openK ?? 0, n.lazy ? LAZY_OPEN_K : 0, expandAt / n.w) * 1.06 : 0;
+  const openAt = container ? Math.max(lodNodes.get(id)?.openK ?? 0, n.lazy ? lazyOpenK(n) : 0, expandAt / n.w) * 1.06 : 0;
   const maxK = Math.max(((container ? 2.5 : 1.8) * expandAt) / n.w, openAt);
   animateTo(n, container ? 0.85 : 0.5, maxK, instant, openAt);
 }
@@ -1091,10 +1125,116 @@ function toggleConnections(id: string) {
 
 const chips = (items: string[]) => el('div', { className: 'chips' }, ...items.map((t) => el('span', { textContent: t })));
 
+// ── dragging cards ──────────────────────────────────────────────────────────
+/**
+ * The card a press would drag: a closed card anywhere on it, an open container only by its name
+ * band (pressing inside an open container pans, as on the background).
+ */
+function dragTarget(e: Event): string | null {
+  if (present?.passiveHover()) return null;
+  const t = e.target as Element;
+  const g = t.closest?.('.node') as SVGGElement | null;
+  const id = g?.dataset.id;
+  if (!id) return null;
+  if (state.expanded.has(id) && !t.closest('.band, .lb.hdr')) return null;
+  return id;
+}
+
+let drag: { id: string; x0: number; y0: number; nx: number; ny: number; moving: boolean } | null = null;
+let suppressClick = false;
+
+nodeLayer.addEventListener('pointerdown', (e) => {
+  if (e.button !== 0) return;
+  const id = dragTarget(e);
+  if (!id) return;
+  const n = nodes.get(id)!;
+  drag = { id, x0: e.clientX, y0: e.clientY, nx: n.x, ny: n.y, moving: false };
+});
+window.addEventListener('pointermove', (e) => {
+  if (!drag) return;
+  if (!drag.moving) {
+    if (Math.hypot(e.clientX - drag.x0, e.clientY - drag.y0) < 4) return;
+    drag.moving = true;
+    svg.classList.add('dragging');
+    // On top of whatever it passes over, with its contents above it.
+    const raise = (cid: string) => {
+      const c = cards.get(cid);
+      if (c) nodeLayer.append(c.g);
+      nodes.get(cid)!.children.forEach(raise);
+    };
+    raise(drag.id);
+    for (const eg of edgeLayer.children) {
+      const key = (eg as SVGGElement).dataset.key ?? '';
+      const [from, to] = key.split('->');
+      if ((from && inSubtree(from, drag.id)) || (to && inSubtree(to, drag.id))) eg.classList.add('drag-off');
+    }
+  }
+  const n = nodes.get(drag.id)!;
+  let x = drag.nx + (e.clientX - drag.x0) / k;
+  let y = drag.ny + (e.clientY - drag.y0) / k;
+  // Stay inside the parent, below its name band.
+  const p = n.parent ? nodes.get(n.parent)! : null;
+  if (p) {
+    const band = 36 * (p.s ?? 1);
+    x = Math.min(Math.max(x, p.x), p.x + p.w - n.w);
+    y = Math.min(Math.max(y, p.y + band), p.y + p.h - n.h);
+  }
+  moveCard(drag.id, x - n.x, y - n.y);
+});
+window.addEventListener('pointerup', () => {
+  if (!drag) return;
+  const { id, moving, nx, ny } = drag;
+  drag = null;
+  if (!moving) return;
+  suppressClick = true;
+  setTimeout(() => (suppressClick = false), 0);
+  svg.classList.remove('dragging');
+  const n = nodes.get(id)!;
+  const prev = moves.get(id) ?? [0, 0];
+  moves.set(id, [prev[0] + n.x - nx, prev[1] + n.y - ny]);
+  saveMoves();
+  // Routes were cached for the old positions.
+  routeCache.clear();
+  drawEdges();
+  applyFocus();
+  present?.onVisibility();
+  drawMinimapBase();
+  drawMinimapViewport();
+  placeMapLabels();
+});
+function moveCard(id: string, dx: number, dy: number) {
+  if (!dx && !dy) return;
+  shiftSubtree(id, dx, dy);
+  const place = (cid: string) => {
+    const n = nodes.get(cid)!;
+    const c = cards.get(cid);
+    if (c) c.g.setAttribute('transform', `translate(${n.x},${n.y})${(n.s ?? 1) !== 1 ? ` scale(${n.s})` : ''}`);
+    n.children.forEach(place);
+  };
+  place(id);
+}
+
+function saveMoves() {
+  resetBtn.hidden = !moves.size;
+  try {
+    if (moves.size) localStorage.setItem(MOVES_KEY, JSON.stringify(Object.fromEntries(moves)));
+    else localStorage.removeItem(MOVES_KEY);
+  } catch {
+    /* storage unavailable: the move lasts until the page is closed */
+  }
+}
+resetBtn.hidden = !moves.size;
+resetBtn.onclick = () => {
+  moves.clear();
+  saveMoves();
+  location.reload();
+};
+
 nodeLayer.addEventListener('click', (e) => {
   const g = (e.target as Element).closest('.node') as SVGGElement | null;
   if (!g) return;
   e.stopPropagation();
+  if (suppressClick) return;
   if (present?.onNodeClick(g.dataset.id!, e)) return;
   selectNode(g.dataset.id!);
 });
@@ -1444,7 +1584,7 @@ function updateCrumbs() {
 const MM_W = 200;
 const mmScale = Math.min(MM_W / bounds.w, 140 / bounds.h);
 const mmBase = document.createElement('canvas');
-{
+function drawMinimapBase() {
   const dpr = window.devicePixelRatio || 1;
   const w = Math.ceil(bounds.w * mmScale) + 12;
   const h = Math.ceil(bounds.h * mmScale) + 12;
@@ -1469,6 +1609,7 @@ const mmBase = document.createElement('canvas');
   };
   roots.forEach((id) => draw(id, 0));
 }
+drawMinimapBase();
 function drawMinimapViewport() {
   const ctx = minimap.getContext('2d')!;
   const dpr = window.devicePixelRatio || 1;

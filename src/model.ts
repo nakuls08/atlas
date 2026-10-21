@@ -24,6 +24,11 @@ export interface BoardNode {
   y: number;
   w: number;
   h: number;
+  /**
+   * How much the card is shrunk: it is drawn at w/s × h/s and scaled by s. Siblings are equal
+   * tiles, so a container's children are drawn smaller than it to fit (1 at the top level).
+   */
+  s?: number;
   children: string[];
   /** Department (or band) the card sits in, for colouring. */
   dept: string | null;

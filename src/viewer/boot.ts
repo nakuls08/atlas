@@ -24,7 +24,7 @@ if ('kind' in payload && payload.kind === 'spec0') void bootSpec0(payload);
 else start(payload as BoardModel);
 
 /** Bump when layout rules change, so cached layouts are recomputed. */
-const LAYOUT_REV = 1;
+const LAYOUT_REV = 2;
 
 async function bootSpec0(p: Spec0Payload) {
   const app = document.getElementById('app')!;
@@ -43,7 +43,7 @@ async function bootSpec0(p: Spec0Payload) {
   const t0 = performance.now();
   const cacheKey = `atlas-layout:${snap.org.id}:${snap.version}:${hierarchy}:${LAYOUT_REV}`;
   if (!restoreLayout(cacheKey, board.nodes)) {
-    await layoutBoard(board.nodes, board.edges, browserElk(), (n) => (n.type === 'api' && !n.children.length ? { w: n.w, h: n.h } : undefined));
+    await layoutBoard(board.nodes, board.edges, browserElk());
     saveLayout(cacheKey, board.nodes);
   }
   const layoutMs = Math.round(performance.now() - t0);
@@ -127,9 +127,9 @@ function restoreLayout(key: string, nodes: Map<string, BoardNode>): boolean {
   try {
     const raw = localStorage.getItem(key);
     if (!raw) return false;
-    const geo = JSON.parse(raw) as Record<string, [number, number, number, number]>;
+    const geo = JSON.parse(raw) as Record<string, [number, number, number, number, number]>;
     if (Object.keys(geo).length !== nodes.size || [...nodes.keys()].some((k) => !geo[k])) return false;
-    for (const [k, [x, y, w, h]] of Object.entries(geo)) Object.assign(nodes.get(k)!, { x, y, w, h });
+    for (const [k, [x, y, w, h, s]] of Object.entries(geo)) Object.assign(nodes.get(k)!, { x, y, w, h, s });
     return true;
   } catch {
     return false;
@@ -138,8 +138,8 @@ function restoreLayout(key: string, nodes: Map<string, BoardNode>): boolean {
 
 function saveLayout(key: string, nodes: Map<string, BoardNode>) {
   try {
-    const geo: Record<string, [number, number, number, number]> = {};
-    for (const [k, n] of nodes) geo[k] = [n.x, n.y, n.w, n.h];
+    const geo: Record<string, [number, number, number, number, number]> = {};
+    for (const [k, n] of nodes) geo[k] = [n.x, n.y, n.w, n.h, n.s ?? 1];
     // Keep only the latest layout per org and hierarchy.
     for (let i = localStorage.length - 1; i >= 0; i--) {
       const k = localStorage.key(i);

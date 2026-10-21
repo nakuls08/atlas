@@ -48,19 +48,27 @@ export interface Cell {
   h: number;
 }
 
-/** Cells for the loaded operations and schemas inside a card of size `box`. Column-major. */
-export function apiCells(box: { w: number; h: number }, actual: { operations: number; schemas: number }): { operations: Cell[]; schemas: Cell[] } {
-  const zones = (ops: number, schs: number) => {
-    const o = zone(ops, API_GRID.op);
-    const s = zone(schs, API_GRID.schema);
-    return { o, s, w: o.w + s.w + (o.w && s.w ? API_GRID.zoneGap : 0), h: Math.max(o.h, s.h) };
-  };
+const zones = (ops: number, schs: number) => {
+  const o = zone(ops, API_GRID.op);
+  const s = zone(schs, API_GRID.schema);
+  return { o, s, w: o.w + s.w + (o.w && s.w ? API_GRID.zoneGap : 0), h: Math.max(o.h, s.h) };
+};
+
+/** How much the items are shrunk to fit a card of size `box`: fit, don't grow. */
+export function apiCellScale(box: { w: number; h: number }, actual: { operations: number; schemas: number }): number {
   const want = zones(actual.operations, actual.schemas);
   const avail = { w: box.w - 2 * API_GRID.pad, h: box.h - API_GRID.band - 2 * API_GRID.pad };
-  // Fit, don't grow: scale everything down if the new spec has more items than reserved.
-  const scale = Math.min(1, avail.w / Math.max(1, want.w), avail.h / Math.max(1, want.h));
-  const x0 = API_GRID.pad;
-  const y0 = API_GRID.band + API_GRID.pad;
+  return Math.min(1, avail.w / Math.max(1, want.w), avail.h / Math.max(1, want.h));
+}
+
+/** Cells for the loaded operations and schemas inside a card of size `box`. Column-major. */
+export function apiCells(box: { w: number; h: number }, actual: { operations: number; schemas: number }): { operations: Cell[]; schemas: Cell[] } {
+  const want = zones(actual.operations, actual.schemas);
+  const scale = apiCellScale(box, actual);
+  // Centred in the room below the band, so a card larger than its contents isn't lopsided.
+  const avail = { w: box.w - 2 * API_GRID.pad, h: box.h - API_GRID.band - 2 * API_GRID.pad };
+  const x0 = API_GRID.pad + Math.max(0, (avail.w - want.w * scale) / 2);
+  const y0 = API_GRID.band + API_GRID.pad + Math.max(0, (avail.h - want.h * scale) / 2);
   const cells = (n: number, cell: { w: number; h: number }, dx: number): Cell[] =>
     Array.from({ length: n }, (_, i) => {
       const c = Math.floor(i / API_GRID.rows);

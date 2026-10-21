@@ -41,11 +41,11 @@ The build runs in Node and the viewer runs in the browser. They share `src/model
 
 ## Rules that keep the board usable
 
-**Cards never move when detail appears.** Every card's position and size is fixed at build time. Opening a container shows children that were already placed inside it. If a change makes a card shift as you zoom, it's a bug, even if the new position looks better. The same goes for org graphs: API cards are sized from counts in the snapshot so the details can load into a box that already exists.
+**Cards never move when detail appears.** Every card's position and size is fixed at build time. Opening a container shows children that were already placed inside it, drawn smaller to fit (DECISIONS D-28). If a change makes a card shift as you zoom, it's a bug, even if the new position looks better. The same goes for org graphs: operations load into the API card's existing box. The only thing that moves a card is a person dragging it, and that stays in their browser.
 
 **Builds are byte-identical.** The same registry produces the same HTML, so a diff of two builds shows only real changes. Don't put timestamps, random ids or iteration order over unsorted maps into the model. There's a test for this.
 
-**Text stays readable or isn't drawn.** Text under 9 px on screen is hidden, and containers stay closed until their children's names would be readable. A screen of unlabelled boxes is worse than a closed card with a count.
+**Text stays readable or isn't drawn.** Text under 9 px on screen is hidden, and containers stay closed until their children's names would be readable. A screen of unlabelled boxes is worse than a closed card with a count. Cards are drawn in their own units and scaled by `BoardNode.s`, so anything that compares a size with the zoom has to account for it (`CardText` values from `buildCard` already do).
 
 **Lines don't move unless you ask.** Nothing about the lines should change on hover, on a single click, or in the middle of a pan or zoom; they settle once the view stops (DECISIONS D-26). If you add an interaction that restyles lines, put it behind a double-click or an explicit control, and redraw through `drawEdges`, which only touches lines that changed.
 

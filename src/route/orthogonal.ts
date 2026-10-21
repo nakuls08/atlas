@@ -489,8 +489,9 @@ class MinHeap {
   }
 }
 
-/** SVG path for a polyline with rounded corners. */
-export function roundedPath(points: Pt[], radius = 8): string {
+/** SVG path for a polyline with rounded corners; coordinates are rounded to multiples of `q`. */
+export function roundedPath(points: Pt[], radius = 8, q = 0.1): string {
+  const fmt = (n: number) => String(+(Math.round(n / q) * q).toPrecision(10));
   if (points.length < 2) return '';
   let d = `M${fmt(points[0][0])},${fmt(points[0][1])}`;
   for (let k = 1; k < points.length - 1; k++) {
@@ -508,4 +509,3 @@ export function roundedPath(points: Pt[], radius = 8): string {
   return `${d} L${fmt(last[0])},${fmt(last[1])}`;
 }
 
-const fmt = (n: number) => (Math.round(n * 10) / 10).toString();

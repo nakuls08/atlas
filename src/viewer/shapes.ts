@@ -141,7 +141,7 @@ function text(parent: SVGElement, cls: string, x: number, y: number, size: numbe
 function block(parent: SVGElement, cls: string, x: number, y: number, designPx: number, maxPx: number): SVGGElement {
   const g = svgEl<SVGGElement>('g', { class: `lb ${cls}` });
   const cap = +(maxPx / designPx).toFixed(4);
-  g.setAttribute('style', `transform: translate(${x}px, ${y}px) scale(min(1, calc(${cap} / var(--k, 1))))`);
+  g.setAttribute('style', `transform: translate(${x}px, ${y}px) scale(min(1, calc(${cap} / (var(--k, 1) * var(--ks, 1)))))`);
   parent.append(g);
   return g;
 }
@@ -162,24 +162,34 @@ export interface CardText {
  * by `show-*` classes set from the LOD pass.
  */
 /**
- * Name size a closed service-like card would pick on its own: fitted to the box, never above 30.
- * Siblings share the smallest of theirs (`closedFs` in buildCard), so they show and hide their
- * names at the same zoom instead of one at a time.
+ * Name size a closed container would pick on its own, in its own units: fitted to the box. Siblings
+ * share the smallest of theirs (`closedFs` in buildCard), so every name at a level is the same
+ * size and they show and hide at the same zoom instead of one at a time.
  */
-export function closedChipFs(n: Pick<BoardNode, 'type' | 'name' | 'summary' | 'w' | 'h'>): number {
-  const { w, h } = n;
-  const cs = Math.min(26, h * 0.4);
-  const room = w - 12 - cs - 8 - 14;
-  const fit = Math.min(room / Math.max(1, textWidth(n.name, 1, 'label')), room / Math.max(1, textWidth(n.summary, 1 / 1.3, 'body')), h * 0.26, 30);
-  return Math.max(LEAF[n.type].font, fit);
+export function closedFs(n: Pick<BoardNode, 'type' | 'name' | 'summary' | 'w' | 'h' | 's'>): number {
+  const s = n.s ?? 1;
+  const w = n.w / s;
+  const h = n.h / s;
+  if (CHIP_TYPES.has(n.type)) {
+    const cs = Math.min(26, h * 0.4);
+    const room = w - 12 - cs - 8 - 14;
+    const fit = Math.min(room / Math.max(1, textWidth(n.name, 1, 'label')), room / Math.max(1, textWidth(n.summary, 1 / 1.3, 'body')), h * 0.26, 30);
+    return Math.max(LEAF[n.type].font, fit);
+  }
+  return Math.max(4, Math.min((w - 48) / Math.max(1, textWidth(n.name, 1, 'title')), h * 0.3));
 }
 
 export function buildCard(
   n: BoardNode,
   opts: { container: boolean; staleText: string | null; closedFs?: number },
 ): { g: SVGGElement; closed: CardText; open: CardText } {
-  const { w, h } = n;
-  const g = svgEl<SVGGElement>('g', { transform: `translate(${n.x},${n.y})` });
+  // Drawn in the card's own units and shrunk by s (see BoardNode.s). Label blocks read --ks so
+  // they stop growing at the same on-screen size as everyone else's.
+  const sc = n.s ?? 1;
+  const w = n.w / sc;
+  const h = n.h / sc;
+  const g = svgEl<SVGGElement>('g', { transform: `translate(${n.x},${n.y})${sc !== 1 ? ` scale(${sc})` : ''}` });
+  if (sc !== 1) g.style.setProperty('--ks', String(sc));
   const isChip = CHIP_TYPES.has(n.type);
   if (!opts.container || n.type === 'domain') g.append(svgEl('path', { class: 'shadow', d: shapePath(n.type, w, h), transform: 'translate(0,2)' }));
   g.append(svgEl('path', { class: 'shape', d: shapePath(n.type, w, h) }));
@@ -234,9 +244,9 @@ export function buildCard(
     if (isChip) {
       // Name sized to the box (like a closed domain), capped like any label.
       const cs = Math.min(26, h * 0.4);
-      closed = leafBlock(cg, 12, h / 2, cs, opts.closedFs ?? closedChipFs(n), n.summary, 'sum');
+      closed = leafBlock(cg, 12, h / 2, cs, opts.closedFs ?? closedFs(n), n.summary, 'sum');
     } else {
-      const fit = Math.max(4, Math.min((w - 48) / Math.max(1, textWidth(n.name, 1, 'title')), h * 0.3));
+      const fit = opts.closedFs ?? closedFs(n);
       const sum = Math.max(3, Math.min(fit * 0.42, (w - 32) / Math.max(1, textWidth(n.summary, 1, 'body'))));
       const max =
         n.type === 'department' ? MAX_PX.department : n.type === 'team' ? MAX_PX.team : n.type === 'domain' ? MAX_PX.domain : n.type === 'band' ? MAX_PX.band : MAX_PX.system;
@@ -307,7 +317,9 @@ export function buildCard(
     const pb = block(g, 'pin', w - 14, 18, 10, 11);
     pb.append(svgEl('circle', { r: 4 }));
   }
-  return { g, closed, open };
+  // In board units: text at s × its own size, reaching its cap at a zoom 1/s higher.
+  const toWorld = (t: CardText): CardText => ({ nameFs: t.nameFs * sc, nameCap: t.nameCap / sc, subFs: t.subFs * sc });
+  return { g, closed: toWorld(closed), open: toWorld(open) };
 }
 
 /** SVG gradients shared by every card (chips, department bands). */

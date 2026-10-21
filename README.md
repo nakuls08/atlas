@@ -2,7 +2,7 @@
 
 Atlas draws your system architecture as one zoomable board. You describe departments, domains, services, APIs, topics and datastores in YAML files kept in git. Atlas checks them, lays them out, and builds a single HTML file you can open anywhere, with no server needed. Zoomed out you see departments and domains. As you zoom in, services, APIs and topics appear inside them, and the connections regroup to match whatever is on screen.
 
-Cards never move when more detail appears. That rule decides most of the layout, and it's what lets people find their way around a large board the second time they open it.
+Every card at a level is the same size, whatever it holds: all departments match, all domains in a department match, and so on. A card's contents are drawn smaller inside it and come into view as you zoom in, so the card you're heading for fills the screen as its neighbours slide out of frame, and zooming out brings back the same even grid. Cards never move when more detail appears, which is what lets people find their way around a large board the second time they open it. You can drag cards into an arrangement you prefer; that stays in your browser and "Reset layout" undoes it.
 
 ![The e-commerce example zoomed into Payments, with the details panel open](docs/images/focus.png)
 
@@ -73,7 +73,7 @@ Containers open by themselves once they're big enough on screen for their childr
 
 Connections are routed at right angles around cards. Lines between the same two cards merge into one with a count, and lines that lead off screen are grouped by the domain they go to ("12 calls → Billing"). When a view would still draw more than 160 lines, both ends are grouped one level coarser and the board says so.
 
-Moving around never changes the lines under you. Hovering does nothing to them, and while you pan or zoom they stay where they are, then regroup for the new view once you stop, with changed lines fading rather than blinking. Click a card to see its details and its inbound and outbound connections. Double-click a card to highlight its connections and dim everything else, or double-click a line to pick out just that connection and list what it stands for. Click empty space or press Esc to clear. Press `/` to search. Filters cover connection kinds, platform links, Kafka clusters, tags and stale domains. The URL always reopens the exact view, so you can paste a link to "the Payments domain with these filters" into a ticket.
+Moving around never changes the lines under you. Hovering does nothing to them, and while you pan or zoom they stay where they are, then regroup for the new view once you stop, with changed lines fading rather than blinking. Click a card to see its details and its inbound and outbound connections. Double-click a card to highlight its connections and dim everything else, or double-click a line to pick out just that connection and list what it stands for. Click empty space or press Esc to clear. Drag a closed card, or an open one by its title bar, to move it; dragging anywhere else pans. Press `/` to search. Filters cover connection kinds, platform links, Kafka clusters, tags and stale domains. The URL always reopens the exact view, so you can paste a link to "the Payments domain with these filters" into a ticket.
 
 There are two drawing styles. Studio is the clean default. Sketch draws in handwriting on graph paper, which works better in a design review because nobody mistakes it for a finished diagram.
 

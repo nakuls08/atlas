@@ -10,10 +10,8 @@ import { DETAIL_FONT, LEAF } from './sizes';
 
 export { DETAIL_FONT, LEAF };
 
-/** Name band at the top of every container, and side padding. */
+/** Name band at the top of every container, in the container's own (unscaled) units. */
 export const PAD = { top: 36, side: 32 };
-
-
 
 /** Every container is laid out on its own, bottom-up: its children are fixed-size boxes. */
 const LAYERED = {
@@ -21,49 +19,31 @@ const LAYERED = {
   'elk.direction': 'RIGHT',
   'elk.randomSeed': '1',
   'elk.separateConnectedComponents': 'true',
-  // Unconnected children pack into wide rows instead of one tall column.
-  'elk.aspectRatio': '2.6',
   'elk.layered.considerModelOrder.strategy': 'NODES_AND_EDGES',
   'elk.layered.crossingMinimization.strategy': 'LAYER_SWEEP',
   'elk.layered.nodePlacement.strategy': 'NETWORK_SIMPLEX',
   'elk.edgeRouting': 'ORTHOGONAL',
 };
 
+/** Cards drawn as boxes that can hold other cards. They share one tile size with their siblings. */
+const BOX_TYPES = new Set<NodeType>(['department', 'domain', 'system', 'team', 'band', 'service', 'apigroup']);
+/** Box cards drawn with a type chip and a left-aligned name rather than a centred title. */
+const CHIP_BOXES = new Set<NodeType>(['service', 'apigroup', 'api']);
+
+const isBox = (n: BoardNode) => BOX_TYPES.has(n.type) || n.children.length > 0 || !!n.lazy;
+
 /**
- * Gutters leave room for several parallel lines, their arrowheads and count labels. They grow
- * with the cards they separate: a fixed gap that looks generous between services is a sliver
- * between whole domains once you zoom out to see them.
+ * Tile a box card would like on its own: room for its name at the closed-card size, about 5:3.
+ * Siblings take the largest of theirs, so every box at a level is the same size.
  */
-function containerOptions(children: Array<{ w: number; h: number }>) {
-  const gap = Math.round(Math.max(56, typicalSize(children) * 0.5));
-  const side = Math.round(Math.max(PAD.side, gap * 0.6));
-  return {
-    ...LAYERED,
-    'elk.padding': `[top=${PAD.top + side - PAD.side},left=${side},bottom=${side},right=${side}]`,
-    'elk.spacing.nodeNode': String(gap),
-    'elk.layered.spacing.nodeNodeBetweenLayers': String(Math.round(gap * 1.8)),
-    'elk.spacing.componentComponent': String(Math.round(gap * 1.15)),
-    'elk.spacing.edgeNode': String(Math.round(Math.max(28, gap * 0.5))),
-    'elk.layered.spacing.edgeNodeBetweenLayers': String(Math.round(Math.max(28, gap * 0.5))),
-  };
+function boxTile(n: BoardNode): { w: number; h: number } {
+  if (CHIP_BOXES.has(n.type)) {
+    const w = Math.max(220, Math.ceil(12 + 26 + 8 + textWidth(n.name, 17, 'label') + 18));
+    return { w, h: Math.max(96, Math.round(w * 0.45)) };
+  }
+  const w = Math.max(280, Math.ceil(textWidth(n.name, 24, 'title') + 2 * 44));
+  return { w, h: Math.max(170, Math.round(w * 0.6)) };
 }
-
-/** Median card size, as the side of a square with the same area. */
-function typicalSize(items: Array<{ w: number; h: number }>): number {
-  const s = items.map((n) => Math.sqrt(n.w * n.h)).sort((a, b) => a - b);
-  return s[Math.floor(s.length / 2)] ?? 0;
-}
-
-/** Children of a service (APIs, datastores) sit in a tight column. */
-const SERVICE_OPTIONS = {
-  ...LAYERED,
-  'elk.direction': 'DOWN',
-  'elk.aspectRatio': '0.6',
-  'elk.padding': `[top=${PAD.top},left=20,bottom=20,right=20]`,
-  'elk.spacing.nodeNode': '18',
-  'elk.layered.spacing.nodeNodeBetweenLayers': '22',
-  'elk.spacing.componentComponent': '18',
-};
 
 export function leafSize(n: Pick<BoardNode, 'type' | 'name' | 'detail'>): { w: number; h: number } {
   const spec = LEAF[n.type];
@@ -71,17 +51,36 @@ export function leafSize(n: Pick<BoardNode, 'type' | 'name' | 'detail'>): { w: n
   return { w: Math.ceil(Math.max(spec.minW, spec.pad + spec.chip + 8 + text + spec.end)), h: spec.h };
 }
 
+/** Equal sizes within a group of siblings: boxes together, other leaves by type. */
+function equalise(children: BoardNode[]): Map<string, { w: number; h: number }> {
+  const groups = new Map<string, Array<{ id: string; w: number; h: number }>>();
+  for (const c of children) {
+    const key = isBox(c) ? 'box' : c.type;
+    const size = isBox(c) ? boxTile(c) : leafSize(c);
+    if (!groups.has(key)) groups.set(key, []);
+    groups.get(key)!.push({ id: c.id, ...size });
+  }
+  const out = new Map<string, { w: number; h: number }>();
+  for (const list of groups.values()) {
+    const w = Math.max(...list.map((x) => x.w));
+    const h = Math.max(...list.map((x) => x.h));
+    for (const x of list) out.set(x.id, { w, h });
+  }
+  return out;
+}
+
+const round = (v: number) => Math.round(v * 1e4) / 1e4;
+
 /**
- * Full nested layout, computed once with everything expanded.
- * Mutates x/y/w/h on the nodes to absolute coordinates.
+ * Full nested layout, computed once with everything expanded. Mutates x/y/w/h/s on the nodes to
+ * absolute coordinates.
+ *
+ * Siblings are equal tiles. A container's children are laid out in their own space and then
+ * shrunk to fit inside its tile, below its name band, so a department with forty domains is the
+ * same size as one with four; its contents are simply drawn smaller and come into view as you
+ * zoom in. `s` records how much a card is shrunk: it is drawn at w/s × h/s and scaled by s.
  */
-export async function layoutBoard(
-  nodes: Map<string, BoardNode>,
-  edges: BoardEdge[],
-  elk: ElkEngine,
-  /** Fixed size for a childless card (e.g. an API reserved from its counts). */
-  sizeOf: (n: BoardNode) => { w: number; h: number } | undefined = () => undefined,
-): Promise<void> {
+export async function layoutBoard(nodes: Map<string, BoardNode>, edges: BoardEdge[], elk: ElkEngine): Promise<void> {
   const chain = (id: string): string[] => {
     const out: string[] = [];
     for (let cur: string | null = id; cur; cur = nodes.get(cur)!.parent) out.push(cur);
@@ -99,13 +98,17 @@ export async function layoutBoard(
     return i > 0 ? c[i - 1] : undefined;
   };
 
+  /** Natural (unscaled) tile of each card, and its children's positions within its content. */
+  const tile = new Map<string, { w: number; h: number }>();
+  const content = new Map<string, { w: number; h: number }>();
   const rel = new Map<string, { x: number; y: number }>();
+
   const layoutContainer = async (n: BoardNode): Promise<void> => {
-    for (const c of n.children) {
-      const child = nodes.get(c)!;
-      if (child.children.length) await layoutContainer(child);
-      else Object.assign(child, sizeOf(child) ?? leafSize(child));
-    }
+    const kids = n.children.map((c) => nodes.get(c)!);
+    for (const c of kids) if (c.children.length) await layoutContainer(c);
+    const sizes = equalise(kids);
+    for (const [id, s] of sizes) tile.set(id, s);
+
     // Connections lifted to this level order the children: one edge per ordered pair.
     const pairs = new Set<string>();
     for (const e of shaping) {
@@ -113,11 +116,26 @@ export async function layoutBoard(
       const b = childUnder(e.to, n.id);
       if (a && b && a !== b) pairs.add(`${a}\u0000${b}`);
     }
-    const compact = n.type === 'service' || n.type === 'apigroup';
+    // Room between cards in proportion to them: wide enough for lines, arrowheads and counts.
+    const big = [...sizes.values()].reduce((m, s) => (s.w * s.h > m.w * m.h ? s : m), { w: 0, h: 0 });
+    const gap = Math.round(Math.max(24, big.h * 0.7));
+    const own = boxTile(n);
+    const options = {
+      ...LAYERED,
+      ...(CHIP_BOXES.has(n.type) ? { 'elk.direction': 'DOWN' } : {}),
+      // Fill the container's own tile, so its contents are shrunk as little as possible.
+      'elk.aspectRatio': (own.w / (own.h - PAD.top)).toFixed(2),
+      'elk.padding': `[top=${gap * 0.6},left=${gap * 0.6},bottom=${gap * 0.6},right=${gap * 0.6}]`,
+      'elk.spacing.nodeNode': String(gap),
+      'elk.layered.spacing.nodeNodeBetweenLayers': String(Math.round(Math.max(gap, big.w * 0.45))),
+      'elk.spacing.componentComponent': String(gap),
+      'elk.spacing.edgeNode': String(Math.round(gap * 0.4)),
+      'elk.layered.spacing.edgeNodeBetweenLayers': String(Math.round(gap * 0.4)),
+    };
     const graph: ElkNode = {
       id: n.id,
-      layoutOptions: compact ? SERVICE_OPTIONS : containerOptions(n.children.map((c) => nodes.get(c)!)),
-      children: n.children.map((c) => ({ id: c, width: nodes.get(c)!.w, height: nodes.get(c)!.h })),
+      layoutOptions: options,
+      children: kids.map((c) => ({ id: c.id, width: sizes.get(c.id)!.w, height: sizes.get(c.id)!.h })),
       edges: [...pairs].sort().map((p, i) => {
         const [a, b] = p.split('\u0000');
         return { id: `e${i}`, sources: [a], targets: [b] };
@@ -125,31 +143,35 @@ export async function layoutBoard(
     };
     const out = await elk.layout(graph);
     for (const c of out.children ?? []) rel.set(c.id, { x: c.x ?? 0, y: c.y ?? 0 });
-    const minW = Math.max(LEAF[n.type].minW, textWidth(n.name, 14, 'title') + 2 * PAD.side + 40, textWidth(n.summary, 11, 'body') + 2 * PAD.side);
-    n.w = Math.round(Math.max(out.width ?? 0, minW));
-    n.h = Math.round(Math.max(out.height ?? 0, 60));
+    content.set(n.id, { w: out.width ?? 0, h: out.height ?? 0 });
   };
 
   const roots = [...nodes.values()].filter((n) => n.parent === null).sort((a, b) => a.id.localeCompare(b.id));
-  for (const r of roots) {
-    if (r.children.length) await layoutContainer(r);
-    else Object.assign(r, sizeOf(r) ?? leafSize(r));
-  }
+  for (const r of roots) if (r.children.length) await layoutContainer(r);
+  // Top-level cards are one size too, whatever they hold.
+  const rootTile = { w: Math.max(...roots.map((r) => boxTile(r).w)), h: Math.max(...roots.map((r) => boxTile(r).h)) };
+  for (const r of roots) tile.set(r.id, rootTile);
 
-  /** Absolute positions from the relative ones. */
-  const place = (id: string, x: number, y: number) => {
+  /** Absolute positions: each container's contents are shrunk to fit below its name band. */
+  const place = (id: string, x: number, y: number, s: number) => {
     const n = nodes.get(id)!;
-    n.x = Math.round(x);
-    n.y = Math.round(y);
-    for (const c of n.children) {
-      const p = rel.get(c)!;
-      place(c, x + p.x, y + p.y);
+    const t = tile.get(id)!;
+    Object.assign(n, { x: round(x), y: round(y), w: round(t.w * s), h: round(t.h * s), s: round(s) });
+    if (!n.children.length) return;
+    const c = content.get(id)!;
+    const room = { w: t.w, h: t.h - PAD.top };
+    const k = Math.min(1, room.w / Math.max(1, c.w), room.h / Math.max(1, c.h));
+    const ox = (room.w - c.w * k) / 2;
+    const oy = PAD.top + (room.h - c.h * k) / 2;
+    for (const cid of n.children) {
+      const p = rel.get(cid)!;
+      place(cid, x + (ox + p.x * k) * s, y + (oy + p.y * k) * s, s * k);
     }
   };
   const rootOf = (id: string) => chains.get(id)![chains.get(id)!.length - 1];
 
   // Top level: order departments so that strongly connected ones sit next to each other,
-  // then wrap into rows. The External band stays on the outer (right) edge.
+  // then lay them out on a grid. The External band stays on the outer (right) edge.
   const weight = new Map<string, number>();
   for (const e of shaping) {
     const a = rootOf(e.from);
@@ -166,27 +188,12 @@ export async function layoutBoard(
     ...roots.filter((r) => isBand(r) && r.id !== '__external').map((r) => r.id).sort(),
   ];
 
-  const items = order.map((id) => nodes.get(id)!);
-  const GAP = Math.round(Math.max(120, typicalSize(items) * 0.45));
-  const area = items.reduce((a, n) => a + (n.w + GAP) * (n.h + GAP), 0);
-  const rowWidth = Math.max(Math.sqrt(area * 1.8), ...items.map((n) => n.w));
-
-  let x = 0;
-  let y = 0;
-  let rowH = 0;
-  let maxX = 0;
-  for (const n of items) {
-    if (x > 0 && x + n.w > rowWidth) {
-      x = 0;
-      y += rowH + GAP;
-      rowH = 0;
-    }
-    place(n.id, x, y);
-    x += n.w + GAP;
-    rowH = Math.max(rowH, n.h);
-    maxX = Math.max(maxX, x);
-  }
-  if (nodes.has('__external')) place('__external', maxX, 0);
+  const gapX = Math.round(rootTile.h * 0.6);
+  const gapY = Math.round(rootTile.h * 0.6);
+  // About twice as wide as tall, like a screen.
+  const cols = Math.max(1, Math.round(Math.sqrt((order.length * 2 * (rootTile.h + gapY)) / (rootTile.w + gapX))));
+  order.forEach((id, i) => place(id, (i % cols) * (rootTile.w + gapX), Math.floor(i / cols) * (rootTile.h + gapY), 1));
+  if (nodes.has('__external')) place('__external', Math.min(cols, order.length) * (rootTile.w + gapX), 0, 1);
 }
 
 /**

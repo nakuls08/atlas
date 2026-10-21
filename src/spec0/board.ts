@@ -1,5 +1,5 @@
 import type { BoardEdge, BoardNode, NodeType } from '../model';
-import { apiCardSize, apiCells } from './apiGrid';
+import { API_GRID, apiCardSize, apiCells } from './apiGrid';
 import type { ApiDetails, GraphSnapshot } from './types';
 
 const field = (k: string, v: string | null | undefined): Array<[string, string]> => (v ? [[k, v]] : []);
@@ -208,7 +208,10 @@ export function expandApi(
   d: ApiDetails,
   ctx: { nodes: Map<string, BoardNode>; edges: BoardEdge[]; hashes: Map<string, string[]>; domainName?: Map<string, string> },
 ): { nodes: BoardNode[]; add: BoardEdge[]; remove: Set<string> } {
-  const cells = apiCells(api, { operations: d.operations.length, schemas: d.schemas.length });
+  // Cells are worked out in the card's own units, then shrunk with it (see BoardNode.s).
+  const sc = api.s ?? 1;
+  const cells = apiCells({ w: api.w / sc, h: api.h / sc }, { operations: d.operations.length, schemas: d.schemas.length });
+  const r4 = (v: number) => Math.round(v * 1e4) / 1e4;
   const out: BoardNode[] = [];
   const level = (api.level ?? 2) + 1;
   const base = (nid: string, type: NodeType, name: string, c: { x: number; y: number; w: number; h: number }, extra: Partial<BoardNode>): BoardNode => ({
@@ -218,10 +221,11 @@ export function expandApi(
     parent: api.id,
     level,
     status: 'active',
-    x: Math.round((api.x + c.x) * 10) / 10,
-    y: Math.round((api.y + c.y) * 10) / 10,
-    w: Math.round(c.w * 10) / 10,
-    h: Math.round(c.h * 10) / 10,
+    x: r4(api.x + c.x * sc),
+    y: r4(api.y + c.y * sc),
+    w: r4(c.w * sc),
+    h: r4(c.h * sc),
+    s: r4((c.w / (type === 'operation' ? API_GRID.op.w : API_GRID.schema.w)) * sc),
     children: [],
     dept: api.dept,
     summary: '',

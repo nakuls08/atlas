@@ -21,10 +21,27 @@ describe('example registry', () => {
       if (!n.parent) continue;
       const p = byId.get(n.parent)!;
       expect(n.x).toBeGreaterThanOrEqual(p.x);
-      expect(n.y).toBeGreaterThanOrEqual(p.y + 24);
+      // The band is drawn at the parent's scale.
+      expect(n.y).toBeGreaterThanOrEqual(p.y + 24 * (p.s ?? 1));
       expect(n.x + n.w).toBeLessThanOrEqual(p.x + p.w);
       expect(n.y + n.h).toBeLessThanOrEqual(p.y + p.h);
     }
+  });
+
+  it('makes sibling boxes, and every top-level card, one size', async () => {
+    const m = await buildModel('examples/ecommerce');
+    const byId = new Map(m.nodes.map((n) => [n.id, n]));
+    const boxes = (ids: string[]) => ids.map((id) => byId.get(id)!).filter((n) => n.children.length);
+    const groups = [boxes(m.nodes.filter((n) => !n.parent).map((n) => n.id)), ...m.nodes.map((p) => boxes(p.children))];
+    for (const g of groups.filter((g) => g.length > 1)) {
+      expect(new Set(g.map((n) => `${n.w}x${n.h}`)).size).toBe(1);
+    }
+  });
+
+  it('draws a container\'s contents smaller than the container', async () => {
+    const m = await buildModel('examples');
+    const byId = new Map(m.nodes.map((n) => [n.id, n]));
+    for (const n of m.nodes) if (n.parent) expect(n.s ?? 1).toBeLessThanOrEqual(byId.get(n.parent)!.s ?? 1);
   });
 
   it('puts topics next to their owner and APIs inside their host (Types table)', async () => {
