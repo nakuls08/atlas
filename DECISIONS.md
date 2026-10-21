@@ -85,20 +85,20 @@ Platform links are included, since an outage of auth does break its callers.
 ## D-20 Calm overview
 When more than 40 connections touch the screen and nothing is focused, lines draw faint until a card or line is double-clicked, or a trace or impact is shown.
 
-## D-21 Spec0 boards are built in the browser
-A Spec0 page carries a data source, not a laid-out model. `src/viewer/boot.ts` fetches the snapshot, builds the chosen hierarchy (`src/spec0/board.ts`), lays it out with ELK in a Web Worker, and caches the layout in local storage per org, snapshot version and hierarchy. Registry boards still arrive laid out from `atlas build`. `layoutBoard` takes the ELK engine as a parameter so both paths share it.
+## D-21 Org graphs are built in the browser
+An org-graph page carries a data source, not a laid-out model. `src/orgview/boot.ts` fetches the snapshot, builds the chosen grouping (`src/orgview/graph.ts`) and lays it out on a grid (`src/orgview/layout.ts`); the grid takes a few milliseconds, so there is no layout worker and nothing to cache. Registry boards still arrive laid out from `atlas build`.
 
 ## D-22 Two-call graph API
 `GET /graph/snapshot` (everything down to APIs and grants, one cacheable response) and `GET /graph/details?apis=id@version,…` (operations, schemas and links, batched, immutable per spec version). No server-side hierarchies, rollups, trace or impact endpoints: the snapshot holds every grant, so lifting, grouping, trace and impact at API level run in the browser. See `docs/graph-api.md`.
 
-## D-23 Hierarchy is a view, not data
-"By team" (team → service → API → operations, schemas) and "By domain" (schema domain → API → operations, schemas, with teams as a consumer band) are built from the same snapshot. An API nests under its exposing service when the snapshot names one, otherwise under its owning team. In the domain view an API sits under the domain holding most of its schemas.
+## D-23 Grouping is a view, not data
+"By team" (team → service → API → operations) and "By domain" (domain → API → operations, with teams and services as callers off the board) are built from the same snapshot. An API sits in its exposing service when the snapshot names one, otherwise in its owning team. In the domain view an API goes to the domain holding most of its schemas.
 
 ## D-24 API cards keep their size when details load
-An API card is a tile like its siblings (D-28). Its operations and schemas are placed into that box when they load, centred and drawn smaller if there are many (`src/spec0/apiGrid.ts`); the card never grows, so nothing on the board moves while data streams in. The zoom at which an API opens follows from how small that makes its operation names. Details are fetched just before a card would open, batched per gesture (at most 50 APIs per request).
+An API card is a tile like its siblings. Its operations and schemas load into that box (centred, and drawn smaller when there are many), so nothing moves while data streams in. Details are fetched as soon as an API card is big enough to read, batched (at most 50 per request), so the method-mix bar is there before you zoom into the operations.
 
 ## D-25 Grants are the connections
-Approved grants are `calls`, pending ones `requests` (dashed), rejected ones are dropped. Operation-scoped grants are refined from consumer → API to consumer → operations once details load. Operations link to the schemas they use; schemas link to the schemas they reference and, opt-in, to identical schemas (same structural hash) in other loaded APIs.
+Approved grants are calls, pending ones are drawn dashed in amber, rejected ones are dropped. Once an API is open, an operation-scoped grant lands on the rows it covers. Selecting an operation draws the schemas it carries, and the references between them dashed.
 
 ## D-26 Lines hold still
 Lines only change when you ask them to or when the view has settled. While a pan or zoom is in progress they keep their current routes, even if containers open or close underneath; 160 ms after the last movement they are regrouped and rerouted for what is now on screen. They are kept by key between redraws, so a line whose route didn't change isn't touched, new ones fade in and removed ones fade out. The exception is panning past the area the lines were drawn for, which draws the newly exposed part straight away.
@@ -115,3 +115,12 @@ The cost is depth: each level is drawn several times smaller than its parent, so
 
 ## D-29 People can move cards; the registry can't see it
 A closed card can be dragged anywhere on it, an open container by its name band (pressing inside an open container pans). The card stays inside its parent, its contents move with it, and lines reroute when it's dropped. Moves are stored as offsets from the built layout in the viewer's local storage, per board, like ink and notes (D-17): they arrange one person's view and never reach the registry or other viewers. "Reset layout" puts everything back. A shared, reviewed layout is still the saved-positions work tracked in the issues.
+
+## D-30 The org graph has its own view
+Org graphs and registry boards share the data sources and the ordering of top-level cards, but not the viewer. The org view (`src/orgview/view.ts`) follows a design built around four questions in turn: which team, which service, which API, which operation. What it does differently, and why:
+
+- Cards are HTML nested the way the org is, each a fixed tile whose inside fills in as it gets bigger on screen: a summary (name, pending-grant badge, one bar per API scaled by traffic, counts), then its children, then theirs. Text in a card scales with it; headers of open cards stop growing at a reading size, and borders stay about a pixel wide.
+- Lines are drawn only for the focused card (or a trace or impact), in screen space on every frame. That is a few dozen lines rather than hundreds, so they never lag behind the zoom and need no level-of-detail rules. An end that is off screen becomes a portal at the edge, callers on the left and dependencies on the right, which you can click to fly there.
+- Inside a card, what is called from outside comes first (left column) and what only calls out comes last, so lines from portals arrive at the near side. A line that would run through another card goes round through the gap between rows.
+- Click focuses, double-click dives in, hover does nothing. The level switcher (Org, Team, Service, API, Op) flies to the focused card at that level; ⌘K or `/` opens a palette that searches teams, services, APIs and loaded operations, and can start a trace or show everything that depends on a card.
+- Dark is the default theme, with a light one; Geist and Geist Mono are embedded. Moved cards are kept per browser, as on registry boards (D-29).

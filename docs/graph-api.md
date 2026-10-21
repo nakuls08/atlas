@@ -11,10 +11,11 @@ Besides YAML registries, Atlas can draw an organisation from a graph of teams, s
 
 A typical session is one snapshot request and a handful of details batches. Everything else happens in the browser:
 
-- **Hierarchy.** "By team" (team → service → API → operations and schemas) and "By domain" (domain → API → operations and schemas) are both built from the same snapshot, so switching between them costs nothing.
-- **Layout.** ELK runs in a Web Worker. API cards are equal tiles like everything else; their operations and schemas load into that box, drawn smaller if there are many, so the board doesn't move when the details arrive.
-- **Connections.** Grants are the leaf edges. Atlas lifts and merges them to whatever is visible, so the server doesn't need to compute any rollups.
-- **Trace and impact** at API level run on the snapshot's grants.
+- **Grouping.** "By team" (team → service → API → operations) and "By domain" (domain → API → operations) are both built from the same snapshot, so switching between them costs nothing.
+- **Layout.** A grid of equal tiles, nested, computed in a few milliseconds. API cards keep their size when their operations load into them, so the board doesn't move when the details arrive.
+- **Connections.** Grants are the lines. Only the focused card's are drawn, merged onto whatever card stands for each end at the current zoom, so the server doesn't need to compute any rollups.
+- **Roll-ups.** Team traffic, pending-grant counts and the per-API bars are summed from the snapshot in the browser.
+- **Trace and impact** run on the snapshot's grants.
 
 `HttpSource` takes a base URL and a `headers` callback, so a host page can add its own auth header.
 
@@ -46,13 +47,13 @@ The response is `{ "apis": [...] }`, one entry per requested API:
 | `grantOperations` | For each operation-scoped consumer, the indexes of the operations it may call |
 | `versions` | Recent spec versions: `tag`, `publishedAt`, `breaking` |
 
-Once an API's details load, its operation-scoped grants are redrawn from the consumer to the individual operations, operations link to the schemas they carry, and schemas link to the schemas they reference. Identical schemas in other loaded APIs (same `structuralHash`) can be linked too, from the filters.
+Once an API is open, its operation-scoped grants land on the operations they cover, and selecting an operation shows the schemas it carries and the references between them.
 
 Grants and operations are objects rather than tuples. Tuples were about a third smaller before compression, but only a few percent smaller after it, and objects are easier to type and read.
 
 ## Trying it without a server
 
-`npm run spec0:fixture` writes a snapshot and details file derived from the e-commerce example into `examples/spec0/`. `npm run build:spec0` turns them into `dist/spec0/index.html`. To browse it the way a person would and print the requests the page made, run:
+`npm run spec0:fixture` writes a snapshot and details file derived from the e-commerce example into `examples/spec0/`. `npm run build:spec0` turns them into `dist/spec0/index.html`. To zoom around it the way a person would and print what was loaded, run:
 
 ```bash
 npx tsx scripts/session.ts dist/spec0/index.html

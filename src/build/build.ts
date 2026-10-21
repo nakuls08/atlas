@@ -1,5 +1,4 @@
-import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
-import { createRequire } from 'node:module';
+import { mkdirSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import * as esbuild from 'esbuild';
@@ -10,10 +9,9 @@ import { loadRegistry } from '../registry/load';
 import { buildTree } from '../registry/tree';
 import type { Issue } from '../registry/types';
 import { validate } from '../registry/validate';
-import { fontFaceCss } from './fonts';
+import { fontFaceCss, ORG_FACES } from './fonts';
 
 const here = dirname(fileURLToPath(import.meta.url));
-const require = createRequire(import.meta.url);
 
 export class ValidationError extends Error {
   constructor(public issues: Issue[]) {
@@ -43,9 +41,9 @@ export async function buildModel(root: string, meta: Record<string, string> = {}
   };
 }
 
-async function bundleViewer(): Promise<{ js: string; css: string }> {
+async function bundleViewer(entry = '../viewer/boot.ts'): Promise<{ js: string; css: string; fonts?: string }> {
   const result = await esbuild.build({
-    entryPoints: [join(here, '../viewer/boot.ts')],
+    entryPoints: [join(here, entry)],
     bundle: true,
     minify: true,
     format: 'iife',
@@ -61,7 +59,7 @@ async function bundleViewer(): Promise<{ js: string; css: string }> {
 
 const esc = (s: string) => s.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]!);
 
-export function renderHtml(model: BoardModel | object, viewer: { js: string; css: string }, extraHead = '', title?: string): string {
+export function renderHtml(model: BoardModel | object, viewer: { js: string; css: string; fonts?: string }, extraHead = '', title?: string): string {
   const data = JSON.stringify(model).replace(/</g, '\\u003c');
   const name = title ?? `Atlas — ${esc((model as BoardModel).meta?.version ?? '')}`;
   return `<!doctype html>
@@ -70,7 +68,7 @@ export function renderHtml(model: BoardModel | object, viewer: { js: string; css
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>${name}</title>${extraHead}
-<style>${fontFaceCss()}</style>
+<style>${viewer.fonts ?? fontFaceCss()}</style>
 <style>${viewer.css}</style>
 </head>
 <body>
@@ -92,8 +90,8 @@ export async function build(root: string, outDir: string, meta: Record<string, s
 
 /**
  * A Spec0 org graph: the page carries a data source instead of a laid-out model. The browser
- * fetches the snapshot, builds the hierarchy, lays it out (ELK in a Web Worker) and loads API
- * details as you zoom. `embedded` serves a snapshot and details from the page (demos, tests);
+ * fetches the snapshot, builds the grouping, lays it out on a grid and loads API details as you
+ * zoom (src/orgview). `embedded` serves a snapshot and details from the page (demos, tests);
  * `http` points at a live graph API.
  */
 export async function buildSpec0(
@@ -101,9 +99,8 @@ export async function buildSpec0(
   outDir: string,
   title = 'Atlas — org graph',
 ): Promise<string> {
-  const viewer = await bundleViewer();
-  const worker = readFileSync(require.resolve('elkjs/lib/elk-worker.min.js'), 'utf8').replace(/<\/script/gi, '<\\/script');
-  const html = renderHtml({ kind: 'spec0', source }, viewer, `\n<script type="text/plain" id="elk-worker">${worker}</script>`, esc(title));
+  const viewer = { ...(await bundleViewer('../orgview/boot.ts')), fonts: fontFaceCss(ORG_FACES) };
+  const html = renderHtml({ kind: 'spec0', source }, viewer, '', esc(title));
   const out = join(outDir, 'index.html');
   mkdirSync(outDir, { recursive: true });
   writeFileSync(out, html);

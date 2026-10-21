@@ -10,7 +10,7 @@ const [file, png] = process.argv.slice(2);
 const browser = await chromium.launch({ executablePath: process.env.CHROME ?? '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome', headless: true });
 const page = await browser.newPage({ viewport: { width: 1440, height: 900 } });
 await page.goto(`file://${resolve(file)}`);
-await page.waitForSelector('svg.board');
+await page.waitForSelector('.ov .card');
 await page.waitForTimeout(600);
 const zoomAt = async (x: number, y: number, steps: number, dir: 1 | -1) => {
   await page.mouse.move(x, y);
@@ -38,8 +38,8 @@ for (const [x, y] of [[500, 300], [900, 500], [700, 650]] as const) {
 await zoomAt(720, 450, 90, 1);
 await pan(800, 0);
 await page.waitForTimeout(800);
-const meter = await page.evaluate(`document.querySelector('.netmeter')?.textContent ?? ''`);
-const cards = await page.evaluate(`document.querySelectorAll('.t-operation, .t-schema').length`);
+const meter = await page.evaluate(`document.querySelector('.ov .meter')?.textContent ?? ''`);
+const apis = await page.evaluate(`document.querySelectorAll('.k-api .mix:not(.loading)').length`);
 if (png) await page.screenshot({ path: png });
 await browser.close();
-console.log(`${meter}\nloaded operation and schema cards: ${cards}`);
+console.log(`${meter || 'no details loaded'}\nAPIs with details: ${apis}`);

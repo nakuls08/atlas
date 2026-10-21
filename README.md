@@ -97,7 +97,11 @@ Guided tours live in `registry/tours.yaml`. Each step has a caption and either f
 
 ## Org graphs from Spec0
 
-Atlas can also draw an organisation that isn't described in YAML. Here the input is a graph of teams, services, APIs and the access grants between them, as [Spec0](https://spec0.io) serves it for its org graph. The page loads one snapshot on open and fetches each API's operations in batches as you zoom into it. The hierarchy (by team or by domain) is chosen in the viewer and built in the browser, so switching costs nothing. [docs/graph-api.md](docs/graph-api.md) describes the format.
+Atlas can also draw an organisation that isn't described in YAML. Here the input is a graph of teams, services, APIs and the access grants between them, as [Spec0](https://spec0.io) serves it for its org graph, and the board has its own view built for it ([try it](https://nakuls08.github.io/atlas/org-graph/)).
+
+![The org graph zoomed into the Payments team, with its callers on the left and dependencies on the right](docs/images/org-graph.png)
+
+Zoomed out, every team is a card with a bar per API scaled by its traffic and a badge for grants waiting on it. Zoom in and a team shows its services, then each service its APIs with a bar of their method mix, then each API its operations and schemas. Click a card to see only its lines: callers come in from the left, dependencies go out to the right, and teams that are off screen wait at the edge as portals you can click to fly to. Double-click to dive in, press `/` or ⌘K to jump anywhere, `T` to trace a path from the focused card and `I` to inspect it. The page loads one snapshot when it opens and fetches API details in batches as they come into view. [docs/graph-api.md](docs/graph-api.md) describes the format.
 
 ```bash
 npm run spec0:fixture && npm run build:spec0   # dist/spec0/index.html, from a generated fixture

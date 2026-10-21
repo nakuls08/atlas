@@ -1,0 +1,341 @@
+/* Org graph board. Colour carries meaning, not decoration: teal is an API and calls going out,
+   blue a service and calls coming in, amber pending, purple schemas. Card contents are sized in
+   the card's own units and scale with it; everything in .stage outside .world is screen pixels. */
+
+.ov {
+  --ground: #0e1013;
+  --surface: #14171c;
+  --raised: #1a1e24;
+  --raised-2: #222730;
+  --line: #262b33;
+  --line-2: #323844;
+  --ink: #eceef1;
+  --ink-2: #a7adb7;
+  --ink-3: #6c737f;
+  --teal: #5fd4b4;
+  --teal-soft: rgba(95, 212, 180, 0.12);
+  --blue: #8ea2ff;
+  --amber: #e9b44c;
+  --purple: #a78bfa;
+  --purple-soft: rgba(167, 139, 250, 0.14);
+  --get: #7bd389;
+  --post: #e9b44c;
+  --put: #c4a8ff;
+  --patch: #8ea2ff;
+  --delete: #f08a84;
+  --inside: #5c636e;
+  --mm-tile: #2a3039;
+  --mm-near: #3d4d6b;
+  --grid-dot: rgba(255, 255, 255, 0.05);
+  --shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
+  --sans: 'Geist', ui-sans-serif, system-ui, sans-serif;
+  --mono: 'Geist Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+  color-scheme: dark;
+}
+.ov[data-theme='light'] {
+  --ground: #f6f6f3;
+  --surface: #ffffff;
+  --raised: #ffffff;
+  --raised-2: #f0f1f3;
+  --line: #e2e3e0;
+  --line-2: #cfd2d6;
+  --ink: #15181d;
+  --ink-2: #4c535e;
+  --ink-3: #8a909a;
+  --teal: #1a9e7e;
+  --teal-soft: rgba(26, 158, 126, 0.1);
+  --blue: #4a63e0;
+  --amber: #b9800f;
+  --purple: #7c5ce0;
+  --purple-soft: rgba(124, 92, 224, 0.1);
+  --get: #2f9e4f;
+  --post: #b9800f;
+  --put: #8a63e8;
+  --patch: #4a63e0;
+  --delete: #d2453c;
+  --inside: #a3a8b0;
+  --mm-tile: #e3e4e1;
+  --mm-near: #c3cdea;
+  --grid-dot: rgba(0, 0, 0, 0.07);
+  --shadow: 0 10px 30px rgba(20, 24, 30, 0.12);
+  color-scheme: light;
+}
+
+html, body { margin: 0; height: 100%; }
+body { background: #0e1013; }
+.ov { position: fixed; inset: 0; display: flex; flex-direction: column; background: var(--ground); color: var(--ink); font: 400 14px/1.35 var(--sans); -webkit-font-smoothing: antialiased; overflow: hidden; }
+.ov button { font: inherit; color: inherit; cursor: pointer; }
+.ov kbd { font: 500 11px var(--mono); color: var(--ink-3); border: 1px solid var(--line-2); border-radius: 5px; padding: 1px 5px; }
+.ov .ic { width: 16px; height: 16px; flex: none; }
+.ov .muted { color: var(--ink-3); }
+.ov .amber { color: var(--amber); }
+.ov .red { color: var(--delete); }
+.ov .mono { font-family: var(--mono); }
+
+/* ── top bar ── */
+.ov .top { height: 56px; flex: none; display: flex; align-items: center; gap: 12px; padding: 0 18px; border-bottom: 1px solid var(--line); background: var(--ground); position: relative; z-index: 5; }
+.ov .brand { display: flex; align-items: center; gap: 9px; font: 600 17px var(--sans); letter-spacing: -0.01em; }
+.ov .logo { width: 20px; height: 20px; border-radius: 6px; border: 2px solid var(--teal); box-sizing: border-box; display: grid; place-items: center; }
+.ov .logo::after { content: ''; width: 8px; height: 8px; border-radius: 2px; background: var(--teal); }
+.ov .sep { width: 1px; height: 22px; background: var(--line-2); margin: 0 4px; }
+.ov .crumbs { display: flex; align-items: center; gap: 6px; font: 500 14px var(--mono); min-width: 0; white-space: nowrap; }
+.ov .crumbs .org::after { content: ' ▾'; color: var(--ink-3); }
+.ov .crumbs .chip { font: 400 12.5px var(--mono); color: var(--ink-2); border: 1px solid var(--line-2); border-radius: 6px; padding: 3px 8px; margin-left: 12px; }
+.ov .crumbs a { color: var(--ink-2); cursor: pointer; text-decoration: none; }
+.ov .crumbs a:hover { color: var(--ink); }
+.ov .crumbs a.here { color: var(--ink); }
+.ov .search { flex: 1; max-width: 490px; margin: 0 auto; height: 36px; display: flex; align-items: center; gap: 10px; padding: 0 10px 0 14px; border-radius: 9px; border: 1px solid var(--line-2); background: var(--surface); color: var(--ink-3); text-align: left; }
+.ov .search span { flex: 1; font-size: 14.5px; }
+.ov .seg { display: flex; padding: 3px; gap: 2px; border-radius: 9px; border: 1px solid var(--line); background: var(--surface); }
+.ov .seg button { border: 0; background: none; color: var(--ink-2); padding: 6px 11px; border-radius: 7px; font-size: 14px; }
+.ov .seg button.on { background: var(--raised-2); color: var(--ink); }
+.ov .btn { display: inline-flex; align-items: center; gap: 7px; height: 36px; padding: 0 13px; border-radius: 9px; border: 1px solid var(--line-2); background: var(--surface); color: var(--ink); font-size: 14px; text-decoration: none; white-space: nowrap; }
+.ov .btn:hover { border-color: var(--ink-3); }
+.ov .btn.icon { width: 36px; padding: 0; justify-content: center; }
+.ov .btn.primary { background: var(--ink); color: var(--ground); border-color: var(--ink); font-weight: 600; }
+.ov .bottom .btn.primary, .ov .inspector .btn.primary { background: var(--teal); border-color: var(--teal); color: #08261e; }
+.ov .btn kbd { margin-left: 3px; }
+
+/* ── stage ── */
+.ov .stage { position: relative; flex: 1; overflow: hidden; background-color: var(--ground); background-image: radial-gradient(var(--grid-dot) 1px, transparent 1.2px); cursor: default; touch-action: none; }
+.ov .stage.panning, .ov .stage.dragging, .ov .stage.dragging .card { cursor: grabbing; }
+.ov .stage.dragging .card { transition: none; }
+.ov .world { position: absolute; left: 0; top: 0; transform-origin: 0 0; }
+.ov .statusline { position: absolute; left: 58px; top: 16px; font: 400 13px var(--mono); color: var(--ink-2); z-index: 2; }
+
+/* ── cards (own units) ── */
+/* Borders stay about 1.2 px on screen at any zoom. */
+.ov .card { position: absolute; box-sizing: border-box; border-radius: 16px; background: var(--surface); border: calc(1.2px / (var(--k, 1) * var(--ws, 1))) solid var(--line); transition: opacity 180ms ease, border-color 180ms ease, box-shadow 180ms ease; }
+.ov .card.off { visibility: hidden; }
+.ov .card.dim { opacity: 0.32; }
+.ov .card.near { border-color: var(--ink-3); }
+.ov .card.focus { border-color: var(--teal); border-width: calc(1.8px / (var(--k, 1) * var(--ws, 1))); box-shadow: 0 0 40px var(--teal-soft); background: color-mix(in srgb, var(--surface) 88%, var(--teal)); }
+.ov .card > .inner { position: absolute; transform-origin: 0 0; display: none; }
+.ov .card.open > .inner { display: block; }
+.ov .card > .head { display: none; }
+.ov .card.open > .head { display: flex; }
+.ov .card.open > .sum { display: none; }
+
+/* An open card's header grows with the zoom until it reaches a reading size (--hcap is the zoom,
+   in the card's own units, at which that happens), then stays there. */
+.ov .card > .head { transform-origin: 0 50%; --hs: min(1, calc(var(--hcap) / (var(--k, 1) * var(--ws, 1)))); transform: scale(var(--hs)); width: calc(100% / var(--hs)); box-sizing: border-box; }
+.ov .k-group > .head { --hcap: 1.63; }
+.ov .k-service > .head { --hcap: 1.08; }
+
+/* team or domain */
+.ov .k-group { border-radius: 26px; }
+.ov .k-group > .sum { position: absolute; inset: 0; padding: 34px 40px 30px; display: flex; flex-direction: column; }
+.ov .k-group .r1 { display: flex; align-items: flex-start; gap: 16px; }
+.ov .k-group .r1 .nm { flex: 1; font: 600 60px/1.05 var(--sans); letter-spacing: -0.015em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.ov .k-group .badge { min-width: 58px; height: 58px; padding: 0 14px; box-sizing: border-box; border-radius: 29px; background: rgba(233, 180, 76, 0.16); color: var(--amber); font: 500 32px/58px var(--mono); text-align: center; }
+.ov .k-group .bars { display: flex; align-items: flex-end; gap: 10px; height: 76px; margin-top: 26px; }
+.ov .k-group .bars i { width: 22px; border-radius: 4px; background: var(--teal); }
+.ov .k-group .bars i.idle { height: 6px; width: 22px; background: var(--line-2); }
+.ov .k-group .r2 { margin-top: auto; display: flex; justify-content: space-between; font: 400 46px var(--mono); color: var(--ink-3); }
+.ov .k-group > .head { height: 56px; align-items: center; gap: 8px; padding: 0 26px; }
+.ov .k-group > .head .nm { font: 600 13.5px var(--sans); letter-spacing: -0.01em; }
+.ov .k-group > .head .slug { font: 400 8px var(--mono); color: var(--ink-3); }
+.ov .k-group > .head .stats { margin-left: auto; font: 400 7.6px var(--mono); color: var(--ink-2); }
+.ov .k-group.open { background: color-mix(in srgb, var(--surface) 70%, var(--ground)); }
+.ov .card.focus.open { background: color-mix(in srgb, var(--surface) 70%, var(--ground)); border-color: var(--line-2); box-shadow: none; }
+
+/* service */
+.ov .k-service { border-radius: 14px; }
+.ov .k-service > .sum { position: absolute; inset: 0; display: flex; align-items: center; padding: 0 24px; font-family: var(--mono); line-height: 1.15; overflow-wrap: anywhere; color: var(--ink); }
+.ov .k-service > .head { height: 34px; align-items: center; gap: 8px; padding: 0 12px; font: 400 13px var(--mono); color: var(--ink); }
+.ov .k-service .svc { width: 13px; height: 13px; color: var(--blue); }
+.ov .k-service.open { background: color-mix(in srgb, var(--surface) 80%, var(--ground)); }
+
+/* API */
+.ov .k-api { border-radius: 12px; background: var(--raised); }
+.ov .k-api > .sum { position: absolute; inset: 0; padding: 15px 16px 14px; display: flex; flex-direction: column; }
+.ov .k-api .r1 { display: flex; align-items: center; gap: 8px; }
+.ov .k-api .api { width: 15px; height: 15px; color: var(--teal); }
+.ov .k-api .r1 .nm { flex: 1; font: 600 15px var(--sans); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.ov .ver { font: 400 11px var(--mono); color: var(--ink-2); border: 1px solid var(--line-2); border-radius: 5px; padding: 1px 6px; }
+.ov .k-api .r2 { margin-top: 11px; font: 400 12px var(--mono); color: var(--ink-2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.ov .k-api .mix { display: flex; gap: 3px; height: 5px; margin: 15px 0 0; }
+.ov .k-api .mix i { border-radius: 3px; }
+.ov .k-api .mix.loading { background: var(--line); border-radius: 3px; }
+.ov .k-api .r3 { margin-top: auto; font: 400 12px var(--mono); color: var(--ink-3); }
+.ov .m-get { background: var(--get); color: var(--get); }
+.ov .m-post { background: var(--post); color: var(--post); }
+.ov .m-put { background: var(--put); color: var(--put); }
+.ov .m-patch { background: var(--patch); color: var(--patch); }
+.ov .m-delete { background: var(--delete); color: var(--delete); }
+.ov .m-other { background: var(--ink-3); color: var(--ink-3); }
+.ov span.m { background: none; font: 500 12px var(--mono); }
+
+/* open API: operations and schemas (own units of the open view) */
+.ov .k-api > .ops { position: absolute; transform-origin: 0 0; display: none; }
+.ov .k-api.open > .ops { display: block; }
+.ov .ops .oh { position: absolute; left: 18px; right: 18px; top: 16px; display: flex; align-items: center; gap: 9px; }
+.ov .ops .oh .api { width: 17px; height: 17px; }
+.ov .ops .oh .nm { font: 600 19px var(--sans); }
+.ov .ops .oh .tr { margin-left: auto; font: 400 12.5px var(--mono); color: var(--ink-2); }
+.ov .ops .osub { position: absolute; left: 18px; right: 18px; top: 46px; font: 400 12px var(--mono); color: var(--ink-3); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.ov .ops .rows { position: absolute; left: 12px; top: 76px; width: 400px; }
+.ov .ops .op { position: relative; height: 30px; margin-bottom: 2px; display: grid; grid-template-columns: 62px 1fr auto; align-items: center; gap: 8px; padding: 0 10px; border-radius: 7px; border: 1px solid transparent; cursor: pointer; }
+.ov .ops .op:hover { background: var(--raised-2); }
+.ov .ops .op.sel { background: var(--raised-2); border-color: var(--line-2); }
+.ov .ops .op .p { font: 400 13.5px var(--mono); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.ov .ops .op .oid { font: 400 11.5px var(--mono); color: var(--ink-3); }
+.ov .ops .more { padding: 4px 10px; font: 400 12px var(--mono); color: var(--ink-3); }
+.ov .ops .schemas { position: absolute; left: 440px; top: 78px; width: 182px; }
+.ov .ops .schemas .lab { font: 500 11px var(--mono); color: var(--ink-3); letter-spacing: 0.06em; height: 22px; }
+.ov .ops .sc { position: relative; height: 26px; margin-bottom: 4px; display: flex; align-items: center; justify-content: space-between; padding: 0 10px; border-radius: 6px; border: 1px solid var(--line); font: 400 12px var(--mono); color: var(--ink-2); }
+.ov .ops .sc span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.ov .ops .sc b { font-weight: 400; color: var(--ink-3); }
+.ov .ops .sc.carry { border-color: var(--purple); background: var(--purple-soft); color: var(--ink); }
+.ov .ops .sc.carry b { color: var(--purple); }
+.ov .olines { position: absolute; left: 0; top: 0; overflow: visible; pointer-events: none; }
+.ov .olines path { fill: none; stroke: var(--purple); stroke-width: 1.4; }
+.ov .olines path.ref { stroke-dasharray: 3 3; }
+.ov .olines path.head { fill: var(--purple); stroke: none; }
+
+/* ── lines and portals (screen pixels) ── */
+.ov .edges { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; overflow: visible; }
+.ov .edges .e { fill: none; stroke-linecap: round; stroke-linejoin: round; }
+.ov .edges .e.in { stroke: var(--blue); }
+.ov .edges .e.out, .ov .edges .e.trace { stroke: var(--teal); }
+.ov .edges .e.inside { stroke: var(--inside); stroke-width: 1.2 !important; }
+.ov .edges .e.pending { stroke: var(--amber); stroke-dasharray: 4 4; }
+.ov .edges .head.in { fill: var(--blue); }
+.ov .edges .head.out, .ov .edges .head.trace { fill: var(--teal); }
+.ov .edges .head.inside { fill: var(--inside); }
+.ov .edges .head.pending { fill: var(--amber); }
+.ov .edges .count rect { fill: var(--ground); stroke: var(--line-2); }
+.ov .edges .count text { font: 500 10px var(--mono); fill: var(--ink-2); text-anchor: middle; dominant-baseline: central; }
+.ov .portals { position: absolute; inset: 0; pointer-events: none; }
+.ov .plab { position: absolute; font: 500 11.5px var(--mono); letter-spacing: 0.08em; color: var(--ink-3); }
+.ov .portal { position: absolute; pointer-events: auto; box-sizing: border-box; height: 50px; padding: 7px 13px; border-radius: 10px; text-align: left; border: 1px solid var(--line-2); background: var(--raised); display: flex; flex-direction: column; justify-content: center; gap: 1px; box-shadow: var(--shadow); }
+.ov .portal b { font: 600 14px var(--sans); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.ov .portal span { font: 400 12px var(--mono); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.ov .portal.l { border-color: color-mix(in srgb, var(--blue) 45%, var(--line-2)); }
+.ov .portal.l span { color: var(--blue); }
+.ov .portal.r { border-color: color-mix(in srgb, var(--teal) 45%, var(--line-2)); background: color-mix(in srgb, var(--raised) 88%, var(--teal)); }
+.ov .portal.r span { color: var(--teal); }
+.ov .portal.pending { border-style: dashed; border-color: var(--amber); }
+
+/* ── operation detail ── */
+.ov .opcard { position: absolute; z-index: 3; box-sizing: border-box; padding: 16px 20px 18px; border-radius: 14px; border: 1px solid var(--line-2); background: var(--raised); box-shadow: var(--shadow); }
+.ov .opcard .oc-h { display: flex; align-items: center; gap: 10px; }
+.ov .opcard .oc-h span.m { font-size: 12px; padding: 2px 7px; border-radius: 5px; background: color-mix(in srgb, currentColor 14%, transparent); }
+.ov .opcard .oc-h b { font: 500 16px var(--mono); }
+.ov .opcard .oc-h .oid { font: 400 13px var(--mono); color: var(--ink-3); }
+.ov .opcard .grow { flex: 1; }
+.ov .opcard .btn { height: 32px; font-size: 13.5px; }
+.ov .opcard .oc-cols { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; margin-top: 16px; font: 400 13px var(--mono); }
+.ov .opcard h4 { margin: 0 0 6px; font: 400 12.5px var(--sans); color: var(--ink-3); }
+
+/* ── bottom chrome ── */
+.ov .levels { position: absolute; left: 58px; bottom: 44px; display: flex; align-items: center; gap: 2px; padding: 4px; border-radius: 10px; border: 1px solid var(--line); background: var(--surface); z-index: 3; }
+.ov .levels button { border: 0; background: none; color: var(--ink-2); padding: 6px 12px; border-radius: 7px; font-size: 14px; }
+.ov .levels button.on { background: var(--raised-2); color: var(--ink); }
+.ov .levels .pct { font: 400 12.5px var(--mono); color: var(--ink-3); padding: 0 8px 0 10px; border-left: 1px solid var(--line); margin-left: 4px; }
+.ov .bottom { position: absolute; left: 50%; bottom: 40px; transform: translateX(-50%); z-index: 3; }
+.ov .bottom .bar { display: flex; align-items: center; gap: 14px; padding: 9px 9px 9px 18px; border-radius: 12px; border: 1px solid var(--line-2); background: var(--raised); box-shadow: var(--shadow); white-space: nowrap; }
+.ov .bottom .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--teal); }
+.ov .bottom .mono { font: 600 15px var(--mono); }
+.ov .bottom .small { font-size: 13px; }
+.ov .bottom .vr { width: 1px; height: 26px; background: var(--line-2); }
+.ov .bottom .in { color: var(--ink-2); }
+.ov .bottom .in::first-letter { color: var(--blue); }
+.ov .bottom .out { color: var(--ink-2); }
+.ov .bottom .out::first-letter { color: var(--teal); }
+.ov .bottom .bar b { color: var(--ink); }
+.ov .legend { display: flex; gap: 22px; align-items: center; font-size: 13.5px; color: var(--ink-2); white-space: nowrap; }
+.ov .legend .li { display: flex; align-items: center; gap: 8px; }
+.ov .legend .ln { width: 20px; height: 2px; border-radius: 1px; position: relative; }
+.ov .legend .ln::after { content: ''; position: absolute; right: -2px; top: -3px; border: 4px solid transparent; border-left: 5px solid; border-right: 0; }
+.ov .legend .ln.in { background: var(--blue); color: var(--blue); }
+.ov .legend .ln.out { background: var(--teal); color: var(--teal); }
+.ov .legend .ln.inside { background: var(--inside); color: var(--inside); }
+.ov .legend .ln.pending { background: repeating-linear-gradient(90deg, var(--amber) 0 4px, transparent 4px 7px); color: var(--amber); }
+.ov .legend .sw { width: 9px; height: 9px; border-radius: 2px; }
+.ov .hints { position: absolute; right: 58px; bottom: 40px; text-align: right; font: 400 12.5px var(--mono); color: var(--ink-3); display: flex; flex-direction: column; gap: 2px; z-index: 2; }
+.ov .meter:empty { display: none; }
+.ov .minimap { position: absolute; right: 36px; bottom: 100px; padding: 10px; border-radius: 12px; border: 1px solid var(--line); background: var(--surface); z-index: 2; cursor: pointer; }
+.ov .statusline:not([hidden]) ~ .minimap { display: none; }
+
+/* ── inspector ── */
+.ov .inspector { position: absolute; right: 18px; top: 16px; bottom: 16px; width: 404px; z-index: 4; box-sizing: border-box; display: flex; flex-direction: column; padding: 22px 22px 18px; border-radius: 16px; border: 1px solid var(--line-2); background: var(--surface); box-shadow: var(--shadow); }
+.ov .inspector[hidden] { display: none; }
+.ov .inspector .ih { display: flex; align-items: center; justify-content: space-between; }
+.ov .inspector .kind { font: 500 12px var(--mono); padding: 3px 8px; border-radius: 6px; border: 1px solid; }
+.ov .inspector .kind.k-api { color: var(--teal); border-color: color-mix(in srgb, var(--teal) 40%, transparent); background: var(--teal-soft); }
+.ov .inspector .kind.k-service { color: var(--blue); border-color: color-mix(in srgb, var(--blue) 40%, transparent); }
+.ov .inspector .kind.k-group { color: var(--ink-2); border-color: var(--line-2); }
+.ov .inspector .x { width: 32px; height: 32px; border-radius: 8px; border: 1px solid var(--line-2); background: none; display: grid; place-items: center; color: var(--ink-2); }
+.ov .inspector h2 { margin: 26px 0 8px; font: 600 26px var(--sans); letter-spacing: -0.01em; }
+.ov .inspector .idl { display: flex; align-items: center; gap: 8px; font: 400 13.5px var(--mono); color: var(--ink-2); }
+.ov .inspector .copy { border: 0; background: none; color: var(--ink-3); padding: 2px; }
+.ov .inspector .tabs { display: flex; margin-top: 22px; border-bottom: 1px solid var(--line); }
+.ov .inspector .tabs button { flex: 1; border: 0; background: none; padding: 8px 4px 9px; color: var(--ink-2); font-size: 14px; display: flex; flex-direction: column; align-items: center; gap: 1px; border-bottom: 2px solid transparent; margin-bottom: -1px; }
+.ov .inspector .tabs button small { font-size: 12.5px; color: var(--ink-3); }
+.ov .inspector .tabs button.on { color: var(--ink); border-bottom-color: var(--teal); }
+.ov .inspector .ib { flex: 1; overflow: auto; margin-top: 10px; scrollbar-width: thin; }
+.ov .inspector dl { display: grid; grid-template-columns: 104px 1fr; gap: 9px 10px; margin: 14px 0 0; font-size: 14.5px; }
+.ov .inspector dt { color: var(--ink-2); }
+.ov .inspector dd { margin: 0; }
+.ov .inspector .st i { display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: var(--get); margin-right: 7px; vertical-align: 1px; }
+.ov .inspector .st-deprecated i { background: var(--delete); }
+.ov .inspector .st-pending i { background: var(--amber); }
+.ov .inspector h3 { margin: 22px 0 9px; font: 500 12px var(--mono); letter-spacing: 0.06em; color: var(--ink-3); }
+.ov .inspector .dombar { display: flex; gap: 4px; height: 6px; }
+.ov .inspector .dombar i { border-radius: 3px; }
+.ov .inspector .dombar .d0 { background: var(--purple); }
+.ov .inspector .dombar .d1 { background: color-mix(in srgb, var(--purple) 50%, var(--line-2)); }
+.ov .inspector .dombar .d2 { background: var(--line-2); }
+.ov .inspector .dombar .d3 { background: var(--ink-3); }
+.ov .inspector .domlab { display: flex; justify-content: space-between; margin-top: 8px; font: 400 12.5px var(--mono); color: var(--ink-2); }
+.ov .inspector .list { display: flex; flex-direction: column; gap: 6px; }
+.ov .inspector .row { display: flex; align-items: center; gap: 10px; padding: 9px 12px; border-radius: 9px; border: 1px solid var(--line); background: var(--raised); text-align: left; font: 400 13.5px var(--mono); }
+.ov .inspector .row i { width: 6px; height: 6px; border-radius: 50%; background: var(--blue); flex: none; }
+.ov .inspector .row.pending i { background: var(--amber); }
+.ov .inspector .row span:nth-child(2) { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ov .inspector .row .meta { color: var(--ink-2); font-size: 12.5px; }
+.ov .inspector .versions { display: grid; grid-template-columns: auto 1fr auto; gap: 8px 22px; font-size: 13.5px; }
+.ov .inspector .foot { display: flex; gap: 10px; padding-top: 14px; }
+.ov .inspector .foot .btn { flex: 1; justify-content: center; height: 40px; }
+.ov .inspector .foot .btn:not(.primary) { background: var(--raised); }
+
+/* ── palette ── */
+.palette-wrap { position: fixed; inset: 0; z-index: 10; background: rgba(5, 6, 8, 0.55); display: flex; justify-content: center; align-items: flex-start; padding-top: 11vh; }
+.palette-wrap[hidden] { display: none; }
+.ov[data-theme='light'] ~ .palette-wrap, .ov[data-theme='light'] .palette-wrap { background: rgba(20, 24, 30, 0.25); }
+.palette { width: min(680px, calc(100vw - 32px)); max-height: 72vh; display: flex; flex-direction: column; border-radius: 18px; border: 1px solid var(--line-2); background: var(--surface); box-shadow: 0 30px 80px rgba(0, 0, 0, 0.55); overflow: hidden; }
+.palette .prompt { padding: 12px 22px 0; font: 400 13px var(--mono); color: var(--teal); }
+.palette .pin { display: flex; align-items: center; gap: 14px; padding: 16px 22px; border-bottom: 1px solid var(--line); }
+.palette .pin .ic { width: 20px; height: 20px; color: var(--ink-2); }
+.palette input { flex: 1; border: 0; outline: 0; background: none; color: var(--ink); font: 400 21px var(--sans); }
+.palette .count { font: 400 14px var(--mono); color: var(--ink-3); }
+.palette .plist { overflow: auto; padding: 6px 10px 10px; scrollbar-width: thin; }
+.palette .pg { padding: 16px 12px 8px; font: 500 12.5px var(--mono); letter-spacing: 0.08em; color: var(--ink-3); }
+.palette .pr { width: 100%; display: flex; align-items: center; gap: 13px; padding: 11px 12px; border: 0; border-radius: 10px; background: none; text-align: left; }
+.palette .pr.on { background: var(--raised-2); }
+.palette .pr .nm { font: 400 16px var(--mono); }
+.palette .pr .nm mark { background: none; color: var(--teal); }
+.palette .pr .meta { margin-left: auto; font: 400 14px var(--mono); color: var(--ink-3); white-space: nowrap; }
+.palette .pr .hint { font: 400 13px var(--mono); color: var(--ink-3); margin-left: 12px; }
+.palette .pr .ic { width: 18px; height: 18px; }
+.palette .pr .ic.team { color: var(--ink); }
+.palette .pr .ic.service { color: var(--blue); }
+.palette .pr .ic.api { color: var(--teal); }
+.palette .pr span.m { width: 52px; font-size: 13px; }
+.palette .pr kbd { margin-left: auto; }
+.palette .pfoot { display: flex; gap: 22px; padding: 12px 22px; border-top: 1px solid var(--line); font: 400 13px var(--mono); color: var(--ink-3); }
+.palette .pfoot .grow { flex: 1; }
+
+/* ── popovers ── */
+.ov .pop { position: absolute; top: 8px; z-index: 6; min-width: 230px; padding: 12px 14px; border-radius: 12px; border: 1px solid var(--line-2); background: var(--raised); box-shadow: var(--shadow); }
+.ov .pop[hidden] { display: none; }
+.ov .pop h4 { margin: 0 0 8px; font: 500 12px var(--mono); letter-spacing: 0.06em; color: var(--ink-3); }
+.ov .pop h4.gap { margin-top: 14px; }
+.ov .pop p.small { margin: 0 0 10px; font-size: 12.5px; max-width: 220px; }
+.ov .pop label { display: flex; align-items: center; gap: 9px; padding: 5px 0; font-size: 14px; cursor: pointer; }
+.ov .toast { position: absolute; left: 50%; top: 18px; transform: translateX(-50%); z-index: 8; padding: 8px 14px; border-radius: 9px; background: var(--ink); color: var(--ground); font-size: 13.5px; }
+.ov .toast[hidden] { display: none; }
+
+/* splash */
+.ov-splash { position: fixed; inset: 0; display: grid; place-items: center; background: #0e1013; color: #a7adb7; font: 400 14px 'Geist', system-ui, sans-serif; }

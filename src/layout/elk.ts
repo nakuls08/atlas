@@ -7,8 +7,9 @@ export interface ElkEngine {
 import type { BoardEdge, BoardNode, NodeType } from '../model';
 import { textWidth } from './measure';
 import { DETAIL_FONT, LEAF } from './sizes';
+import { orderByAffinity } from './affinity';
 
-export { DETAIL_FONT, LEAF };
+export { DETAIL_FONT, LEAF, orderByAffinity };
 
 /** Name band at the top of every container, in the container's own (unscaled) units. */
 export const PAD = { top: 36, side: 32 };
@@ -194,23 +195,4 @@ export async function layoutBoard(nodes: Map<string, BoardNode>, edges: BoardEdg
   const cols = Math.max(1, Math.round(Math.sqrt((order.length * 2 * (rootTile.h + gapY)) / (rootTile.w + gapX))));
   order.forEach((id, i) => place(id, (i % cols) * (rootTile.w + gapX), Math.floor(i / cols) * (rootTile.h + gapY), 1));
   if (nodes.has('__external')) place('__external', Math.min(cols, order.length) * (rootTile.w + gapX), 0, 1);
-}
-
-/**
- * Greedy chain: start from the most connected, then repeatedly append the one most connected
- * to the last placed (ties: to anything placed, then by id). Deterministic.
- */
-export function orderByAffinity(ids: string[], w: (a: string, b: string) => number): string[] {
-  const rest = [...ids].sort();
-  if (!rest.length) return [];
-  const total = (id: string) => rest.reduce((s, o) => s + (o === id ? 0 : w(id, o)), 0);
-  rest.sort((a, b) => total(b) - total(a) || a.localeCompare(b));
-  const out = [rest.shift()!];
-  while (rest.length) {
-    const last = out[out.length - 1];
-    const score = (id: string) => w(last, id) * 1000 + out.reduce((s, o) => s + w(o, id), 0);
-    rest.sort((a, b) => score(b) - score(a) || a.localeCompare(b));
-    out.push(rest.shift()!);
-  }
-  return out;
 }

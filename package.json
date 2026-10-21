@@ -32,12 +32,14 @@
     "type-check": "tsc --noEmit",
     "perf": "tsx scripts/perf.ts dist/bench/index.html",
     "spec0:fixture": "tsx scripts/gen-spec0-fixture.ts",
-    "build:spec0": "tsx src/cli/main.ts build-spec0 --snapshot examples/spec0/snapshot.json --details examples/spec0/details.json -o dist/spec0",
+    "build:spec0": "tsx src/cli/main.ts build-spec0 --snapshot examples/spec0/snapshot-with-services.json --details examples/spec0/details.json -o dist/spec0",
     "build:demo": "tsx scripts/build-demo.ts"
   },
   "dependencies": {
     "@fontsource/caveat": "^5.3.0",
     "@fontsource/fraunces": "^5.3.0",
+    "@fontsource/geist-mono": "^5.3.0",
+    "@fontsource/geist-sans": "^5.3.0",
     "@fontsource/inter": "^5.3.0",
     "@fontsource/jetbrains-mono": "^5.3.0",
     "d3-interpolate": "^3.0.1",

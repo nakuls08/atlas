@@ -29,7 +29,8 @@ src/
   layout/     ELK layout (bottom-up per container), text metrics, card sizes
   lod/        what is visible at each zoom, edge lifting and grouping, trace and impact
   route/      orthogonal edge router
-  spec0/      graph format types, data sources, board builder, API card grid
+  spec0/      graph format types and data sources (live API or embedded fixture)
+  orgview/    the org graph board: grouping, grid layout, view
   build/      model and viewer bundle into one HTML file, with fonts embedded
   viewer/     the board, card shapes, presentation tools
   cli/        atlas validate | build | build-spec0
