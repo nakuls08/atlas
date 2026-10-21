@@ -9,7 +9,7 @@ import { routeAll, roundedPath, type Pt, type Rect, type RouteRequest } from '..
 import { LEVEL_NAMES } from '../registry/rules';
 import type { ConnectionKind } from '../registry/types';
 import { el, svgEl } from './dom';
-import { buildCard, buildDefs, deptHue, legendShape, MAX_PX, type CardText } from './shapes';
+import { buildCard, buildDefs, CHIP_TYPES, closedChipFs, deptHue, legendShape, MAX_PX, type CardText } from './shapes';
 import { initPresentation, type Highlight } from './present';
 
 const MIN_TEXT_PX = 9;
@@ -164,12 +164,21 @@ function staleInfo(n: BoardNode): { text: string; stale: boolean } | null {
   return { text: `reviewed ${at}${by ? ` by ${by}` : ''}`, stale: days > STALE_DAYS };
 }
 
+/** Closed service-like siblings share one name size: the smallest any of them needs. */
+const sharedClosedFs = new Map<string, number>();
+for (const p of model.nodes) {
+  const sibs = p.children.map((c) => nodes.get(c)!).filter((c) => (c.children.length || c.lazy) && CHIP_TYPES.has(c.type));
+  if (sibs.length < 2) continue;
+  const fs = Math.min(...sibs.map(closedChipFs));
+  for (const c of sibs) sharedClosedFs.set(c.id, fs);
+}
+
 function addCard(id: string) {
   const n = nodes.get(id)!;
   const container = n.children.length > 0 || !!n.lazy;
   const s = staleInfo(n);
   if (s?.stale) staleDomains.add(id);
-  const { g, closed, open } = buildCard(n, { container, staleText: s?.text ?? null });
+  const { g, closed, open } = buildCard(n, { container, staleText: s?.text ?? null, closedFs: sharedClosedFs.get(id) });
   const hue = hueFor(n);
   if (hue !== undefined) g.style.setProperty('--h', String(hue));
   const flags = [
@@ -187,13 +196,15 @@ function addCard(id: string) {
 roots.forEach(addCard);
 
 /**
- * Zoom at which a container's children become readable: the median child's name reaches 8 px.
+ * Zoom at which a container's children become readable: the median child's name reaches the size
+ * at which it is actually drawn (9 px, 10 for containers). Opening any earlier shows blank cards.
  * Containers stay closed (showing their own name and counts) until then.
  */
+const nameAt = (id: string) => MIN_TEXT_PX + (cards.get(id)!.container ? 1 : 0);
 const lodNodes = new Map<string, BoardNode & { openK?: number }>(
   model.nodes.map((n): [string, BoardNode & { openK?: number }] => {
     if (!n.children.length) return [n.id, n];
-    const ks = n.children.map((c) => 8 / Math.max(1, cards.get(c)!.closed.nameFs)).sort((a, b) => a - b);
+    const ks = n.children.map((c) => nameAt(c) / Math.max(1, cards.get(c)!.closed.nameFs)).sort((a, b) => a - b);
     return [n.id, { ...n, openK: ks[Math.floor(ks.length / 2)] }];
   }),
 );
@@ -225,7 +236,7 @@ let highlight: Highlight | null = null;
  * would open: everything that qualifies during a gesture goes out in one batched request.
  * Their children are placed inside the space the card already reserved.
  */
-const LAZY_OPEN_K = 8 / 11;
+const LAZY_OPEN_K = MIN_TEXT_PX / 11;
 const detailQueue = new Set<string>();
 const detailsLoading = new Set<string>();
 let detailTimer = 0;
@@ -282,7 +293,7 @@ function applyDetails(r: DetailResult) {
     addCard(n.id);
   }
   delete parent.lazy;
-  const ks = parent.children.map((c) => 8 / Math.max(1, cards.get(c)!.closed.nameFs)).sort((a, b) => a - b);
+  const ks = parent.children.map((c) => nameAt(c) / Math.max(1, cards.get(c)!.closed.nameFs)).sort((a, b) => a - b);
   lodNodes.set(parent.id, { ...parent, openK: ks.length ? ks[Math.floor(ks.length / 2)] : 0 });
   if (r.remove.size || r.add.length) {
     model.edges = model.edges.filter((e) => !r.remove.has(e.id)).concat(r.add);
@@ -549,7 +560,7 @@ function drawEdges() {
   }
   lifted = all.filter((l) => !fanned.has(l));
   svg.classList.toggle('dense', lifted.length > 150);
-  svg.classList.toggle('quiet', lifted.filter((l) => near(l.from) || near(l.to)).length > 70);
+  svg.classList.toggle('quiet', lifted.filter((l) => near(l.from) || near(l.to)).length > 40);
 
   const t1 = performance.now();
   const cache = new Map<string | null, string[]>();

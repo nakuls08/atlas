@@ -65,7 +65,7 @@ Markers (PLATFORM, DISPUTED, MIGRATE, SHARED, SUPERSEDED, PLANNED, DEPRECATED) s
 - Datastores accessed by non-owners marked SHARED.
 
 ## D-15 Containers open when their children are readable
-A container opens at 320 px wide, because by then it should be large enough on screen to hold its children readably. Wide containers with many small children met the width long before their children's names were readable, which filled the screen with unlabelled cards. A container now also needs the zoom at which its median child's name reaches 8 px (with the same 0.85 hysteresis). Until then it stays closed and shows its own name and counts. Pins and "show down to" still override.
+A container opens at 320 px wide, because by then it should be large enough on screen to hold its children readably. Wide containers with many small children met the width long before their children's names were readable, which filled the screen with unlabelled cards. A container now also needs the zoom at which its median child's name reaches the size it is drawn at, 9 px or 10 px for a container's name (with the same 0.85 hysteresis). Closed service-like siblings share one name size, so they show their names together rather than one at a time. Until then it stays closed and shows its own name and counts. Pins and "show down to" still override.
 
 ## D-16 Drawing styles
 Two styles share every rule and differ only in CSS tokens: Studio (Fraunces titles, Inter labels, gradient type chips, soft card shadows, dot grid) and Sketch (Caveat handwriting for titles and labels at 1.3×, ink outlines, graph paper, no shadows). Body text, ids and tags stay in Inter/JetBrains Mono in both, for legibility. The choice is in the toolbar, the URL (`style=sketch`) and the viewer's local storage.
@@ -83,7 +83,7 @@ Platform links are included, since an outage of auth does break its callers.
 `registry/tours.yaml` holds named walkthroughs; each step has a caption and one of `focus`, `trace: [from, to]` or `impact` (+ `direction`), optionally `level`. They are validated with the rest of the registry. The viewer can record a draft tour from what's on screen and copy it as YAML to paste into the file, so tours go through the same review as everything else.
 
 ## D-20 Calm overview
-When more than 70 connections touch the screen and nothing is focused, lines draw faint until a card or line is double-clicked, or a trace or impact is shown.
+When more than 40 connections touch the screen and nothing is focused, lines draw faint until a card or line is double-clicked, or a trace or impact is shown.
 
 ## D-21 Spec0 boards are built in the browser
 A Spec0 page carries a data source, not a laid-out model. `src/viewer/boot.ts` fetches the snapshot, builds the chosen hierarchy (`src/spec0/board.ts`), lays it out with ELK in a Web Worker, and caches the layout in local storage per org, snapshot version and hierarchy. Registry boards still arrive laid out from `atlas build`. `layoutBoard` takes the ELK engine as a parameter so both paths share it.
@@ -104,3 +104,7 @@ Approved grants are `calls`, pending ones `requests` (dashed), rejected ones are
 Lines only change when you ask them to or when the view has settled. While a pan or zoom is in progress they keep their current routes, even if containers open or close underneath; 160 ms after the last movement they are regrouped and rerouted for what is now on screen. They are kept by key between redraws, so a line whose route didn't change isn't touched, new ones fade in and removed ones fade out. The exception is panning past the area the lines were drawn for, which draws the newly exposed part straight away.
 Hovering changes nothing, and a single click on a card only opens its panel. Highlighting is on double-click: a card's connections, or one line and the cards at its ends. Pinning a container open or closed, which double-click used to do, moved to the panel.
 A mouse wheel notch zooms by the same factor d3-zoom uses but eases there over a few frames around the pointer. Pinch goes straight to d3-zoom, and screen-constant sizes (`--k`, `--inv`) follow the zoom on every frame, which measured no slower than stepping them.
+
+## D-27 Room between cards, and rounded corners at every size
+Gaps between siblings scale with the cards they separate: half the typical card size (the side of a square with the median card's area), never under 56, with padding, layer spacing and the gap between top-level cards following from it. A fixed gap that looks generous between services shrinks to a sliver between whole domains once you zoom out to see them, and the gutters are where lines, arrowheads and counts have to fit.
+Corner radii grow with the card too (5% of its shorter side, between the type's base radius and 64), so a department still reads as a rounded box at overview zoom instead of a sharp rectangle.

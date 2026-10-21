@@ -11,7 +11,7 @@ import { DETAIL_FONT, LEAF } from './sizes';
 export { DETAIL_FONT, LEAF };
 
 /** Name band at the top of every container, and side padding. */
-export const PAD = { top: 36, side: 20 };
+export const PAD = { top: 36, side: 32 };
 
 
 
@@ -29,26 +29,40 @@ const LAYERED = {
   'elk.edgeRouting': 'ORTHOGONAL',
 };
 
-/** Gutters are wide enough for a few parallel lines (for routing). */
-const CONTAINER_OPTIONS = {
-  ...LAYERED,
-  'elk.padding': `[top=${PAD.top},left=${PAD.side},bottom=${PAD.side},right=${PAD.side}]`,
-  'elk.spacing.nodeNode': '36',
-  'elk.layered.spacing.nodeNodeBetweenLayers': '64',
-  'elk.spacing.componentComponent': '40',
-  'elk.spacing.edgeNode': '18',
-  'elk.layered.spacing.edgeNodeBetweenLayers': '20',
-};
+/**
+ * Gutters leave room for several parallel lines, their arrowheads and count labels. They grow
+ * with the cards they separate: a fixed gap that looks generous between services is a sliver
+ * between whole domains once you zoom out to see them.
+ */
+function containerOptions(children: Array<{ w: number; h: number }>) {
+  const gap = Math.round(Math.max(56, typicalSize(children) * 0.5));
+  const side = Math.round(Math.max(PAD.side, gap * 0.6));
+  return {
+    ...LAYERED,
+    'elk.padding': `[top=${PAD.top + side - PAD.side},left=${side},bottom=${side},right=${side}]`,
+    'elk.spacing.nodeNode': String(gap),
+    'elk.layered.spacing.nodeNodeBetweenLayers': String(Math.round(gap * 1.8)),
+    'elk.spacing.componentComponent': String(Math.round(gap * 1.15)),
+    'elk.spacing.edgeNode': String(Math.round(Math.max(28, gap * 0.5))),
+    'elk.layered.spacing.edgeNodeBetweenLayers': String(Math.round(Math.max(28, gap * 0.5))),
+  };
+}
+
+/** Median card size, as the side of a square with the same area. */
+function typicalSize(items: Array<{ w: number; h: number }>): number {
+  const s = items.map((n) => Math.sqrt(n.w * n.h)).sort((a, b) => a - b);
+  return s[Math.floor(s.length / 2)] ?? 0;
+}
 
 /** Children of a service (APIs, datastores) sit in a tight column. */
 const SERVICE_OPTIONS = {
   ...LAYERED,
   'elk.direction': 'DOWN',
   'elk.aspectRatio': '0.6',
-  'elk.padding': `[top=${PAD.top},left=16,bottom=14,right=16]`,
-  'elk.spacing.nodeNode': '12',
-  'elk.layered.spacing.nodeNodeBetweenLayers': '16',
-  'elk.spacing.componentComponent': '12',
+  'elk.padding': `[top=${PAD.top},left=20,bottom=20,right=20]`,
+  'elk.spacing.nodeNode': '18',
+  'elk.layered.spacing.nodeNodeBetweenLayers': '22',
+  'elk.spacing.componentComponent': '18',
 };
 
 export function leafSize(n: Pick<BoardNode, 'type' | 'name' | 'detail'>): { w: number; h: number } {
@@ -102,7 +116,7 @@ export async function layoutBoard(
     const compact = n.type === 'service' || n.type === 'apigroup';
     const graph: ElkNode = {
       id: n.id,
-      layoutOptions: compact ? SERVICE_OPTIONS : CONTAINER_OPTIONS,
+      layoutOptions: compact ? SERVICE_OPTIONS : containerOptions(n.children.map((c) => nodes.get(c)!)),
       children: n.children.map((c) => ({ id: c, width: nodes.get(c)!.w, height: nodes.get(c)!.h })),
       edges: [...pairs].sort().map((p, i) => {
         const [a, b] = p.split('\u0000');
@@ -152,8 +166,8 @@ export async function layoutBoard(
     ...roots.filter((r) => isBand(r) && r.id !== '__external').map((r) => r.id).sort(),
   ];
 
-  const GAP = 72;
   const items = order.map((id) => nodes.get(id)!);
+  const GAP = Math.round(Math.max(120, typicalSize(items) * 0.45));
   const area = items.reduce((a, n) => a + (n.w + GAP) * (n.h + GAP), 0);
   const rowWidth = Math.max(Math.sqrt(area * 1.8), ...items.map((n) => n.w));
 

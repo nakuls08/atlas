@@ -59,18 +59,18 @@ export function shapePath(type: NodeType, w: number, h: number): string {
       const s = Math.min(12, w / 8);
       return `M${s},0 H${w} L${w - s},${h} H0 Z`;
     }
-    case 'department':
-    case 'team':
-    case 'band':
-      return roundRect(w, h, 18);
-    case 'operation':
-    case 'schema':
-      return roundRect(w, h, 6);
-    case 'domain':
-      return roundRect(w, h, 14);
     default:
-      return roundRect(w, h, 10);
+      return roundRect(w, h, cornerRadius(type, w, h));
   }
+}
+
+/**
+ * Corner radius of a box. It grows with the card, so a large container still reads as rounded
+ * when zoomed out instead of shrinking to a square corner.
+ */
+export function cornerRadius(type: NodeType, w: number, h: number): number {
+  const base = type === 'department' || type === 'team' || type === 'band' ? 18 : type === 'domain' ? 14 : type === 'operation' || type === 'schema' ? 6 : 10;
+  return Math.min(64, Math.max(base, Math.min(w, h) * 0.05));
 }
 
 /** Second outline that gives a shape its 3D cue (tube end, cylinder lid). */
@@ -92,9 +92,12 @@ function roundRect(w: number, h: number, r: number): string {
 }
 
 /** Top band of an open container, behind its name. */
-export function headerBandPath(type: NodeType, w: number, band: number): string {
-  const r = type === 'department' || type === 'team' || type === 'band' ? 18 : type === 'domain' ? 14 : 10;
-  return `M0,${r} A${r},${r} 0 0 1 ${r},0 H${w - r} A${r},${r} 0 0 1 ${w},${r} V${band} H0 Z`;
+export function headerBandPath(type: NodeType, w: number, h: number, band: number): string {
+  const r = Math.min(cornerRadius(type, w, h), w / 2, h / 2);
+  if (r <= band) return `M0,${r} A${r},${r} 0 0 1 ${r},0 H${w - r} A${r},${r} 0 0 1 ${w},${r} V${band} H0 Z`;
+  // The corner is taller than the band: follow the arc down to where it meets the band's bottom.
+  const x = r - Math.sqrt(r * r - (r - band) * (r - band));
+  return `M${x},${band} A${r},${r} 0 0 1 ${r},0 H${w - r} A${r},${r} 0 0 1 ${w - x},${band} Z`;
 }
 
 /** Icon glyphs drawn in a 16×16 box, white on the type chip. */
@@ -109,7 +112,7 @@ const ICONS: Partial<Record<NodeType, string>> = {
   schema: 'M2.5,3 h11 v10 h-11 Z M2.5,6.5 H13.5 M2.5,9.8 H13.5 M6.5,6.5 V13',
 };
 
-const CHIP_TYPES = new Set<NodeType>(['service', 'api', 'apigroup', 'topic', 'channel', 'datastore', 'external', 'schema']);
+export const CHIP_TYPES = new Set<NodeType>(['service', 'api', 'apigroup', 'topic', 'channel', 'datastore', 'external', 'schema']);
 
 function chip(type: NodeType, x: number, y: number, size: number): SVGGElement {
   const g = svgEl<SVGGElement>('g', { class: 'chip', transform: `translate(${x},${y})` });
@@ -158,7 +161,23 @@ export interface CardText {
  * Builds the SVG for one card in local coordinates. Visibility of the text parts is controlled
  * by `show-*` classes set from the LOD pass.
  */
-export function buildCard(n: BoardNode, opts: { container: boolean; staleText: string | null }): { g: SVGGElement; closed: CardText; open: CardText } {
+/**
+ * Name size a closed service-like card would pick on its own: fitted to the box, never above 30.
+ * Siblings share the smallest of theirs (`closedFs` in buildCard), so they show and hide their
+ * names at the same zoom instead of one at a time.
+ */
+export function closedChipFs(n: Pick<BoardNode, 'type' | 'name' | 'summary' | 'w' | 'h'>): number {
+  const { w, h } = n;
+  const cs = Math.min(26, h * 0.4);
+  const room = w - 12 - cs - 8 - 14;
+  const fit = Math.min(room / Math.max(1, textWidth(n.name, 1, 'label')), room / Math.max(1, textWidth(n.summary, 1 / 1.3, 'body')), h * 0.26, 30);
+  return Math.max(LEAF[n.type].font, fit);
+}
+
+export function buildCard(
+  n: BoardNode,
+  opts: { container: boolean; staleText: string | null; closedFs?: number },
+): { g: SVGGElement; closed: CardText; open: CardText } {
   const { w, h } = n;
   const g = svgEl<SVGGElement>('g', { transform: `translate(${n.x},${n.y})` });
   const isChip = CHIP_TYPES.has(n.type);
@@ -194,7 +213,7 @@ export function buildCard(n: BoardNode, opts: { container: boolean; staleText: s
   if (opts.container) {
     // Open: name band with the name (and chip) on the left, review date on the right.
     const band = n.type === 'service' || n.type === 'apigroup' ? 32 : 36;
-    g.append(svgEl('path', { class: 'band', d: headerBandPath(n.type, w, band) }));
+    g.append(svgEl('path', { class: 'band', d: headerBandPath(n.type, w, h, band) }));
     const hdrFs = n.type === 'department' ? 12.5 : 14;
     const hb = block(g, 'hdr', 14, band / 2, hdrFs, n.type === 'department' ? 13 : MAX_PX.header);
     let hx = 0;
@@ -215,8 +234,7 @@ export function buildCard(n: BoardNode, opts: { container: boolean; staleText: s
     if (isChip) {
       // Name sized to the box (like a closed domain), capped like any label.
       const cs = Math.min(26, h * 0.4);
-      const fit = Math.min((w - 12 - cs - 8 - 14) / Math.max(1, textWidth(n.name, 1, 'label')), (w - 12 - cs - 8 - 14) / Math.max(1, textWidth(n.summary, 1 / 1.3, 'body')), h * 0.26, 30);
-      closed = leafBlock(cg, 12, h / 2, cs, Math.max(spec.font, fit), n.summary, 'sum');
+      closed = leafBlock(cg, 12, h / 2, cs, opts.closedFs ?? closedChipFs(n), n.summary, 'sum');
     } else {
       const fit = Math.max(4, Math.min((w - 48) / Math.max(1, textWidth(n.name, 1, 'title')), h * 0.3));
       const sum = Math.max(3, Math.min(fit * 0.42, (w - 32) / Math.max(1, textWidth(n.summary, 1, 'body'))));
