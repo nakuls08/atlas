@@ -28,7 +28,7 @@
   --mm-near: #3d4d6b;
   --grid-dot: rgba(255, 255, 255, 0.05);
   --shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
-  --sans: 'Geist', ui-sans-serif, system-ui, sans-serif;
+  --sans: 'Geist', 'Geist Sans', ui-sans-serif, system-ui, sans-serif;
   --mono: 'Geist Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
   color-scheme: dark;
 }
