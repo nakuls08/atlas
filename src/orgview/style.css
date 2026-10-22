@@ -80,11 +80,14 @@
 .ov .crumbs { display: flex; align-items: center; gap: 6px; font: 500 14px var(--mono); min-width: 0; white-space: nowrap; }
 .ov .crumbs .org::after { content: ' ▾'; color: var(--ink-3); }
 .ov .crumbs .chip { font: 400 12.5px var(--mono); color: var(--ink-2); border: 1px solid var(--line-2); border-radius: 6px; padding: 3px 8px; margin-left: 12px; }
+/* In a narrow panel the snapshot chip goes first, then the search label. */
+.ov { container-type: inline-size; }
+@container (max-width: 1240px) { .ov .crumbs .chip { display: none; } }
 .ov .crumbs a { color: var(--ink-2); cursor: pointer; text-decoration: none; }
 .ov .crumbs a:hover { color: var(--ink); }
 .ov .crumbs a.here { color: var(--ink); }
-.ov .search { flex: 1; max-width: 490px; margin: 0 auto; height: 36px; display: flex; align-items: center; gap: 10px; padding: 0 10px 0 14px; border-radius: 9px; border: 1px solid var(--line-2); background: var(--surface); color: var(--ink-3); text-align: left; }
-.ov .search span { flex: 1; font-size: 14.5px; }
+.ov .search { flex: 1; min-width: 0; max-width: 490px; margin: 0 auto; height: 36px; display: flex; align-items: center; gap: 10px; padding: 0 10px 0 14px; border-radius: 9px; border: 1px solid var(--line-2); background: var(--surface); color: var(--ink-3); text-align: left; }
+.ov .search span { flex: 1; min-width: 0; font-size: 14.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .ov .seg { display: flex; padding: 3px; gap: 2px; border-radius: 9px; border: 1px solid var(--line); background: var(--surface); }
 .ov .seg button { border: 0; background: none; color: var(--ink-2); padding: 6px 11px; border-radius: 7px; font-size: 14px; }
 .ov .seg button.on { background: var(--raised-2); color: var(--ink); }
@@ -243,6 +246,9 @@
 .ov .bottom .out { color: var(--ink-2); }
 .ov .bottom .out::first-letter { color: var(--teal); }
 .ov .bottom .bar b { color: var(--ink); }
+/* The legend sits below the level switcher's row, so the two never overlap. */
+.ov .bottom:has(> .legend) { bottom: 14px; }
+@container (max-width: 1060px) { .ov .legend .li:has(.sw) { display: none; } }
 .ov .legend { display: flex; gap: 22px; align-items: center; font-size: 13.5px; color: var(--ink-2); white-space: nowrap; }
 .ov .legend .li { display: flex; align-items: center; gap: 8px; }
 .ov .legend .ln { width: 20px; height: 2px; border-radius: 1px; position: relative; }

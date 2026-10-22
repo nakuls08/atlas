@@ -344,6 +344,8 @@ export function mountOrgView(app: HTMLElement, graph: OrgGraph, geo: Map<string,
   const open = new Set<string>();
   const opts = { pending: true, inside: true };
   const vp = () => ({ w: stage.clientWidth, h: stage.clientHeight });
+  /** Zoom that fits the whole board; positive even before the stage has a size. */
+  const fitK = (v: { w: number; h: number }) => Math.max(0.01, Math.min((v.w - 120) / bounds.w, (v.h - 200) / bounds.h));
   const screen = (r: Rect): Rect => ({ x: r.x * view.k + view.x, y: r.y * view.k + view.y, w: r.w * view.k, h: r.h * view.k });
   const onScreen = (r: Rect, m = 0) => {
     const v = vp();
@@ -474,6 +476,7 @@ export function mountOrgView(app: HTMLElement, graph: OrgGraph, geo: Map<string,
   }
   const gridStep = () => {
     let s = 22 * view.k;
+    if (!(s > 0)) return 22;
     while (s < 14) s *= 2;
     while (s >= 28) s /= 2;
     return s;
@@ -1046,7 +1049,8 @@ export function mountOrgView(app: HTMLElement, graph: OrgGraph, geo: Map<string,
       minimap.style.width = `${MM.w}px`;
       minimap.style.height = `${MM.h}px`;
     }
-    const ctx = minimap.getContext('2d')!;
+    const ctx = minimap.getContext('2d');
+    if (!ctx) return;
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     ctx.clearRect(0, 0, MM.w, MM.h);
     const css = getComputedStyle(app);
@@ -1073,9 +1077,9 @@ export function mountOrgView(app: HTMLElement, graph: OrgGraph, geo: Map<string,
   // ── zoom and pan ──────────────────────────────────────────────────────────
   const kRange = () => {
     const v = vp();
-    const fitK = Math.min(v.w / bounds.w, v.h / bounds.h);
+    const whole = Math.max(0.01, Math.min(v.w / bounds.w, v.h / bounds.h));
     const deepest = Math.max(...[...openK.values()]);
-    return [fitK * 0.4, deepest * 3] as const;
+    return [whole * 0.4, deepest * 3] as const;
   };
   function setView(x: number, y: number, k: number) {
     const [lo, hi] = kRange();
@@ -1129,7 +1133,7 @@ export function mountOrgView(app: HTMLElement, graph: OrgGraph, geo: Map<string,
   }
   function fit() {
     const v = vp();
-    const k = Math.min((v.w - 120) / bounds.w, (v.h - 200) / bounds.h);
+    const k = fitK(v);
     animate({ x: (v.w - bounds.w * k) / 2 - bounds.x * k, y: 96 + (v.h - 200 - bounds.h * k) / 2 - bounds.y * k, k });
   }
 
@@ -1650,6 +1654,16 @@ export function mountOrgView(app: HTMLElement, graph: OrgGraph, geo: Map<string,
     else if (e.key === '-') zoomAround(v.w / 2, v.h / 2, 1 / 1.4);
   }, global);
   window.addEventListener('resize', schedule, global);
+  // A board mounted while hidden (an inactive tab, a collapsed panel) fits itself once it shows.
+  let sized = vp().w > 0;
+  const resized = typeof ResizeObserver === 'undefined' ? null : new ResizeObserver(() => {
+    if (!sized && vp().w > 0) {
+      sized = true;
+      const k = fitK(vp());
+      setView((vp().w - bounds.w * k) / 2 - bounds.x * k, 96 + (vp().h - 200 - bounds.h * k) / 2 - bounds.y * k, k);
+    } else schedule();
+  });
+  resized?.observe(stage);
   // Nothing in the stage scrolls: focusing or clicking a deep element must not shift the board.
   stage.addEventListener('scroll', () => {
     stage.scrollLeft = 0;
@@ -1681,7 +1695,7 @@ export function mountOrgView(app: HTMLElement, graph: OrgGraph, geo: Map<string,
     const size = vp();
     if (v && v.length === 3 && v.every(Number.isFinite)) Object.assign(view, { x: size.w / 2 - v[0] * v[2], y: size.h / 2 - v[1] * v[2], k: v[2] });
     else {
-      const k = Math.min((size.w - 120) / bounds.w, (size.h - 200) / bounds.h);
+      const k = fitK(size);
       Object.assign(view, { k, x: (size.w - bounds.w * k) / 2 - bounds.x * k, y: 96 + (size.h - 200 - bounds.h * k) / 2 - bounds.y * k });
     }
     if (f) {
@@ -1713,6 +1727,7 @@ export function mountOrgView(app: HTMLElement, graph: OrgGraph, geo: Map<string,
   return {
     destroy() {
       alive.abort();
+      resized?.disconnect();
       clearTimeout(flushTimer);
       clearTimeout(hashTimer);
       clearTimeout(toastTimer);
