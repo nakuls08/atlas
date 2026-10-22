@@ -6,6 +6,7 @@ import { el } from '../viewer/dom';
 import { applyUsage, buildGraph, type Hierarchy } from './graph';
 import { layoutOrg } from './layout';
 import { mountOrgView } from './view';
+import './page.css';
 
 /**
  * Page entry for an org graph: fetch the snapshot, build the chosen grouping, load usage from the

@@ -61,9 +61,8 @@
   color-scheme: light;
 }
 
-html, body { margin: 0; height: 100%; }
-body { background: #0e1013; }
-.ov { position: fixed; inset: 0; display: flex; flex-direction: column; background: var(--ground); color: var(--ink); font: 400 14px/1.35 var(--sans); -webkit-font-smoothing: antialiased; overflow: hidden; }
+/* The board fills the element it is mounted in, which needs a height. */
+.ov { position: relative; width: 100%; height: 100%; display: flex; flex-direction: column; background: var(--ground); color: var(--ink); font: 400 14px/1.35 var(--sans); -webkit-font-smoothing: antialiased; overflow: hidden; }
 .ov button { font: inherit; color: inherit; cursor: pointer; }
 .ov kbd { font: 500 11px var(--mono); color: var(--ink-3); border: 1px solid var(--line-2); border-radius: 5px; padding: 1px 5px; }
 .ov .ic { width: 16px; height: 16px; flex: none; }
@@ -301,31 +300,31 @@ body { background: #0e1013; }
 .ov .inspector .foot .btn:not(.primary) { background: var(--raised); }
 
 /* ── palette ── */
-.palette-wrap { position: fixed; inset: 0; z-index: 10; background: rgba(5, 6, 8, 0.55); display: flex; justify-content: center; align-items: flex-start; padding-top: 11vh; }
-.palette-wrap[hidden] { display: none; }
-.ov[data-theme='light'] ~ .palette-wrap, .ov[data-theme='light'] .palette-wrap { background: rgba(20, 24, 30, 0.25); }
-.palette { width: min(680px, calc(100vw - 32px)); max-height: 72vh; display: flex; flex-direction: column; border-radius: 18px; border: 1px solid var(--line-2); background: var(--surface); box-shadow: 0 30px 80px rgba(0, 0, 0, 0.55); overflow: hidden; }
-.palette .prompt { padding: 12px 22px 0; font: 400 13px var(--mono); color: var(--teal); }
-.palette .pin { display: flex; align-items: center; gap: 14px; padding: 16px 22px; border-bottom: 1px solid var(--line); }
-.palette .pin .ic { width: 20px; height: 20px; color: var(--ink-2); }
-.palette input { flex: 1; border: 0; outline: 0; background: none; color: var(--ink); font: 400 21px var(--sans); }
-.palette .count { font: 400 14px var(--mono); color: var(--ink-3); }
-.palette .plist { overflow: auto; padding: 6px 10px 10px; scrollbar-width: thin; }
-.palette .pg { padding: 16px 12px 8px; font: 500 12.5px var(--mono); letter-spacing: 0.08em; color: var(--ink-3); }
-.palette .pr { width: 100%; display: flex; align-items: center; gap: 13px; padding: 11px 12px; border: 0; border-radius: 10px; background: none; text-align: left; }
-.palette .pr.on { background: var(--raised-2); }
-.palette .pr .nm { font: 400 16px var(--mono); }
-.palette .pr .nm mark { background: none; color: var(--teal); }
-.palette .pr .meta { margin-left: auto; font: 400 14px var(--mono); color: var(--ink-3); white-space: nowrap; }
-.palette .pr .hint { font: 400 13px var(--mono); color: var(--ink-3); margin-left: 12px; }
-.palette .pr .ic { width: 18px; height: 18px; }
-.palette .pr .ic.team { color: var(--ink); }
-.palette .pr .ic.service { color: var(--blue); }
-.palette .pr .ic.api { color: var(--teal); }
-.palette .pr span.m { width: 52px; font-size: 13px; }
-.palette .pr kbd { margin-left: auto; }
-.palette .pfoot { display: flex; gap: 22px; padding: 12px 22px; border-top: 1px solid var(--line); font: 400 13px var(--mono); color: var(--ink-3); }
-.palette .pfoot .grow { flex: 1; }
+.ov .palette-wrap { position: absolute; inset: 0; z-index: 10; background: rgba(5, 6, 8, 0.55); display: flex; justify-content: center; align-items: flex-start; padding-top: 11vh; }
+.ov .palette-wrap[hidden] { display: none; }
+.ov[data-theme="light"] .palette-wrap { background: rgba(20, 24, 30, 0.25); }
+.ov .palette { width: min(680px, calc(100vw - 32px)); max-height: 72vh; display: flex; flex-direction: column; border-radius: 18px; border: 1px solid var(--line-2); background: var(--surface); box-shadow: 0 30px 80px rgba(0, 0, 0, 0.55); overflow: hidden; }
+.ov .palette .prompt { padding: 12px 22px 0; font: 400 13px var(--mono); color: var(--teal); }
+.ov .palette .pin { display: flex; align-items: center; gap: 14px; padding: 16px 22px; border-bottom: 1px solid var(--line); }
+.ov .palette .pin .ic { width: 20px; height: 20px; color: var(--ink-2); }
+.ov .palette input { flex: 1; border: 0; outline: 0; background: none; color: var(--ink); font: 400 21px var(--sans); }
+.ov .palette .count { font: 400 14px var(--mono); color: var(--ink-3); }
+.ov .palette .plist { overflow: auto; padding: 6px 10px 10px; scrollbar-width: thin; }
+.ov .palette .pg { padding: 16px 12px 8px; font: 500 12.5px var(--mono); letter-spacing: 0.08em; color: var(--ink-3); }
+.ov .palette .pr { width: 100%; display: flex; align-items: center; gap: 13px; padding: 11px 12px; border: 0; border-radius: 10px; background: none; text-align: left; }
+.ov .palette .pr.on { background: var(--raised-2); }
+.ov .palette .pr .nm { font: 400 16px var(--mono); }
+.ov .palette .pr .nm mark { background: none; color: var(--teal); }
+.ov .palette .pr .meta { margin-left: auto; font: 400 14px var(--mono); color: var(--ink-3); white-space: nowrap; }
+.ov .palette .pr .hint { font: 400 13px var(--mono); color: var(--ink-3); margin-left: 12px; }
+.ov .palette .pr .ic { width: 18px; height: 18px; }
+.ov .palette .pr .ic.team { color: var(--ink); }
+.ov .palette .pr .ic.service { color: var(--blue); }
+.ov .palette .pr .ic.api { color: var(--teal); }
+.ov .palette .pr span.m { width: 52px; font-size: 13px; }
+.ov .palette .pr kbd { margin-left: auto; }
+.ov .palette .pfoot { display: flex; gap: 22px; padding: 12px 22px; border-top: 1px solid var(--line); font: 400 13px var(--mono); color: var(--ink-3); }
+.ov .palette .pfoot .grow { flex: 1; }
 
 /* ── popovers ── */
 .ov .pop { position: absolute; top: 8px; z-index: 6; min-width: 230px; padding: 12px 14px; border-radius: 12px; border: 1px solid var(--line-2); background: var(--raised); box-shadow: var(--shadow); }
@@ -337,5 +336,3 @@ body { background: #0e1013; }
 .ov .toast { position: absolute; left: 50%; top: 18px; transform: translateX(-50%); z-index: 8; padding: 8px 14px; border-radius: 9px; background: var(--ink); color: var(--ground); font-size: 13.5px; }
 .ov .toast[hidden] { display: none; }
 
-/* splash */
-.ov-splash { position: fixed; inset: 0; display: grid; place-items: center; background: #0e1013; color: #a7adb7; font: 400 14px 'Geist', system-ui, sans-serif; }

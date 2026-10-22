@@ -134,3 +134,6 @@ A registry says what exists and who may call what. How much they call it is obse
 - Spec0's `calls30d` is read only through its own plugin (`--usage spec0`), the same as any other source.
 - Reports, URLs and Prometheus are built in. Anything else is a module exporting `{ name, load(ctx) }`, run at build time.
 
+## D-32 The org view can live inside another app
+`mountOrgView` returns a handle whose `destroy()` removes the board and every window listener, timer and frame it started, so a host can mount and unmount it (on navigation, or to switch grouping) without leaks. The board fills the element it is mounted in instead of the window, and the rules for a standalone page (`html`, `body`, the splash) live in `page.css`, which only `boot.ts` loads. Hooks let the host keep links in its own router (`navigate`), rebuild after "Reset layout" instead of reloading (`reload`), and leave out the Atlas name (`brand: null`).
+

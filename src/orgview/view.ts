@@ -30,6 +30,17 @@ export interface OrgViewHooks {
   setHierarchy?(h: Hierarchy): void;
   /** URL of an API's spec in the host app, if there is one. */
   specUrl?(apiId: string): string | null;
+  /** Follows a link inside the host app. Without it, links open in a new tab. */
+  navigate?(href: string): void;
+  /** Rebuilds the board after "Reset layout". Without it, the page reloads. */
+  reload?(): void;
+  /** Name in the top-left corner; null leaves it out (when the host app has its own). */
+  brand?: string | null;
+}
+
+export interface OrgViewHandle {
+  /** Removes the board and every listener, timer and frame it started. */
+  destroy(): void;
 }
 
 type Theme = 'dark' | 'light';
@@ -42,7 +53,10 @@ const OP_FONT = 13;
 const API_NAME_FONT = 15;
 const LEVELS: Record<Hierarchy, string[]> = { team: ['Org', 'Team', 'Service', 'API', 'Op'], domain: ['Org', 'Domain', 'API', 'Op'] };
 
-export function mountOrgView(app: HTMLElement, graph: OrgGraph, geo: Map<string, Geo>, source: GraphSource, hooks: OrgViewHooks = {}) {
+export function mountOrgView(app: HTMLElement, graph: OrgGraph, geo: Map<string, Geo>, source: GraphSource, hooks: OrgViewHooks = {}): OrgViewHandle {
+  // Listeners outside the board's own elements go through this, so destroy() can remove them.
+  const alive = new AbortController();
+  const global = { signal: alive.signal };
   const cards = graph.cards;
   const card = (id: string) => cards.get(id)!;
   const details = new Map<string, ApiDetails>();
@@ -99,7 +113,9 @@ export function mountOrgView(app: HTMLElement, graph: OrgGraph, geo: Map<string,
   const filterBtn = el('button', { className: 'btn' }, icon('filter'), 'Filters');
   const themeBtn = el('button', { className: 'btn icon', title: 'Light or dark' }, icon(theme === 'dark' ? 'moon' : 'sun'));
   const linkBtn = el('button', { className: 'btn primary', textContent: 'Copy view link' });
-  app.append(el('header', { className: 'top' }, el('div', { className: 'brand' }, el('span', { className: 'logo' }), 'atlas'), el('span', { className: 'sep' }), crumbs, searchBtn, seg, filterBtn, themeBtn, linkBtn));
+  const brand = hooks.brand === undefined ? 'atlas' : hooks.brand;
+  const brandEls = brand ? [el('div', { className: 'brand' }, el('span', { className: 'logo' }), brand), el('span', { className: 'sep' })] : [];
+  app.append(el('header', { className: 'top' }, ...brandEls, crumbs, searchBtn, seg, filterBtn, themeBtn, linkBtn));
 
   const status = el('div', { className: 'statusline' });
   status.append(
@@ -389,7 +405,7 @@ export function mountOrgView(app: HTMLElement, graph: OrgGraph, geo: Map<string,
   // ── per-frame update ──────────────────────────────────────────────────────
   let pending = false;
   function schedule() {
-    if (pending) return;
+    if (pending || alive.signal.aborted) return;
     pending = true;
     requestAnimationFrame(update);
   }
@@ -872,7 +888,7 @@ export function mountOrgView(app: HTMLElement, graph: OrgGraph, geo: Map<string,
           el('b', { textContent: o.path }),
           el('span', { className: 'oid', textContent: o.operationId ?? '' }),
           el('span', { className: 'grow' }),
-          url ? Object.assign(el('a', { className: 'btn', textContent: 'Open in spec', href: url, target: '_blank' }), {}) : '',
+          url ? link('btn', 'Open in spec', url) : '',
           Object.assign(el('button', { className: 'btn', textContent: 'Copy as curl' }), { onclick: () => copy(curl, 'curl copied') }),
         ),
         el(
@@ -1180,7 +1196,7 @@ export function mountOrgView(app: HTMLElement, graph: OrgGraph, geo: Map<string,
     }
     moveTo(id, x, y);
     schedule();
-  });
+  }, global);
   window.addEventListener('pointerup', (e) => {
     if (!press || e.pointerId !== press.id) return;
     const { moved, drag } = press;
@@ -1200,7 +1216,7 @@ export function mountOrgView(app: HTMLElement, graph: OrgGraph, geo: Map<string,
     if (row && c) setFocus({ card: c.dataset.id!, op: Number(row.dataset.op) });
     else if (c) setFocus({ card: c.dataset.id! });
     else if (t.closest?.('.world') || t === stage || t.closest?.('.edges')) setFocus(null);
-  });
+  }, global);
   stage.addEventListener('dblclick', (e) => {
     const c = (e.target as Element).closest('.card') as HTMLElement | null;
     if (!c) return;
@@ -1370,7 +1386,7 @@ export function mountOrgView(app: HTMLElement, graph: OrgGraph, geo: Map<string,
     const foot = el('div', { className: 'foot' });
     if (c.kind === 'api') {
       const url = hooks.specUrl?.(c.api!.id);
-      if (url) foot.append(Object.assign(el('a', { className: 'btn primary', textContent: 'Open spec', href: url, target: '_blank' })));
+      if (url) foot.append(link('btn primary', 'Open spec', url));
     }
     const tr = el('button', { className: 'btn', textContent: c.kind === 'api' ? 'Trace consumers' : 'Show dependents' });
     tr.onclick = () => setMode({ kind: 'impact', of: c.id, cards: dependents(graph, c.id) });
@@ -1538,7 +1554,8 @@ export function mountOrgView(app: HTMLElement, graph: OrgGraph, geo: Map<string,
   resetBtn.onclick = () => {
     moves.clear();
     saveMoves();
-    location.reload();
+    if (hooks.reload) hooks.reload();
+    else location.reload();
   };
   function saveMoves() {
     resetBtn.hidden = !moves.size;
@@ -1626,8 +1643,8 @@ export function mountOrgView(app: HTMLElement, graph: OrgGraph, geo: Map<string,
     else if (e.key === 'f' || e.key === 'F') fit();
     else if (e.key === '+' || e.key === '=') zoomAround(v.w / 2, v.h / 2, 1.4);
     else if (e.key === '-') zoomAround(v.w / 2, v.h / 2, 1 / 1.4);
-  });
-  window.addEventListener('resize', schedule);
+  }, global);
+  window.addEventListener('resize', schedule, global);
   // Nothing in the stage scrolls: focusing or clicking a deep element must not shift the board.
   stage.addEventListener('scroll', () => {
     stage.scrollLeft = 0;
@@ -1674,6 +1691,32 @@ export function mountOrgView(app: HTMLElement, graph: OrgGraph, geo: Map<string,
     update();
     requestAnimationFrame(() => app.classList.add('ready'));
   }
+
+  /** A link that stays in the host app when it can, and opens a tab when it can't. */
+  function link(className: string, text: string, href: string) {
+    const a = el('a', { className, textContent: text, href });
+    if (!hooks.navigate) a.target = '_blank';
+    else
+      a.onclick = (e) => {
+        if (e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return;
+        e.preventDefault();
+        hooks.navigate!(href);
+      };
+    return a;
+  }
+
+  return {
+    destroy() {
+      alive.abort();
+      clearTimeout(flushTimer);
+      clearTimeout(hashTimer);
+      clearTimeout(toastTimer);
+      cancelAnimationFrame(glide.frame);
+      app.replaceChildren();
+      app.classList.remove('ov', 'ready');
+      delete app.dataset.theme;
+    },
+  };
 }
 
 // ── geometry helpers ────────────────────────────────────────────────────────

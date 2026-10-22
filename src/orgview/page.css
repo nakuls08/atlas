@@ -1,0 +1,4 @@
+/* The standalone page (boot.ts): the board fills the window. Not loaded when the view is embedded. */
+html, body, #app { margin: 0; height: 100%; }
+body { background: #0e1013; }
+.ov-splash { position: fixed; inset: 0; display: grid; place-items: center; background: #0e1013; color: #a7adb7; font: 400 14px 'Geist', system-ui, sans-serif; }
