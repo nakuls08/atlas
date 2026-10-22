@@ -36,6 +36,8 @@ export interface OrgViewHooks {
   reload?(): void;
   /** Name in the top-left corner; null leaves it out (when the host app has its own). */
   brand?: string | null;
+  /** Show a button that gives the board the whole screen (for a board embedded in a panel). */
+  fullscreen?: boolean;
 }
 
 export interface OrgViewHandle {
@@ -115,7 +117,10 @@ export function mountOrgView(app: HTMLElement, graph: OrgGraph, geo: Map<string,
   const linkBtn = el('button', { className: 'btn primary', textContent: 'Copy view link' });
   const brand = hooks.brand === undefined ? 'atlas' : hooks.brand;
   const brandEls = brand ? [el('div', { className: 'brand' }, el('span', { className: 'logo' }), brand), el('span', { className: 'sep' })] : [];
-  app.append(el('header', { className: 'top' }, ...brandEls, crumbs, searchBtn, seg, filterBtn, themeBtn, linkBtn));
+  const fullBtn = el('button', { className: 'btn icon', title: 'Full screen' }, icon('expand'));
+  fullBtn.onclick = () => (document.fullscreenElement === app ? document.exitFullscreen() : app.requestFullscreen()).catch(() => {});
+  const fullEls = hooks.fullscreen && document.fullscreenEnabled ? [fullBtn] : [];
+  app.append(el('header', { className: 'top' }, ...brandEls, crumbs, searchBtn, seg, filterBtn, themeBtn, ...fullEls, linkBtn));
 
   const status = el('div', { className: 'statusline' });
   status.append(
@@ -1776,6 +1781,7 @@ function arrow(p: Pt, deg: number, cls: string): SVGElement {
 const ICONS = {
   search: '<circle cx="7" cy="7" r="4.5" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M10.5 10.5L14 14" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>',
   filter: '<path d="M2.5 3h11l-4.2 5v4.5l-2.6 1.2V8z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/>',
+  expand: '<path d="M2.5 6V2.5H6M10 2.5h3.5V6M13.5 10v3.5H10M6 13.5H2.5V10" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>',
   moon: '<path d="M13 9.6A5.5 5.5 0 0 1 6.4 3a5.5 5.5 0 1 0 6.6 6.6z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/>',
   sun: '<circle cx="8" cy="8" r="3" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M8 1.5v1.8M8 12.7v1.8M1.5 8h1.8M12.7 8h1.8M3.4 3.4l1.3 1.3M11.3 11.3l1.3 1.3M3.4 12.6l1.3-1.3M11.3 4.7l1.3-1.3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>',
   service: '<rect x="2.5" y="2.5" width="11" height="11" rx="2.5" fill="none" stroke="currentColor" stroke-width="1.6"/>',
