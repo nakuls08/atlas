@@ -46,7 +46,26 @@ export function mountOrgView(app: HTMLElement, graph: OrgGraph, geo: Map<string,
   const cards = graph.cards;
   const card = (id: string) => cards.get(id)!;
   const details = new Map<string, ApiDetails>();
-  const maxTraffic = Math.max(1, ...[...cards.values()].filter((c) => c.kind === 'api').map((c) => c.traffic));
+  // Usage is a layer from plugins (src/enrich); without one the board draws no traffic at all.
+  const usage = graph.usage?.reports.length ? graph.usage : null;
+  const win = usage?.reports[0].window ?? '';
+  const sizeOf = (c: Card) => (usage ? c.traffic : c.api!.operations);
+  const maxSize = Math.max(1, ...[...cards.values()].filter((c) => c.kind === 'api').map((c) => sizeOf(c) ?? 0));
+  /** "12k / 30d", "no calls", "no data"; null when there is no usage layer. */
+  const trafficShort = (c: Card) => (!usage ? null : c.traffic === null ? 'no data' : c.traffic ? `${compact(c.traffic)} / ${win}` : 'no calls');
+  const trafficLong = (c: Card) => (!usage ? '' : c.traffic === null ? 'no usage data' : c.traffic ? `${compact(c.traffic)} calls / ${win}` : `no calls in ${win}`);
+  /** Inspector rows: calls, errors and latency where the source has them, and where they came from. */
+  const usageRows = (c: Card): Array<[string, string]> => {
+    if (!usage) return [];
+    const rows: Array<[string, string]> = [['Traffic', c.traffic === null ? 'no usage data' : `${c.traffic.toLocaleString('en')} calls / ${win}`]];
+    const u = c.usage;
+    if (u?.errors !== undefined) rows.push(['Errors', `${u.errors.toLocaleString('en')}${u.calls ? ` (${((100 * u.errors) / u.calls).toFixed(u.errors / u.calls < 0.01 ? 2 : 1)}%)` : ''}`]);
+    if (u?.p95Ms !== undefined) rows.push(['p95 latency', `${u.p95Ms.toLocaleString('en')} ms`]);
+    if (c.kind !== 'api' && c.measured < c.apis.length) rows.push(['Reporting', `${c.measured} of ${c.apis.length} APIs`]);
+    const from = usage.reports[u?.report ?? 0];
+    rows.push(['Usage from', [from.source, from.sample && '(sample data)', from.asOf && `as of ${from.asOf.slice(0, 10)}`].filter(Boolean).join(' ')]);
+    return rows;
+  };
   const orgSlug = graph.org.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
   const label = (id: string) => {
     const c = card(id);
@@ -89,6 +108,13 @@ export function mountOrgView(app: HTMLElement, graph: OrgGraph, geo: Map<string,
     `${graph.totals.apis} APIs · ${graph.totals.grants} grants`,
     ...(graph.totals.pending ? [' · ', el('span', { className: 'amber', textContent: `${graph.totals.pending} pending` })] : []),
   );
+  // Say where traffic came from, or that a source failed; say nothing when no plugin is loaded.
+  if (graph.usage) {
+    const r = graph.usage.reports;
+    const failed = graph.usage.failed;
+    const text = r.length ? `usage: ${r.map((x) => x.source).join(', ')}${r.some((x) => x.sample) ? ' (sample data)' : ''}` : 'usage unavailable';
+    status.append(' · ', el('span', { className: failed.length && !r.length ? 'amber' : 'muted', textContent: text, title: failed.map((f) => `${f.plugin}: ${f.error}`).join('\n') }));
+  }
 
   const stage = el('div', { className: 'stage' });
   const world = el('div', { className: 'world' });
@@ -111,12 +137,12 @@ export function mountOrgView(app: HTMLElement, graph: OrgGraph, geo: Map<string,
   // ── cards ─────────────────────────────────────────────────────────────────
   const elOf = new Map<string, HTMLElement>();
   const bars = (c: Card) => {
-    const box = el('div', { className: 'bars' });
+    const box = el('div', { className: 'bars', title: usage ? `Calls per API, last ${win}` : 'Operations per API' });
     const shown = c.apis.slice(0, 14);
     for (const a of shown) {
-      const t = card(a).traffic;
+      const t = sizeOf(card(a)) ?? 0;
       const b = el('i');
-      if (t > 0) b.style.height = `${Math.round(22 + 78 * (Math.log10(t + 1) / Math.log10(maxTraffic + 1)))}%`;
+      if (t > 0) b.style.height = `${Math.round(22 + 78 * (Math.log10(t + 1) / Math.log10(maxSize + 1)))}%`;
       else b.className = 'idle';
       box.append(b);
     }
@@ -129,7 +155,6 @@ export function mountOrgView(app: HTMLElement, graph: OrgGraph, geo: Map<string,
     const sch = d?.schemas.length ?? c.api!.schemas;
     return [c.api!.specVersion, `${ops} ops`, `${sch} schemas`].filter(Boolean).join(' · ');
   };
-  const callsLine = (c: Card) => (c.traffic ? `${compact(c.traffic)} calls / 30d` : 'no calls in 30d');
 
   // Closed service names: one size per set of siblings, fitted to the longest.
   const serviceFs = new Map<string, number>();
@@ -160,7 +185,7 @@ export function mountOrgView(app: HTMLElement, graph: OrgGraph, geo: Map<string,
             'div',
             { className: 'r2' },
             el('span', { textContent: graph.hierarchy === 'team' ? `${c.services} svc · ${c.apis.length} api` : `${c.apis.length} api` }),
-            el('span', { textContent: c.traffic ? compact(c.traffic) : '–' }),
+            el('span', { textContent: !usage ? '' : c.traffic ? compact(c.traffic) : '–' }),
           ),
         ),
         el(
@@ -170,7 +195,7 @@ export function mountOrgView(app: HTMLElement, graph: OrgGraph, geo: Map<string,
           c.slug ? el('span', { className: 'slug', textContent: c.slug }) : '',
           el('span', {
             className: 'stats',
-            textContent: `${people}${graph.hierarchy === 'team' ? `${c.services} services · ` : ''}${c.apis.length} APIs · ${c.traffic ? `${compact(c.traffic)} calls / 30d` : 'no calls in 30d'}`,
+            textContent: [`${people}${graph.hierarchy === 'team' ? `${c.services} services · ` : ''}${c.apis.length} APIs`, trafficLong(c)].filter(Boolean).join(' · '),
           }),
         ),
       );
@@ -186,7 +211,7 @@ export function mountOrgView(app: HTMLElement, graph: OrgGraph, geo: Map<string,
           el('div', { className: 'r1' }, icon('api', 'api'), el('span', { className: 'nm', textContent: c.name }), versionChip(c)),
           el('div', { className: 'r2', textContent: opsLine(c) }),
           el('div', { className: 'mix loading' }),
-          el('div', { className: 'r3', textContent: callsLine(c) }),
+          el('div', { className: 'r3', textContent: trafficLong(c) }),
         ),
       );
     }
@@ -262,7 +287,7 @@ export function mountOrgView(app: HTMLElement, graph: OrgGraph, geo: Map<string,
         icon('api', 'api'),
         el('span', { className: 'nm', textContent: c.name }),
         versionChip(c),
-        el('span', { className: 'tr', textContent: c.traffic ? `${compact(c.traffic)} / 30d` : 'no calls' }),
+        el('span', { className: 'tr', textContent: trafficShort(c) ?? '' }),
       ),
       el('div', { className: 'osub', textContent: [c.api!.specVersion && `spec ${c.api!.specVersion}`, `${d.operations.length} operations`, `${d.schemas.length} schemas`, `team-wide: ${owner}`].filter(Boolean).join(' · ') }),
     );
@@ -1274,7 +1299,7 @@ export function mountOrgView(app: HTMLElement, graph: OrgGraph, geo: Map<string,
             ['Version', [c.api!.version && `v${c.api!.version.replace(/^v/, '')}`, c.api!.specVersion && `spec ${c.api!.specVersion}`].filter(Boolean).join(' · ') || '—'],
             ['Source', c.api!.source ? (SOURCES[c.api!.source] ?? c.api!.source) : '—'],
             ['Status', el('span', { className: `st st-${c.api!.status.toLowerCase()}` }, el('i'), c.api!.status[0] + c.api!.status.slice(1).toLowerCase())],
-            ['Traffic', c.traffic ? `${c.traffic.toLocaleString('en')} calls / 30d` : 'no calls in 30d'],
+            ...usageRows(c),
           ]),
         );
         if (d?.schemas.length) {
@@ -1320,7 +1345,7 @@ export function mountOrgView(app: HTMLElement, graph: OrgGraph, geo: Map<string,
           ...(c.kind === 'service' ? ([['Team', graph.teamName(c.team)]] as Array<[string, string]>) : []),
           ...(graph.hierarchy === 'team' && c.kind === 'group' ? ([['Services', String(c.services)]] as Array<[string, string]>) : []),
           ['APIs', String(c.apis.length)],
-          ['Traffic', c.traffic ? `${c.traffic.toLocaleString('en')} calls / 30d` : 'no calls in 30d'],
+          ...usageRows(c),
           ['Pending grants', String(c.pending)],
         ]),
       );
@@ -1340,7 +1365,7 @@ export function mountOrgView(app: HTMLElement, graph: OrgGraph, geo: Map<string,
         depRows.set(top, r);
       }
       body.push(el('h3', { textContent: 'CALLERS' }), list([...callerRows.values()]), el('h3', { textContent: 'DEPENDS ON' }), list([...depRows.values()]));
-      body.push(el('h3', { textContent: 'APIS' }), list(c.apis.map((a) => ({ name: card(a).name, meta: card(a).traffic ? `${compact(card(a).traffic)} / 30d` : '—', card: a }))));
+      body.push(el('h3', { textContent: 'APIS' }), list(c.apis.map((a) => ({ name: card(a).name, meta: trafficShort(card(a)) ?? `${card(a).api!.operations} ops`, card: a }))));
     }
     const foot = el('div', { className: 'foot' });
     if (c.kind === 'api') {
@@ -1403,7 +1428,7 @@ export function mountOrgView(app: HTMLElement, graph: OrgGraph, geo: Map<string,
         if (s < 0) continue;
         if (c.kind === 'group') groups[graph.hierarchy === 'team' ? 'TEAMS' : 'DOMAINS'].push({ group: '', id: c.id, name: c.name, meta: `${graph.hierarchy === 'team' ? `${c.services} svc · ` : ''}${c.apis.length} api${c.members ? ` · ${c.members} people` : ''}`, icon: 'team' });
         else if (c.kind === 'service') groups.SERVICES.push({ group: '', id: c.id, name: c.name, meta: graph.teamName(c.team), icon: 'service' });
-        else groups.APIS.push({ group: '', id: c.id, name: c.name, meta: `${c.api!.operations} ops · ${c.traffic ? `${compact(c.traffic)} / 30d` : 'no calls'}`, icon: 'api' });
+        else groups.APIS.push({ group: '', id: c.id, name: c.name, meta: [`${c.api!.operations} ops`, trafficShort(c)].filter(Boolean).join(' · '), icon: 'api' });
       }
       for (const [id, d] of details) {
         d.operations.forEach((o, i) => {

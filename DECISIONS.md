@@ -124,3 +124,13 @@ Org graphs and registry boards share the data sources and the ordering of top-le
 - Inside a card, what is called from outside comes first (left column) and what only calls out comes last, so lines from portals arrive at the near side. A line that would run through another card goes round through the gap between rows.
 - Click focuses, double-click dives in, hover does nothing. The level switcher (Org, Team, Service, API, Op) flies to the focused card at that level; ⌘K or `/` opens a palette that searches teams, services, APIs and loaded operations, and can start a trace or show everything that depends on a card.
 - Dark is the default theme, with a light one; Geist and Geist Mono are embedded. Moved cards are kept per browser, as on registry boards (D-29).
+
+## D-31 Traffic is a layer from plugins, never declared
+A registry says what exists and who may call what. How much they call it is observed, changes by the hour, and would turn every registry into a stream of noisy pull requests, so it is never part of the registry or the board model. Usage plugins (`src/enrich`) return a report: a source, a window, when it was taken, and per API id the calls and optionally errors and p95 latency. The page lists its plugins in order; for each API the first one with numbers wins, and a report with a different window from the first is refused, because calls from different windows can't be added up.
+
+- Missing is not zero. An API no plugin covers shows "no data", and a team shows how many of its APIs reported. With no plugin loaded the board draws no traffic at all, and the team bars fall back to operation counts.
+- Every number says where it came from: the status line names the sources, and the inspector shows the source and date next to the figures. Made-up numbers (the demo) are flagged `sample` and labelled.
+- Plugins are keyed by API id. Mapping metric series to ids is the plugin's job (`--map` for Prometheus), so names in a metrics system never leak into the registry.
+- Spec0's `calls30d` is read only through its own plugin (`--usage spec0`), the same as any other source.
+- Reports, URLs and Prometheus are built in. Anything else is a module exporting `{ name, load(ctx) }`, run at build time.
+

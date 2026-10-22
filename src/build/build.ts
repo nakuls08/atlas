@@ -8,6 +8,7 @@ import { DEFAULT_SETTINGS, type BoardModel } from '../model';
 import { loadRegistry } from '../registry/load';
 import { buildTree } from '../registry/tree';
 import type { Issue } from '../registry/types';
+import type { UsageSpec } from '../orgview/boot';
 import { validate } from '../registry/validate';
 import { fontFaceCss, ORG_FACES } from './fonts';
 
@@ -92,15 +93,17 @@ export async function build(root: string, outDir: string, meta: Record<string, s
  * A Spec0 org graph: the page carries a data source instead of a laid-out model. The browser
  * fetches the snapshot, builds the grouping, lays it out on a grid and loads API details as you
  * zoom (src/orgview). `embedded` serves a snapshot and details from the page (demos, tests);
- * `http` points at a live graph API.
+ * `http` points at a live graph API. `usage` lists the usage plugins, in order of preference
+ * (src/enrich); with none, the board shows no traffic.
  */
 export async function buildSpec0(
   source: { type: 'embedded'; snapshot: unknown; details: unknown } | { type: 'http'; baseUrl: string },
   outDir: string,
   title = 'Atlas — org graph',
+  usage: UsageSpec[] = [],
 ): Promise<string> {
   const viewer = { ...(await bundleViewer('../orgview/boot.ts')), fonts: fontFaceCss(ORG_FACES) };
-  const html = renderHtml({ kind: 'spec0', source }, viewer, '', esc(title));
+  const html = renderHtml({ kind: 'spec0', source, usage }, viewer, '', esc(title));
   const out = join(outDir, 'index.html');
   mkdirSync(outDir, { recursive: true });
   writeFileSync(out, html);

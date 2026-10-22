@@ -58,8 +58,6 @@ export interface BoardEdge {
   gap?: string;
   /** Target is a platform service or one of its APIs. */
   platform?: boolean;
-  /** Observed traffic, e.g. authorised calls over 30 days. */
-  weight?: number;
 }
 
 export interface BoardModel {

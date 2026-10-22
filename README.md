@@ -64,6 +64,8 @@ The smallest complete example is in [`examples/registry`](examples/registry), ab
 | `atlas build -r <root> -o <dir>` | Builds the board as one HTML file, with fonts embedded so it works offline |
 | `atlas build-spec0 -o <dir> --snapshot <file> --details <file>` | Builds a board from an org graph instead of a registry (see below) |
 | `atlas build-spec0 -o <dir> --api <url>` | The same, loading the graph from a live server |
+| `atlas build-spec0 ... --usage <source>` | Adds traffic from a usage plugin (see [docs/usage.md](docs/usage.md)) |
+| `atlas usage prometheus --url <url> --label <name> --calls <promql> -o <file>` | Writes a usage report from Prometheus |
 
 Run them with `npx tsx src/cli/main.ts <command>` or `bin/atlas.mjs <command>`.
 
@@ -101,11 +103,23 @@ Atlas can also draw an organisation that isn't described in YAML. Here the input
 
 ![The org graph zoomed into the Payments team, with its callers on the left and dependencies on the right](docs/images/org-graph.png)
 
-Zoomed out, every team is a card with a bar per API scaled by its traffic and a badge for grants waiting on it. Zoom in and a team shows its services, then each service its APIs with a bar of their method mix, then each API its operations and schemas. Click a card to see only its lines: callers come in from the left, dependencies go out to the right, and teams that are off screen wait at the edge as portals you can click to fly to. Double-click to dive in, press `/` or ⌘K to jump anywhere, `T` to trace a path from the focused card and `I` to inspect it. The page loads one snapshot when it opens and fetches API details in batches as they come into view. [docs/graph-api.md](docs/graph-api.md) describes the format.
+Zoomed out, every team is a card with a bar per API and a badge for grants waiting on it. The bars show traffic when a usage plugin is loaded, and operation counts when not. Zoom in and a team shows its services, then each service its APIs with a bar of their method mix, then each API its operations and schemas. Click a card to see only its lines: callers come in from the left, dependencies go out to the right, and teams that are off screen wait at the edge as portals you can click to fly to. Double-click to dive in, press `/` or ⌘K to jump anywhere, `T` to trace a path from the focused card and `I` to inspect it. The page loads one snapshot when it opens and fetches API details in batches as they come into view. [docs/graph-api.md](docs/graph-api.md) describes the format.
 
 ```bash
 npm run spec0:fixture && npm run build:spec0   # dist/spec0/index.html, from a generated fixture
 ```
+
+### Traffic comes from plugins
+
+Nothing in a registry or a graph snapshot says how busy an API is. Traffic changes by the hour, and nobody should review a pull request to update it. Atlas loads it from usage plugins when the page is built or opened and draws it as its own layer, labelled with where it came from and the window it covers. An API that a plugin has no numbers for shows "no data", which is different from zero calls.
+
+```bash
+atlas usage prometheus --url http://prometheus:9090 --label service_name \
+  --calls 'sum by (service_name) (increase(http_server_request_duration_seconds_count[30d]))' -o usage.json
+atlas build-spec0 --api https://graph.example.com --usage usage.json -o dist/org
+```
+
+A plugin can also be a URL the page fetches when it opens, or your own module. The demo's numbers are made up by the fixture generator, and the board says so. [docs/usage.md](docs/usage.md) has the report format and how to write a plugin.
 
 ## Development
 

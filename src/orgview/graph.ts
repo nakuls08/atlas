@@ -1,3 +1,4 @@
+import type { Usage, UsageLayer } from '../enrich/usage';
 import type { ApiDetails, GraphSnapshot, SnapshotApi } from '../spec0/types';
 
 /**
@@ -28,8 +29,15 @@ export interface Card {
   /** API card ids in this card's subtree, in board order. */
   apis: string[];
   services: number;
-  /** Authorised calls over 30 days, summed over the subtree. */
-  traffic: number;
+  /**
+   * Calls in the usage window, summed over the subtree's APIs that have usage data; null when
+   * none has (or no usage plugin is loaded). Set by `applyUsage`, never from the snapshot.
+   */
+  traffic: number | null;
+  /** APIs: the rest of their usage, when the source has it. */
+  usage?: Usage & { report: number };
+  /** How many of the subtree's APIs have usage data. */
+  measured: number;
   /** Grants awaiting approval on APIs in the subtree. */
   pending: number;
 }
@@ -61,6 +69,8 @@ export interface OrgGraph {
   teamName(id: string | null): string;
   domainName(id: string): string;
   totals: { teams: number; services: number; apis: number; grants: number; pending: number };
+  /** Where traffic came from, once `applyUsage` has run with something. */
+  usage: UsageLayer | null;
 }
 
 export const cardId = {
@@ -77,7 +87,7 @@ const byName = <T extends { name: string; id: string }>(a: T, b: T) => a.name.lo
 export function buildGraph(snap: GraphSnapshot, hierarchy: Hierarchy): OrgGraph {
   const cards = new Map<string, Card>();
   const add = (id: string, kind: CardKind, name: string, parent: string | null, extra: Partial<Card> = {}) => {
-    const c: Card = { id, kind, name, parent, children: [], team: null, apis: [], services: 0, traffic: 0, pending: 0, ...extra };
+    const c: Card = { id, kind, name, parent, children: [], team: null, apis: [], services: 0, traffic: null, measured: 0, pending: 0, ...extra };
     cards.set(id, c);
     if (parent) cards.get(parent)!.children.push(id);
     return c;
@@ -138,7 +148,6 @@ export function buildGraph(snap: GraphSnapshot, hierarchy: Hierarchy): OrgGraph 
     const c = cards.get(id)!;
     if (c.kind === 'api') {
       c.apis = [id];
-      c.traffic = c.api!.calls30d;
       c.pending = pendingByApi.get(id) ?? 0;
       return;
     }
@@ -146,7 +155,6 @@ export function buildGraph(snap: GraphSnapshot, hierarchy: Hierarchy): OrgGraph 
       roll(k);
       const kid = cards.get(k)!;
       c.apis.push(...kid.apis);
-      c.traffic += kid.traffic;
       c.pending += kid.pending;
       c.services += kid.kind === 'service' ? 1 : kid.services;
     }
@@ -178,7 +186,35 @@ export function buildGraph(snap: GraphSnapshot, hierarchy: Hierarchy): OrgGraph 
       grants: grants.length,
       pending: grants.filter((g) => g.status === 'PENDING').length,
     },
+    usage: null,
   };
+}
+
+/**
+ * Puts a usage layer on the graph: each API's numbers from its plugin, and sums for every card
+ * above it. Replaces whatever layer was there.
+ */
+export function applyUsage(graph: OrgGraph, layer: UsageLayer | null): void {
+  graph.usage = layer;
+  const roll = (id: string): void => {
+    const c = graph.cards.get(id)!;
+    if (c.kind === 'api') {
+      const u = layer?.apis.get(c.api!.id);
+      c.usage = u;
+      c.traffic = u ? u.calls : null;
+      c.measured = u ? 1 : 0;
+      return;
+    }
+    c.traffic = null;
+    c.measured = 0;
+    for (const k of c.children) {
+      roll(k);
+      const kid = graph.cards.get(k)!;
+      if (kid.traffic !== null) c.traffic = (c.traffic ?? 0) + kid.traffic;
+      c.measured += kid.measured;
+    }
+  };
+  graph.roots.forEach(roll);
 }
 
 /** Is `id` the card `root` or inside it? */

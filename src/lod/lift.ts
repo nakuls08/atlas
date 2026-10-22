@@ -6,7 +6,6 @@ export interface LeafEdge {
   to: string;
   kind: ConnectionKind;
   gap?: string;
-  weight?: number;
 }
 
 export interface LiftedEdge {
@@ -19,8 +18,6 @@ export interface LiftedEdge {
   leaves: string[];
   /** True when every leaf is an unknown-API call (drawn dashed). */
   gapOnly: boolean;
-  /** Sum of the leaves' observed traffic. */
-  weight: number;
 }
 
 /** Precomputed ancestor chains, node first: [node, parent, grandparent, ...]. */
@@ -57,11 +54,10 @@ export function liftEdges(
     const key = `${a}->${b}`;
     let l = out.get(key);
     if (!l) {
-      l = { key, from: a, to: b, count: 0, kinds: {}, leaves: [], gapOnly: true, weight: 0 };
+      l = { key, from: a, to: b, count: 0, kinds: {}, leaves: [], gapOnly: true };
       out.set(key, l);
     }
     l.count++;
-    l.weight += e.weight ?? 0;
     l.kinds[e.kind] = (l.kinds[e.kind] ?? 0) + 1;
     l.leaves.push(e.id);
     if (e.kind !== 'calls-unknown') l.gapOnly = false;
@@ -101,11 +97,10 @@ export function regroupBy(lifted: readonly LiftedEdge[], map: (id: string) => st
     const key = `${a}->${b}`;
     let l = out.get(key);
     if (!l) {
-      l = { key, from: a, to: b, count: 0, kinds: {}, leaves: [], gapOnly: true, weight: 0 };
+      l = { key, from: a, to: b, count: 0, kinds: {}, leaves: [], gapOnly: true };
       out.set(key, l);
     }
     l.count += e.count;
-    l.weight += e.weight;
     for (const [k, n] of Object.entries(e.kinds) as Array<[ConnectionKind, number]>) l.kinds[k] = (l.kinds[k] ?? 0) + n;
     l.leaves.push(...e.leaves);
     if (!e.gapOnly) l.gapOnly = false;

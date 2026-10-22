@@ -1,6 +1,6 @@
 import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
-import { buildGraph, connections, dependents, methodMix, tracePath, within } from '../src/orgview/graph';
+import { applyUsage, buildGraph, connections, dependents, methodMix, tracePath, within } from '../src/orgview/graph';
 import { HEAD, layoutOrg } from '../src/orgview/layout';
 import type { ApiDetails, GraphSnapshot } from '../src/spec0/types';
 
@@ -15,7 +15,8 @@ describe('buildGraph', () => {
     const payments = g.cards.get('t:team-payments')!;
     expect(payments.services).toBe(8);
     expect(payments.apis).toHaveLength(8);
-    expect(payments.traffic).toBe(payments.apis.reduce((s, a) => s + g.cards.get(a)!.traffic, 0));
+    // Traffic is not part of the graph until a usage layer is applied.
+    expect(payments.traffic).toBeNull();
     // Pending grants roll up to the team that has to approve them.
     expect([...g.roots].reduce((s, r) => s + g.cards.get(r)!.pending, 0)).toBe(g.totals.pending);
   });

@@ -5,6 +5,7 @@
  *   examples/spec0/snapshot.json                 teams, services, domains, APIs, grants
  *   examples/spec0/snapshot-with-services.json   same, with APIs linked to their exposing service
  *   examples/spec0/details.json                  operations, schemas and links per API
+ *   examples/spec0/usage.json                    made-up traffic, as a usage report (src/enrich)
  *
  *   tsx scripts/gen-spec0-fixture.ts
  *
@@ -17,6 +18,7 @@ import { createHash } from 'node:crypto';
 import { join } from 'node:path';
 import { loadRegistry } from '../src/registry/load';
 import type { Entry } from '../src/registry/types';
+import type { UsageReport } from '../src/enrich/usage';
 import type { ApiDetails, GraphSnapshot, SnapshotApi } from '../src/spec0/types';
 
 let seed = 20261012;
@@ -161,6 +163,7 @@ for (const api of of('api')) {
 // ── grants: registry calls from services to APIs ──────────────────────────────
 const apiBy = new Map(of('api').map((a) => [a.id, slug(a.id.replace('/', '-'))]));
 const grants: GraphSnapshot['grants'] = [];
+const sampleCalls = new Map<string, number>();
 const seen = new Set<string>();
 for (const c of reg.connections) {
   const from = reg.entries.get(c.from);
@@ -175,8 +178,9 @@ for (const c of reg.connections) {
   const r = rand();
   const status = r < 0.88 ? 'APPROVED' : r < 0.97 ? 'PENDING' : 'REJECTED';
   const operationScoped = rand() < 0.3;
-  // Calls are per API (Spec0 has no per-grant rollup); each approved grant adds its traffic.
-  if (status === 'APPROVED') snapApis.find((a) => a.id === api)!.calls30d += Math.round(Math.exp(int(70, 140) / 10));
+  // Made-up traffic, per API: each approved grant adds some. It goes to the usage report, not
+  // the snapshot, so the snapshot's own counts stay zero, as they are without authorisation checks.
+  if (status === 'APPROVED') sampleCalls.set(api, (sampleCalls.get(api) ?? 0) + Math.round(Math.exp(int(70, 140) / 10)));
   grants.push({ consumer, consumerKind, api, status, operationScoped });
   if (operationScoped && status !== 'REJECTED') {
     const ops = details[api].operations;
@@ -202,6 +206,21 @@ mkdirSync(out, { recursive: true });
 writeFileSync(join(out, 'snapshot.json'), `${JSON.stringify(base)}\n`);
 writeFileSync(join(out, 'snapshot-with-services.json'), `${JSON.stringify(withServices)}\n`);
 writeFileSync(join(out, 'details.json'), `${JSON.stringify(details)}\n`);
+const usage: UsageReport = {
+  source: 'Fixture generator',
+  window: '30d',
+  asOf: base.generatedAt,
+  sample: true,
+  // Some idle APIs report zero calls; others aren't instrumented at all and have no entry.
+  apis: Object.fromEntries(
+    snapApis.flatMap((a) => {
+      const calls = sampleCalls.get(a.id) ?? 0;
+      if (calls) return [[a.id, { calls, errors: Math.round(calls * rand() * 0.004), p95Ms: int(40, 900) }]];
+      return rand() < 0.5 ? [[a.id, { calls: 0 }]] : [];
+    }),
+  ),
+};
+writeFileSync(join(out, 'usage.json'), `${JSON.stringify(usage, null, 1)}\n`);
 const opsTotal = Object.values(details).reduce((n, d) => n + d.operations.length, 0);
 const schemasTotal = Object.values(details).reduce((n, d) => n + d.schemas.length, 0);
 console.log(

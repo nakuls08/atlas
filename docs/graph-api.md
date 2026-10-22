@@ -32,7 +32,9 @@ A typical session is one snapshot request and a handful of details batches. Ever
 | `apis[].service` | The service that exposes the API, or null when that isn't known. APIs without one sit under their owning team |
 | `grants` | One per consumer and API: `consumer`, `consumerKind` (`TEAM` or `SERVICE`), `api`, `status` (`APPROVED`, `PENDING` or `REJECTED`) and `operationScoped` |
 
-Approved grants are drawn as calls, pending ones as dashed requests, and rejected ones are left out. Traffic is per API (`calls30d`), so connections carry no weight.
+Approved grants are drawn as calls, pending ones as dashed requests, and rejected ones are left out. Connections carry no weight.
+
+The board doesn't read `calls30d` on its own. Spec0 fills it with the authorisation checks it answered for the API over 30 days; pass `--usage spec0` to show those numbers, alone or behind another usage plugin (see [usage.md](usage.md)).
 
 ## Details
 

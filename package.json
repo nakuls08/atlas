@@ -32,7 +32,7 @@
     "type-check": "tsc --noEmit",
     "perf": "tsx scripts/perf.ts dist/bench/index.html",
     "spec0:fixture": "tsx scripts/gen-spec0-fixture.ts",
-    "build:spec0": "tsx src/cli/main.ts build-spec0 --snapshot examples/spec0/snapshot-with-services.json --details examples/spec0/details.json -o dist/spec0",
+    "build:spec0": "tsx src/cli/main.ts build-spec0 --snapshot examples/spec0/snapshot-with-services.json --details examples/spec0/details.json --usage examples/spec0/usage.json -o dist/spec0",
     "build:demo": "tsx scripts/build-demo.ts"
   },
   "dependencies": {

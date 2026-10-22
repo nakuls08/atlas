@@ -1,0 +1,395 @@
+{
+ "source": "Fixture generator",
+ "window": "30d",
+ "asOf": "2026-10-12T09:00:00Z",
+ "sample": true,
+ "apis": {
+  "accounts-address-book-api": {
+   "calls": 0
+  },
+  "accounts-consent-api": {
+   "calls": 0
+  },
+  "accounts-profile-api": {
+   "calls": 556265,
+   "errors": 1826,
+   "p95Ms": 711
+  },
+  "analytics-metrics-api": {
+   "calls": 311169,
+   "errors": 36,
+   "p95Ms": 451
+  },
+  "billing-invoice-api": {
+   "calls": 0
+  },
+  "campaigns-audience-api": {
+   "calls": 147267,
+   "errors": 6,
+   "p95Ms": 347
+  },
+  "campaigns-campaign-api": {
+   "calls": 0
+  },
+  "cart-cart-api": {
+   "calls": 990612,
+   "errors": 2364,
+   "p95Ms": 212
+  },
+  "cart-wishlist-api": {
+   "calls": 0
+  },
+  "catalog-attributes-api": {
+   "calls": 0
+  },
+  "catalog-catalog-read-api": {
+   "calls": 100352,
+   "errors": 77,
+   "p95Ms": 140
+  },
+  "catalog-product-admin-api": {
+   "calls": 296559,
+   "errors": 321,
+   "p95Ms": 295
+  },
+  "catalog-product-api": {
+   "calls": 0
+  },
+  "catalog-taxonomy-api": {
+   "calls": 729416,
+   "errors": 2738,
+   "p95Ms": 847
+  },
+  "checkout-address-api": {
+   "calls": 6771,
+   "errors": 16,
+   "p95Ms": 893
+  },
+  "checkout-checkout-api": {
+   "calls": 1636,
+   "errors": 6,
+   "p95Ms": 134
+  },
+  "checkout-shipping-quote-api": {
+   "calls": 9073,
+   "errors": 6,
+   "p95Ms": 332
+  },
+  "content-content-api": {
+   "calls": 1202604,
+   "errors": 3563,
+   "p95Ms": 325
+  },
+  "content-media-api": {
+   "calls": 80822,
+   "errors": 300,
+   "p95Ms": 332
+  },
+  "costing-cost-api": {
+   "calls": 0
+  },
+  "edge-auth-api": {
+   "calls": 896532,
+   "errors": 3009,
+   "p95Ms": 72
+  },
+  "edge-edge-gateway": {
+   "calls": 0
+  },
+  "events-collect-api": {
+   "calls": 2981,
+   "errors": 5,
+   "p95Ms": 156
+  },
+  "inventory-allocation-api": {
+   "calls": 442413,
+   "errors": 513,
+   "p95Ms": 260
+  },
+  "inventory-availability-api": {
+   "calls": 541401,
+   "errors": 1634,
+   "p95Ms": 314
+  },
+  "inventory-inventory-api": {
+   "calls": 729416,
+   "errors": 817,
+   "p95Ms": 439
+  },
+  "ledger-ledger-api": {
+   "calls": 1998,
+   "errors": 3,
+   "p95Ms": 257
+  },
+  "legacy-legacy-addresses": {
+   "calls": 0
+  },
+  "legacy-legacy-admin-api": {
+   "calls": 0
+  },
+  "legacy-legacy-catalog-api": {
+   "calls": 1636,
+   "errors": 4,
+   "p95Ms": 299
+  },
+  "legacy-legacy-catalog-feed": {
+   "calls": 0
+  },
+  "legacy-legacy-customer-search": {
+   "calls": 0
+  },
+  "legacy-legacy-order-admin": {
+   "calls": 0
+  },
+  "legacy-legacy-order-search": {
+   "calls": 0
+  },
+  "legacy-legacy-orders-api": {
+   "calls": 59874,
+   "errors": 0,
+   "p95Ms": 601
+  },
+  "legacy-legacy-reports": {
+   "calls": 0
+  },
+  "loyalty-loyalty-api": {
+   "calls": 2582949,
+   "errors": 742,
+   "p95Ms": 770
+  },
+  "loyalty-rewards-api": {
+   "calls": 0
+  },
+  "messaging-email-api": {
+   "calls": 2697,
+   "errors": 2,
+   "p95Ms": 63
+  },
+  "messaging-preferences-api": {
+   "calls": 27984,
+   "errors": 15,
+   "p95Ms": 547
+  },
+  "messaging-push-api": {
+   "calls": 1097,
+   "errors": 3,
+   "p95Ms": 506
+  },
+  "ml-feature-store-api": {
+   "calls": 1276792,
+   "errors": 230,
+   "p95Ms": 146
+  },
+  "ml-forecast-api": {
+   "calls": 0
+  },
+  "ml-model-serving-api": {
+   "calls": 601578,
+   "errors": 807,
+   "p95Ms": 733
+  },
+  "orders-order-api-v2": {
+   "calls": 619222,
+   "errors": 1029,
+   "p95Ms": 275
+  },
+  "orders-order-history-api": {
+   "calls": 367225,
+   "errors": 1063,
+   "p95Ms": 850
+  },
+  "payments-adyen-adapter": {
+   "calls": 1212,
+   "errors": 5,
+   "p95Ms": 401
+  },
+  "payments-card-vault-api": {
+   "calls": 442413,
+   "errors": 981,
+   "p95Ms": 215
+  },
+  "payments-klarna-adapter": {
+   "calls": 16318,
+   "errors": 28,
+   "p95Ms": 741
+  },
+  "payments-payments-api": {
+   "calls": 928205,
+   "errors": 976,
+   "p95Ms": 599
+  },
+  "payments-paypal-adapter": {
+   "calls": 147267,
+   "errors": 79,
+   "p95Ms": 286
+  },
+  "payments-psp-webhooks": {
+   "calls": 0
+  },
+  "payments-stripe-adapter": {
+   "calls": 13360,
+   "errors": 47,
+   "p95Ms": 267
+  },
+  "payouts-payout-api": {
+   "calls": 393919,
+   "errors": 498,
+   "p95Ms": 507
+  },
+  "personalization-experiments-api": {
+   "calls": 0
+  },
+  "personalization-recommendations-api": {
+   "calls": 0
+  },
+  "pricing-fx-api": {
+   "calls": 7332,
+   "errors": 26,
+   "p95Ms": 858
+  },
+  "pricing-price-api": {
+   "calls": 101157,
+   "errors": 308,
+   "p95Ms": 312
+  },
+  "pricing-price-rules-api": {
+   "calls": 400312,
+   "errors": 311,
+   "p95Ms": 429
+  },
+  "procurement-supplier-api": {
+   "calls": 49021,
+   "errors": 38,
+   "p95Ms": 66
+  },
+  "promotions-coupon-api": {
+   "calls": 311324,
+   "errors": 134,
+   "p95Ms": 797
+  },
+  "promotions-promotion-eval-api": {
+   "calls": 138343,
+   "errors": 110,
+   "p95Ms": 519
+  },
+  "refunds-refund-api": {
+   "calls": 1002200,
+   "errors": 3155,
+   "p95Ms": 383
+  },
+  "returns-returns-api": {
+   "calls": 32860,
+   "errors": 110,
+   "p95Ms": 708
+  },
+  "reviews-reviews-api": {
+   "calls": 0
+  },
+  "reviews-submit-review-api": {
+   "calls": 0
+  },
+  "risk-chargeback-api": {
+   "calls": 0
+  },
+  "risk-fraud-rules-api": {
+   "calls": 268337,
+   "errors": 1054,
+   "p95Ms": 825
+  },
+  "risk-fraud-score-api": {
+   "calls": 842927,
+   "errors": 149,
+   "p95Ms": 571
+  },
+  "risk-risk-review-console": {
+   "calls": 0
+  },
+  "runtime-flags-api": {
+   "calls": 855606,
+   "errors": 3221,
+   "p95Ms": 335
+  },
+  "runtime-secrets-api": {
+   "calls": 0
+  },
+  "search-merchandising-api": {
+   "calls": 9897,
+   "errors": 37,
+   "p95Ms": 511
+  },
+  "search-query-nlu-api": {
+   "calls": 147267,
+   "errors": 279,
+   "p95Ms": 659
+  },
+  "search-search-api": {
+   "calls": 36316,
+   "errors": 90,
+   "p95Ms": 134
+  },
+  "sellers-listings-api": {
+   "calls": 268337,
+   "errors": 411,
+   "p95Ms": 295
+  },
+  "sellers-onboarding-api": {
+   "calls": 6003,
+   "errors": 20,
+   "p95Ms": 721
+  },
+  "sellers-seller-orders-api": {
+   "calls": 3294,
+   "errors": 7,
+   "p95Ms": 100
+  },
+  "sellers-seller-portal-api": {
+   "calls": 0
+  },
+  "service-desk-chat-api": {
+   "calls": 0
+  },
+  "service-desk-ticketing-api": {
+   "calls": 807342,
+   "errors": 2312,
+   "p95Ms": 800
+  },
+  "shipping-carrier-api": {
+   "calls": 222780,
+   "errors": 11,
+   "p95Ms": 259
+  },
+  "shipping-delivery-promise-api": {
+   "calls": 342513,
+   "errors": 1135,
+   "p95Ms": 468
+  },
+  "shipping-label-api": {
+   "calls": 605299,
+   "errors": 2080,
+   "p95Ms": 170
+  },
+  "storefront-prerender-api": {
+   "calls": 0
+  },
+  "storefront-storefront-graphql": {
+   "calls": 16318,
+   "errors": 48,
+   "p95Ms": 868
+  },
+  "storefront-storefront-web": {
+   "calls": 24343,
+   "errors": 54,
+   "p95Ms": 489
+  },
+  "tax-tax-api": {
+   "calls": 18059,
+   "errors": 28,
+   "p95Ms": 259
+  },
+  "warehouse-locations-api": {
+   "calls": 24343,
+   "errors": 64,
+   "p95Ms": 361
+  }
+ }
+}
